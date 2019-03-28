@@ -1,18 +1,11 @@
-import {BASIC_SEARCH} from './types'
+import { SET_SEARCH_PARAM } from "./types"
 
-
-export const basicSearch=(searchKey)=>{
-   return {
-       type:BASIC_SEARCH,
-       payload:searchKey
-   }
+// export const basicSearch = searchKey => dispatch => {
+//   dispatch({ type: BASIC_SEARCH, payload: searchKey })
+// }
+export const setSearchParam = searchParam => dispatch => {
+  dispatch({ type: SET_SEARCH_PARAM, payload: searchParam })
 }
-// export const setSideNavClass=(sideNavClass)=>{
-//     return {
-//         type:SIDENAV_CLASS,
-//         payload:sideNavClass
-//     }
-//  }
 // export const setNavToggle=(toggleVal, pageClass, navClass)=>dispatch=>{
 //     if(toggleVal){
 //         dispatch(setSideNavClass(navClass))

@@ -216,3 +216,62 @@ img.desaturate {
   max-height: 44vh;
   overflow-y: auto;
 }
+.img-card-overlay{
+  width:30px;
+}
+.bottomright {
+  position: absolute;
+  bottom: 0px;
+  right: -10px;
+}
+.container-ovr{
+  position: relative;
+  display: inline-block;
+}
+
+.recListMenu:hover{
+  /* padding: .2rem .5rem;
+  white-space: normal; */
+  background-color: #f8f9fa;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+.recListMenu .fa-arrow-right {
+  display: none;
+}
+.recListMenu:hover .fa-arrow-right {
+  display: inline-block
+}
+.recListMenu:hover .fa-chevron-right{
+  display: none
+}
+.recListMenu:active {
+  background-color: #1f9eba;
+  color: #fff !important;
+}
+.fa-plus:hover:before {
+  content: "\f0fe";
+  cursor: pointer;
+  color: #1f9eba !important;
+}
+.recListMenu{
+  display: block;
+  padding: .5rem;
+}
+.listIcn{
+  width:20px;
+}
+.img-icn{
+   width:24px;
+}
+.modal-list{
+  overflow-y: auto;
+  height:350px
+}
+/* div.childList {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+div.childList [class*="col"]{
+  display: inline-block;
+  float: none;
+} */

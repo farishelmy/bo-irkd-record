@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <g id="Group_102" data-name="Group 102" transform="translate(-2802 -1428.824)">
+    <path id="Path_315" data-name="Path 315" d="M200,100a99.956,99.956,0,1,1-5.669-33.228,97.594,97.594,0,0,1,5.354,26.3A51.028,51.028,0,0,1,200,100Z" transform="translate(2802 1428.824)" fill="#70c1b3"/>
+    <g id="workflow_1_" data-name="workflow (1)" transform="translate(2825.466 1458.377)">
+      <path id="Path_289" data-name="Path 289" d="M153.663,18.75a2.344,2.344,0,0,0-2.344,2.344v87.889a26.953,26.953,0,1,1-53.905,0V31.64a31.64,31.64,0,1,0-63.28,0V128.9a2.344,2.344,0,1,0,4.687,0V31.64a26.953,26.953,0,1,1,53.905,0v77.343a31.64,31.64,0,0,0,63.28,0V21.093A2.343,2.343,0,0,0,153.663,18.75Z" transform="translate(-18.569)" fill="#4482c3"/>
+      <circle id="Ellipse_17" data-name="Ellipse 17" cx="30.468" cy="30.468" r="30.468" transform="translate(46.033 39.843)" fill="#14a085"/>
+      <path id="Path_290" data-name="Path 290" d="M229.657,205.228a2.344,2.344,0,0,0-3.262.577l-14.805,21.147-2.712-2.712a2.344,2.344,0,0,0-3.314,3.314l4.688,4.688a2.343,2.343,0,0,0,1.657.687,1.94,1.94,0,0,0,.2,0,2.344,2.344,0,0,0,1.715-.991L230.233,208.5a2.343,2.343,0,0,0-.576-3.272Z" transform="translate(-142.437 -148.555)" fill="#fff"/>
+      <path id="Path_291" data-name="Path 291" d="M359.242,8.533V36.658h-7.031a2.344,2.344,0,0,1-2.344-2.344V10.877a2.343,2.343,0,0,1,2.344-2.344h7.031Z" transform="translate(-247.584 -6.189)" fill="#e57e25"/>
+      <path id="Path_292" data-name="Path 292" d="M416.812,10.877V34.314a2.344,2.344,0,0,1-2.344,2.344H384V8.533h30.468A2.344,2.344,0,0,1,416.812,10.877Z" transform="translate(-272.343 -6.189)" fill="#f0c419"/>
+      <g id="Group_97" data-name="Group 97" transform="translate(118.689 9.375)">
+        <path id="Path_293" data-name="Path 293" d="M426.006,34.133H411.944a2.344,2.344,0,1,0,0,4.687h14.062a2.344,2.344,0,1,0,0-4.687Z" transform="translate(-409.6 -34.133)" fill="#e57e25"/>
+        <path id="Path_294" data-name="Path 294" d="M416.631,68.267h-4.688a2.344,2.344,0,0,0,0,4.687h4.688a2.344,2.344,0,1,0,0-4.687Z" transform="translate(-409.6 -58.892)" fill="#e57e25"/>
+      </g>
+      <circle id="Ellipse_18" data-name="Ellipse 18" cx="9.375" cy="9.375" r="9.375" transform="translate(8.534 119.53)" fill="#f0c419"/>
+    </g>
+  </g>
+</svg>
