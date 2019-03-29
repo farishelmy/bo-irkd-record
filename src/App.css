@@ -38,6 +38,9 @@
   width: 100px;
   height: 100px;
 }
+.img-list{
+  max-width:50px;
+}
 .cust-header{
   font-size:2rem
 }

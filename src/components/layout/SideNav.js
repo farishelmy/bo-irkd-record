@@ -1,18 +1,22 @@
 import React from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import { setActivePage } from "../../actions/layoutInitAction"
 
+import { setActivePage } from "../../actions/layoutInitAction"
 import { setSearchParam } from "../../actions/searchAction"
+import { setStakehType, setStakehNumb, setShowFab, setStakehLabel, setStakehSel } from '../../actions/location'
+
 class SideNav extends React.Component {
   constructor() {
     super()
     this.state = {
       folderToggle: false,
       documentToggle: false,
-      uploadToggle: false
+      uploadToggle: false,
+      locationToggle: false,
     }
   }
+
   toggleClass = e => {
     e.preventDefault()
     const {
@@ -39,16 +43,17 @@ class SideNav extends React.Component {
       case "search":
         const docState = this.state.documentToggle
         if (!docState) {
-          this.setState({ documentToggle: !docState, folderToggle: false, uploadToggle: false })
+          this.setState({ documentToggle: !docState, folderToggle: false, uploadToggle: false})
         }
         this.props.setActivePage("savedSearch")
         break
       case "upload":
         const upState = this.state.uploadToggle
         this.setState({ uploadToggle: !upState, folderToggle: false })
-        break
+        break       
     }
   }
+  
   setActivePage = e => {
     e.preventDefault()
     const pageName = e.target.getAttribute("data-pagename")
@@ -60,7 +65,33 @@ class SideNav extends React.Component {
     } = this.props
 
     this.props.setActivePage(pageName)
-    console.log(pageName)
+
+    if(pageName==="location"){
+
+      const stakehList = {
+        _action: "LISTLOCATION",
+        _id: _id,
+      }
+      this.props.setStakehType(stakehList)
+
+      // //Breadcrumb
+      // this.props.setNewBread(true, {
+      //   id: e.target.getAttribute('data-pagename'),
+      //   label: e.target.getAttribute('data-pageTitle'),
+      //   activePage: e.target.getAttribute('data-pagename'),
+      //   isActive: true,
+      // })
+
+      this.props.setStakehLabel(e.target.getAttribute("data-label"))
+      this.props.setStakehSel(null)  // ID stakeholder select to null
+      this.props.setShowFab(false) // Fab True false
+      // this.props.setStakehNumb(e.target.getAttribute('data-label'))
+
+      this.setState({ uploadToggle: false, folderToggle: false, documentToggle: false })
+
+    }     
+
+    // console.log(pageName)
     // if (pageName === "record") {
     //   const searchParam = {
     //     _action: "SEARCHRECORD",
@@ -99,6 +130,9 @@ class SideNav extends React.Component {
           <div className='main-menu'>
             <h5 className='sidenav-heading'>Main</h5>
             <ul id='side-main-menu' className='side-menu list-unstyled'>
+
+              {/********************************************************** Record ****************************************************/}
+
               <li>
                 <a
                   href='/'
@@ -124,7 +158,11 @@ class SideNav extends React.Component {
                     </a>
                   </li>
                 </ul>
+
               </li>
+
+              {/********************************************************** Search ****************************************************/}
+
               <li>
                 {/* Need to chage the a tag so it does not addinh the # on the url */}
                 <a
@@ -139,7 +177,11 @@ class SideNav extends React.Component {
                     <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' />
                   </div>
                   Search
-                </a>
+                </a>                
+
+              {/********************************************************** Advance Search ****************************************************/}
+
+
                 <ul id='chartsDropdown' className={this.state.documentToggle ? "collapse list-unstyled show" : "collapse list-unstyled"}>
                   <li>
                     <a href='/' data-pagename='advSearch' onClick={this.setActivePage}>
@@ -157,6 +199,9 @@ class SideNav extends React.Component {
                       Form Search
                     </a>
                   </li> */}
+
+              {/********************************************************** Browse by Classification ****************************************************/}
+
                   <li>
                     <a href='/' data-pagename='searchClass' onClick={this.setActivePage}>
                       <div className='userIcon' data-pagename='searchClass'>
@@ -167,6 +212,20 @@ class SideNav extends React.Component {
                   </li>
                 </ul>
               </li>
+              
+              {/********************************************************** Location ****************************************************/}
+              
+              <li>    
+                <a href="/" onClick={this.setActivePage} data-pagename="location" data-label="All Locations">
+                  <div className="userIcon" data-pagename="location">
+                    <img src={require(`../../img/employee.svg`)} alt="location" className="img-fluid mr-1" />
+                  </div>Locations
+                </a>           
+              </li>
+
+              {/********************************************************** Workflow ****************************************************/}
+
+
             </ul>
           </div>
         </div>
@@ -178,7 +237,11 @@ SideNav.propTypes = {
   session: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  setSearchParam: PropTypes.func.isRequired
+  setSearchParam: PropTypes.func.isRequired,
+  setStakehType: PropTypes.func.isRequired,
+  setShowFab: PropTypes.func.isRequired,
+  setStakehLabel: PropTypes.func.isRequired,
+  setStakehSel: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   session: state.session,
@@ -186,5 +249,12 @@ const mapStateToProps = state => ({
 })
 export default connect(
   mapStateToProps,
-  { setActivePage, setSearchParam }
+  { 
+    setActivePage, 
+    setSearchParam, 
+    setStakehType,
+    setShowFab, 
+    setStakehLabel,
+    setStakehSel
+  }
 )(SideNav)

@@ -16,7 +16,7 @@
     "react-number-format": "^4.0.6",
     "react-pose": "^4.0.6",
     "react-redux": "^5.0.7",
-    "react-scripts": "2.0.5",
+    "react-scripts": "^2.1.8",
     "react-select": "^2.4.1",
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",

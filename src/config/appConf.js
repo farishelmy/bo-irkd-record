@@ -1,3 +1,3 @@
-const gwUrl = "http://192.168.56.101/IRGateway/Gateway?"
+const gwUrl = "http://192.168.56.5/IRGateway/Gateway?"
 
 export { gwUrl }

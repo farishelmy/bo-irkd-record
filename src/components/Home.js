@@ -16,6 +16,11 @@ import Search from "./search"
 import SearchClass from "./search/searchClass"
 import AdvSearch from "./search/advSearch"
 
+import location from "./location/index"
+import viewLoc from "./location/view/ViewDetail"
+
+
+
 const AnimeCont = posed.div({
   enter: {
     x: 0,
@@ -43,7 +48,12 @@ class Home extends Component {
     savedSearch: Search,
     advSearch: AdvSearch,
     // formSearch: RecCreate,
-    searchClass: SearchClass
+    searchClass: SearchClass,
+
+    //Location
+    location: location,
+    viewLocation: viewLoc
+    
   }
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions)

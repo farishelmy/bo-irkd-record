@@ -28,3 +28,18 @@ export const SET_REC_CONF = "SET_REC_CONF"
 //backend action and reducer link
 export const RECORD_LIST = "RECORD_LIST"
 export const RECORD_TYPE_LIST = "RECORD_TYPE_LIST"
+
+//Location action and reducer link
+export const LOC_TYPE = 'LOC_TYPE'
+export const LOC_SEL = 'LOC_SEL'
+export const LOC_SEL_OBJ = 'LOC_SEL_OBJ'
+export const LOC_VIEW = 'LOC_VIEW'
+export const SHOW_FAB = 'SHOW_FAB'
+export const LOC_LABEL = 'LOC_LABEL'
+export const LOC_NUMB = 'LOC_NUMB'
+export const PAGE_SIZE_LOCATION = 'PAGE_SIZE_LOCATION'
+export const TOTAL_COUNT_LOCATION = 'TOTAL_COUNT_LOCATION'
+export const LOCATION_VIEW = 'LOCATION_VIEW'
+export const LOCATION_MEMBER = 'LOCATION_MEMBER'
+export const SEARCH_STATUS = 'SEARCH_STATUS'
+
