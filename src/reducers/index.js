@@ -7,6 +7,11 @@ import layoutInitReducer from "./layoutInitReducer"
 import searchReducer from "./searchReducer"
 import recReducer from "./recReducer"
 import locationReducer from "./locationReducer"
+import workflowReducer from "./workflowReducer"
+import activityReducer from "./activityReducer"
+
+
+
 // import stakehReducer from './stakehReducer'
 
 // import activitiesReducer from './activitiesReducer'
@@ -16,11 +21,14 @@ const appReducer = combineReducers({
   session: authReducer,
   layout: layoutInitReducer,
   searchConf: searchReducer,
-  location: locationReducer,
   // stakeh:stakehReducer,
   // activities:activitiesReducer,
   // tasks:taskReducer,
-  rec: recReducer
+  rec: recReducer,
+  location: locationReducer,
+  workflow: workflowReducer,
+  activity: activityReducer
+
 })
 
 export const rootReducer = (state, action) => {

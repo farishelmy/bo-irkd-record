@@ -103,7 +103,7 @@ const updSecBtn=(e)=>{
                     </span>
                 </li>  */}
 
-                <li className= "fab-buttons-item">
+                {/* <li className= "fab-buttons-item">
                     <span className="fab-buttons-link">
                         <Tooltip
                             placement="left"
@@ -112,7 +112,7 @@ const updSecBtn=(e)=>{
                              <img name="basic" data-wizardpage="basic" src={require('../../img/fab-update.svg')} alt='basic' className='img-fluid' onClick={updBasicBtn}  /> 
                         </Tooltip>
                     </span>
-                </li> 
+                </li>  */}
 
                               
                

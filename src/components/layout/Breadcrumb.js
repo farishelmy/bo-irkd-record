@@ -11,7 +11,10 @@ export class Breadcrumb extends Component {
             <li className='breadcrumb-item' to='/'>
               Home
             </li>
-            <li className='breadcrumb-item active'>Upload</li>
+            {/* <li className='breadcrumb-item active'>Upload</li> */}
+            
+
+
           </ul>
         </div>
       </div>

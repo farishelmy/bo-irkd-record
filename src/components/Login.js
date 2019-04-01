@@ -118,7 +118,7 @@ class Login extends Component {
             <div className='form-inner' style={styles.innerForm}>
               <div className='logo text-uppercase'>
                 <strong className='text-primary'>
-                  <span className='text-light'>DIGITAL</span>DOCUMENT
+                  <span className='text-light'>i</span>Rekod
                 </strong>
               </div>
               <p className='text-light'>Digital Document is not simply a tool but it lets a user manage access, track and edit information stored.</p>

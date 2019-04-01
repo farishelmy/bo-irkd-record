@@ -19,6 +19,14 @@ import AdvSearch from "./search/advSearch"
 import location from "./location/index"
 import viewLoc from "./location/view/ViewDetail"
 
+import listWorkflow from "./workflow/ListWorkflow"
+import WorkflowContent from './workflow/WorkflowContent'
+import WorkflowDetails from './workflow/wizard/WorkflowDetails'
+
+import ListActivity from './activity/ListActivity'
+import ActivityDetails from './activity/wizard/ActivityDetails'
+import SearchActivity from './activity/search/SearchActivity'
+import SearchWorkflow from './workflow/search/SearchWorkflow'
 
 
 const AnimeCont = posed.div({
@@ -52,7 +60,19 @@ class Home extends Component {
 
     //Location
     location: location,
-    viewLocation: viewLoc
+    viewLocation: viewLoc,
+
+    //Workflow
+    listAllWorkflow: listWorkflow,
+    workflowContent: WorkflowContent,
+    viewWorkflow: WorkflowDetails,    
+
+    listOfActivity: ListActivity,
+    wizardActivity: ActivityDetails,
+    searchActivity: SearchActivity,
+    searchWorkflow: SearchWorkflow,
+
+
     
   }
   componentDidMount() {

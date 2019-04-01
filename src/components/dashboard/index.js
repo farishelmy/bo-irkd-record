@@ -2,6 +2,9 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
+// import AnalyticComps from "../dashboard/AnalyticComps";
+
+
 export class index extends Component {
   render() {
     return (
@@ -12,6 +15,9 @@ export class index extends Component {
               <h1 className='h3 display'>Dashboard</h1>
             </div>
           </header>
+
+          {/* <AnalyticComps ref={el => (this.componentRef = el)} /> */}
+          
         </div>
       </section>
     )

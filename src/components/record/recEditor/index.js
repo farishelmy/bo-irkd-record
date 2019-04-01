@@ -53,7 +53,7 @@ export class index extends Component {
         <div className='container-fluid'>
           <header>
             <div className='d-flex align-items-center justify-content-between'>
-              <h1 className='h3 display'>New {formTitle} </h1>
+              <h1 className='h3 display'>Document 1 </h1>
             </div>
           </header>
           <div className='card'>

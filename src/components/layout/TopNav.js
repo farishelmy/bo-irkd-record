@@ -68,8 +68,8 @@ class TopNav extends Component {
 
                   <a href='/' className='navbar-brand' onClick={this.setActivePage}>
                     <div className='brand-text d-none d-md-inline-block'>
-                      <span>Digital </span>
-                      <strong className='text-primary'>Document</strong>
+                      {/* <span> </span> */}
+                      <strong className='text-primary'>iRekod</strong>
                     </div>
                   </a>
                 </div>
