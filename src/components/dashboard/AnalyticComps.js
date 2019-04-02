@@ -93,7 +93,7 @@ class AnalyticComps extends Component {
     }
 
     const { recordYear } = this.props.dashboard;
-    console.log(recordYear)
+    // console.log(recordYear)
     if (recordYear.length === 0) {
       getRecYear({
         _action: "GETTOTALRECORDCREATED",

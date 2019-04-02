@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { changeSubBtn } from '../../actions/fabAction'
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setWizardPage, setRecordStore } from "../../actions/workflowAction"
-// import { setNewBread } from "../../actions/breadcrumbAction"
+import { setNewBread } from "../../actions/breadcrumbAction"
 import { toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
 import { getResult } from '../../actions/activityAction'
 
@@ -31,8 +31,14 @@ class FabActivityContent extends Component {
     action=(e)=>{
         e.preventDefault()
 
-        const {  activityUri, checkResult } = this.props.activity
-        const { user: { _id: bId }} = this.props.session
+        const {
+            session: {
+                user: { _id:bId, sortname }
+            },
+            activity: {
+                activityUri, checkResult, activityName
+            },
+          } = this.props
 
         switch(e.target.name){
             
@@ -65,6 +71,14 @@ class FabActivityContent extends Component {
                 // this.props.setRecordStore(recordDet)
                 this.props.setActivePage('wizardActivity')
                 this.props.setWizardPage("record") 
+
+                 //Breadcrumb
+                 this.props.setNewBread(false, {
+                    id: activityUri,
+                    label: activityName,
+                    activePage: "wizardActivity",
+                    isActive: true
+                })
            
             break   
 
@@ -72,7 +86,15 @@ class FabActivityContent extends Component {
                 
                 this.props.setActivePage('wizardActivity')
                 this.props.setWizardPage("general") 
-                this.props.changeSubBtn(false)                   
+                this.props.changeSubBtn(false)   
+                
+                //Breadcrumb
+                this.props.setNewBread(false, {
+                    id: activityUri,
+                    label: activityName,
+                    activePage: "wizardActivity",
+                    isActive: true
+                })
                 
             break   
 
@@ -213,7 +235,7 @@ FabActivityContent.propTypes={
     changeSubBtn:PropTypes.func.isRequired,
     setActivePage:PropTypes.func.isRequired,
     setWizardPage:PropTypes.func.isRequired,
-    // setNewBread:PropTypes.func.isRequired,
+    setNewBread:PropTypes.func.isRequired,
     setRecordStore:PropTypes.func.isRequired,
     toggleErr:PropTypes.func.isRequired,
     showComplete:PropTypes.func.isRequired,
@@ -234,7 +256,7 @@ export default connect(mapStateToProps,{
     changeSubBtn,
     setActivePage,
     setWizardPage,
-    // setNewBread,
+    setNewBread,
     setRecordStore,
     toggleErr,
     showComplete,

@@ -96,7 +96,11 @@ class Home extends Component {
         <SideNav />
         <div className={pageClass}>
           <TopNav />
-          <Breadcrumb />
+            <div className="breadcrumb-holder">
+              <div className="container-fluid">
+                <Breadcrumb />
+              </div>
+            </div>
           <PoseGroup>
             <AnimeCont key={activePage}>
               <Activepage />

@@ -4,14 +4,14 @@ import Pagination from 'rc-pagination'
 import {setStakehSel,stakehSelObj,setStakehViewTrue,setStakehViewFalse,setShowFab,setStakehType} from '../../actions/location' 
 import {setActivePage} from '../../actions/layoutInitAction'  
 import {setStakeholderItemDetail,viewStakehMember} from '../../actions/location'
-// import {setNewBread} from '../../actions/breadcrumbAction'
+import {setNewBread} from '../../actions/breadcrumbAction'
 // import {showMultiFab} from '../../actions/fabAction' 
 
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Dropdown from './Dropdown'
-// import Breadcrumb from '../layouts/Breadcrumb'
+import Breadcrumb from '../layout/Breadcrumb'
 import CardRow from '../location/CardRow'  
 import DetailCard from '../location/DetailCard'
 import Fab from '../fab/FabLocation'
@@ -156,14 +156,14 @@ class index extends Component {
 
         // console.log(locSel)
 
-        // //Breadcrumb
-        // this.props.setNewBread(false,{
-        //     id: stakehObj.sId, 
-        //     label:stakehObj.name, 
-        //     typeName: stakehObj.typeName,
-        //     activePage:'viewStakeh', 
-        //     isActive:true,
-        // })
+        //Breadcrumb
+        this.props.setNewBread(false,{
+            id: locObj.sId, 
+            label:locObj.name, 
+            typeName: locObj.typeName,
+            activePage:'viewLocation', 
+            isActive:true,
+        })
        
         this.props.setActivePage(param)  //direct page to viewDetail
          
@@ -399,7 +399,7 @@ index.propTypes={
     // setWizardPage: PropTypes.func.isRequired,  
     // showMultiFab: PropTypes.func.isRequired,
     stakehSelObj: PropTypes.func.isRequired,   
-    // setNewBread: PropTypes.func.isRequired,  
+    setNewBread: PropTypes.func.isRequired,  
     setStakehType: PropTypes.func.isRequired,  
     
 }
@@ -425,7 +425,7 @@ export default connect(mapStateToProps,{
     // setWizardPage,    
     // showMultiFab,
     stakehSelObj,
-    // setNewBread,
+    setNewBread,
     setStakehType
    
 })(index)

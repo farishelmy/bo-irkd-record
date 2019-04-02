@@ -145,7 +145,7 @@ class Breadcrumb extends Component {
       
         /////////////////////////////Location////////////////////////////////
 
-        if(activePage==="viewStakeh"){         
+        if(activePage==="viewLocation"){         
 
           const stakehObj ={
             sId: id,

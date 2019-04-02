@@ -5,7 +5,7 @@ import MemberView from '../../location/view/MemberView'
 import { setActivePage} from '../../../actions/layoutInitAction' 
 import { setStakeholderItemDetail,viewStakehMember } from '../../../actions/location'
 import { setStakehType,setStakehSel,setStakehNumb,stakehSelObj } from '../../../actions/location'
-// import {setNewBread} from '../../../actions/breadcrumbAction'
+import {setNewBread} from '../../../actions/breadcrumbAction'
 
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
@@ -26,13 +26,13 @@ class ViewDetail extends Component {
     const {user:{_id:bId}} = this.props.session
     const val = ({sId,typeName,name})  
     
-    // this.props.setNewBread(false,{
-    //   id:sId,
-    //   typeName:typeName,
-    //   label:name, 
-    //   activePage:'viewStakeh', 
-    //   isActive:true,
-    // })
+    this.props.setNewBread(false,{
+      id:sId,
+      typeName:typeName,
+      label:name, 
+      activePage:'viewLocation', 
+      isActive:true,
+    })
     
     // console.log(sId)
     // console.log(stakehObj)
@@ -185,7 +185,7 @@ ViewDetail.propTypes={
   setStakehSel: PropTypes.func.isRequired,
   setStakehNumb: PropTypes.func.isRequired,
   stakehSelObj: PropTypes.func.isRequired,
-  // setNewBread: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
   
   
 }
@@ -205,7 +205,7 @@ export default connect(mapStateToProps,{
     setStakehSel,
     setStakehNumb,
     stakehSelObj,
-    // setNewBread
+    setNewBread
     
 
 })(ViewDetail)

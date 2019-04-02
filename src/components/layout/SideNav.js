@@ -8,6 +8,7 @@ import { setSearchParam } from "../../actions/searchAction"
 import { setStakehType, setStakehNumb, setShowFab, setStakehLabel, setStakehSel } from '../../actions/location'
 import { populateWorkflow, toggleSearchWorkflow } from '../../actions/workflowAction'
 import { setListActDue, toggleSearchActivity } from '../../actions/activityAction'
+import { setNewBread, resetNav } from '../../actions/breadcrumbAction'
 
 class SideNav extends React.Component {
   constructor() {
@@ -44,18 +45,35 @@ class SideNav extends React.Component {
           jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Owner Location", value1: sortname }]))
         })
         this.props.setActivePage("record")
+
+        this.props.setNewBread(true, {
+          id: e.target.getAttribute('data-breadcrumb'),
+          label: e.target.getAttribute('data-breadcrumb'),
+          activePage: e.target.getAttribute('data-breadcrumb'),
+          isActive: true,
+        })
         break
+
       case "search":
         const docState = this.state.documentToggle
         if (!docState) {
           this.setState({ documentToggle: !docState, folderToggle: false, uploadToggle: false, workflowToggle: false, activityToggle: false})
         }
         this.props.setActivePage("savedSearch")
+
+        this.props.setNewBread(true, {
+          id: e.target.getAttribute('data-breadcrumb'),
+          label: e.target.getAttribute('data-breadcrumb'),
+          activePage: e.target.getAttribute('data-breadcrumb'),
+          isActive: true,
+        })
         break
+
       case "upload":
         const upState = this.state.uploadToggle
           this.setState({ uploadToggle: !upState, folderToggle: false, workflowToggle: false, activityToggle: false })
         break 
+
       case "workflow":
         const workflowState = this.state.workflowToggle
         if (!workflowState) {
@@ -67,11 +85,18 @@ class SideNav extends React.Component {
           _action: 'SEARCHWORKFLOW',
           _id
         }      
-        // this.props.setPageTitle(e.target.getAttribute('data-pagetitle'))
         this.props.populateWorkflow(workflow)
         this.props.setShowFab(false)  // Fav True False
         this.props.setActivePage("listAllWorkflow")
+
+        this.props.setNewBread(true, {
+          id: e.target.getAttribute('data-breadcrumb'),
+          label: e.target.getAttribute('data-breadcrumb'),
+          activePage: e.target.getAttribute('data-breadcrumb'),
+          isActive: true,
+        })
         break 
+
       case "activity":
         const activityState = this.state.activityToggle
         if (!activityState) {
@@ -92,7 +117,8 @@ class SideNav extends React.Component {
       recFetch,
       session: {
         user: { _id:bId, sortname }
-      }
+      },
+      breadcrumb:{isParent}
     } = this.props
 
     this.props.setActivePage(pageName)
@@ -105,14 +131,14 @@ class SideNav extends React.Component {
       }
       this.props.setStakehType(stakehList)
 
-      // //Breadcrumb
-      // this.props.setNewBread(true, {
-      //   id: e.target.getAttribute('data-pagename'),
-      //   label: e.target.getAttribute('data-pageTitle'),
-      //   activePage: e.target.getAttribute('data-pagename'),
-      //   isActive: true,
-      // })
-
+      //Breadcrumb
+      this.props.setNewBread(true, {
+        id: e.target.getAttribute('data-breadcrumb'),
+        label: e.target.getAttribute('data-breadcrumb'),
+        activePage: e.target.getAttribute('data-breadcrumb'),
+        isActive: true,
+      })   
+      
       this.props.setStakehLabel(e.target.getAttribute("data-label"))
       this.props.setStakehSel(null)  // ID stakeholder select to null
       this.props.setShowFab(false) // Fab True false
@@ -194,6 +220,7 @@ class SideNav extends React.Component {
                   name='record'
                   className={this.state.folderToggle ? "" : "collapsed"}
                   onClick={this.toggleClass}
+                  data-breadcrumb='Record'
                 >
                   <div className='userIcon'>
                     <img src={require(`../../img/folder.svg`)} alt='doc' className='img-fluid p-1' />
@@ -225,6 +252,7 @@ class SideNav extends React.Component {
                   name='search'
                   className={this.state.documentToggle ? "" : "collapsed"}
                   onClick={this.toggleClass}
+                  data-breadcrumb='Search'
                 >
                   <div className='userIcon'>
                     <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' />
@@ -269,7 +297,7 @@ class SideNav extends React.Component {
               {/********************************************************** Location ****************************************************/}
               
               <li>    
-                <a href="/" onClick={this.setActivePage} data-pagename="location" data-label="All Locations">
+                <a href="/" onClick={this.setActivePage} data-pagename="location"  data-breadcrumb='Locations' data-label="All Locations">
                   <div className="userIcon" data-pagename="location">
                     <img src={require(`../../img/employee.svg`)} alt="location" className="img-fluid mr-1" />
                   </div>Locations
@@ -286,6 +314,7 @@ class SideNav extends React.Component {
                   name='workflow'
                   className={this.state.workflowToggle ? "" : "collapsed"}
                   onClick={this.toggleClass}
+                  data-breadcrumb='List Workflow'
                 >
                   <div className='userIcon'>
                     <img src={require(`../../img/workflow.svg`)} alt='workflow' className='img-fluid p-1' />
@@ -337,6 +366,7 @@ class SideNav extends React.Component {
 SideNav.propTypes = {
   session: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
+  breadcrumb: PropTypes.object.isRequired,
   setActivePage: PropTypes.func.isRequired,
   setSearchParam: PropTypes.func.isRequired,
   setStakehType: PropTypes.func.isRequired,
@@ -347,10 +377,13 @@ SideNav.propTypes = {
   setListActDue: PropTypes.func.isRequired,
   toggleSearchActivity: PropTypes.func.isRequired,
   toggleSearchWorkflow: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
+  resetNav: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   session: state.session,
-  layout: state.layout
+  layout: state.layout,
+  breadcrumb: state.breadcrumb
 })
 export default connect(
   mapStateToProps,
@@ -364,6 +397,8 @@ export default connect(
     populateWorkflow,
     setListActDue,
     toggleSearchActivity,
-    toggleSearchWorkflow
+    toggleSearchWorkflow,
+    setNewBread,
+    resetNav
   }
 )(SideNav)

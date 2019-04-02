@@ -7,7 +7,7 @@ import PropTypes from "prop-types"
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setCardView, setSelWorkFlow, setShowFab, getDetails, setWorkflowName, populateWorkflow, panelContent } from "../../actions/workflowAction"
 import { setRecordStore, setListActivity, setWizardPage } from "../../actions/workflowAction"
-// import { setNewBread } from "../../actions/breadcrumbAction"
+import { setNewBread } from "../../actions/breadcrumbAction"
 
 import Tooltip from "rc-tooltip"
 import update from "immutability-helper"
@@ -89,12 +89,12 @@ class ListWorkflow extends Component {
       this.props.setRecordStore(recordDet);
   
       //Breadcrumb
-      // this.props.setNewBread(false, {
-      //   id: wrkflSel,
-      //   label: workflowName,
-      //   activePage: "workflowContent",
-      //   isActive: true
-      // })
+      this.props.setNewBread(false, {
+        id: wrkflSel,
+        label: workflowName,
+        activePage: "workflowContent",
+        isActive: true
+      })
     }
 
   //Selection
@@ -363,7 +363,7 @@ ListWorkflow.propTypes = {
   setRecordStore: PropTypes.func.isRequired,
   // setPageTitle: PropTypes.func.isRequired,
   setWorkflowName: PropTypes.func.isRequired,
-  // setNewBread: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
   populateWorkflow: PropTypes.func.isRequired,
   panelContent:  PropTypes.func.isRequired,
   
@@ -382,7 +382,7 @@ export default connect(
     setShowFab,
     setListActivity,
     getDetails,
-    // setNewBread,
+    setNewBread,
     setRecordStore,
     // setPageTitle,
     setWorkflowName,

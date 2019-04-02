@@ -57,7 +57,7 @@ export const getRecordTypes = recTypesParam => dispatch => {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
+        // console.log(res);
         dispatch({
           type: TOTAL_CREATED,
           payload: res.totalRecordCreated
