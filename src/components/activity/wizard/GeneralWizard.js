@@ -24,7 +24,6 @@ class GeneralWizard extends Component {
             icon:null,
             supervisor:null,
             priority:null,
-            estDuration:null,
             stakehList:[],
             day:null,
             hour:null,
@@ -40,16 +39,15 @@ class GeneralWizard extends Component {
     }   
     
     componentWillMount(){
-      const {activityName,activityUri,workflowName,assignedTo,activityDateDue,icon,supervisor,priority,estDuration} = this.props.item
-      const { locType}=this.props.location   
-      const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
-      const priorityVal = ({value: priority, label: priority})
-      const assignedToVal = ({value: assignedTo, label: assignedTo})
-      const supervisorVal = ({value: supervisor, label: supervisor})
-    //   const ab = parseInt(estDuration)
-      const a = moment(28800, "seconds").format("d [days], h [hrs], m [min]");
-     
-      console.log(a)
+        const {activityName,activityUri,workflowName,assignedTo,activityDateDue,icon,supervisor,priority,estDuration} = this.props.item
+        const { locType}=this.props.location   
+        const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
+        const priorityVal = ({value: priority, label: priority})
+        const assignedToVal = ({value: assignedTo, label: assignedTo})
+        const supervisorVal = ({value: supervisor, label: supervisor})
+        const day = Math.trunc(estDuration/86400)
+        const hour = moment.utc(estDuration*1000).format("h")
+        const minute = moment.utc(estDuration*1000).format("mm")
 
       this.setState({
         activityName:activityName,
@@ -60,7 +58,9 @@ class GeneralWizard extends Component {
         icon:icon,
         supervisor:supervisorVal,
         priority:priorityVal,
-        estDuration:estDuration,
+        day:day,
+        hour:hour,
+        minute:minute,
         stakehList:stakehOptions,
       })
     }    
@@ -112,7 +112,7 @@ class GeneralWizard extends Component {
     
   render() {
 
-    const { activityName,activityUri,workflowName,assignedTo,activityDateDue,icon,supervisor,priority,estDuration,stakehList,priorityOption } = this.state
+    const { activityName,activityUri,workflowName,assignedTo,activityDateDue,icon,supervisor,priority,estDuration,stakehList,priorityOption,day,hour,minute } = this.state
     // console.log(assignedTo)
      
    
@@ -173,13 +173,13 @@ class GeneralWizard extends Component {
                             <label>Estimate</label>
                             <div className="row">                       
                                 <div className="col-sm-4 form-group">
-                                    <input name="estDuration" type="number" name="day" className="form-control" placeholder="Day" onChange={this.handleChange} value={estDuration}/> 
+                                    <input name="day" type="number" name="day" className="form-control" placeholder="Day" onChange={this.handleChange} value={day}/> 
                                 </div>
                                 <div className="col-sm-4 form-group">
-                                    <input name="estDuration" type="number" name="hour" max="24" min="0" className="form-control" placeholder="Hour" onChange={this.handleChange} value={estDuration}/> 
+                                    <input name="hour" type="number" name="hour" max="24" min="0" className="form-control" placeholder="Hour" onChange={this.handleChange} value={hour}/> 
                                 </div>
                                 <div className="col-sm-4 form-group">
-                                    <input name="estDuration" type="number" name="minute" max="59" min="0" className="form-control" placeholder="Minute" onChange={this.handleChange} value={estDuration}/> 
+                                    <input name="minute" type="number" name="minute" max="59" min="0" className="form-control" placeholder="Minute" onChange={this.handleChange} value={minute}/> 
                                 </div>
                             </div>                                     
                         </div> 

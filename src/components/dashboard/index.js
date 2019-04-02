@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
-// import AnalyticComps from "../dashboard/AnalyticComps";
+import AnalyticComps from "../dashboard/AnalyticComps";
 
 
 export class index extends Component {
@@ -16,7 +16,9 @@ export class index extends Component {
             </div>
           </header>
 
-          {/* <AnalyticComps ref={el => (this.componentRef = el)} /> */}
+          <AnalyticComps 
+            // ref={el => (this.componentRef = el)} 
+          />
           
         </div>
       </section>

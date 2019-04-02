@@ -17,7 +17,9 @@ import{
     PAGE_SIZE,
     TOTAL_COUNT,
     SHOW_MODAL_SEARCH,
-    SHOW_ERR
+    SHOW_ERR,
+    SHOW_COMPLETE,
+    SHOW_SUSPEND
 } from '../actions/types'
 
 const initialState={
@@ -159,6 +161,18 @@ export default function(state = initialState, action){
         return {
             ...state,
             showErr:action.payload
+        }
+
+        case SHOW_COMPLETE:
+        return {
+            ...state,
+            showComplete:action.payload
+        }
+
+        case SHOW_SUSPEND:
+        return {
+            ...state,
+            showSuspend:action.payload
         }
 
         default:

@@ -9,6 +9,8 @@ import recReducer from "./recReducer"
 import locationReducer from "./locationReducer"
 import workflowReducer from "./workflowReducer"
 import activityReducer from "./activityReducer"
+import dashboardReducer from "./dashboardReducer"
+import breadcrumbReducer from "./breadcrumbReducer"
 
 
 
@@ -25,10 +27,11 @@ const appReducer = combineReducers({
   // activities:activitiesReducer,
   // tasks:taskReducer,
   rec: recReducer,
+  breadcrumb: breadcrumbReducer,
+  dashboard: dashboardReducer,
   location: locationReducer,
   workflow: workflowReducer,
   activity: activityReducer
-
 })
 
 export const rootReducer = (state, action) => {

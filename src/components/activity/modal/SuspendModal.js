@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { connect } from 'react-redux'
 
-import { suspendActivity, showSuspend } from '../../../../actions/activityAction/listActivity/modal'
+import { suspendActivity, showSuspend } from '../../../actions/activityAction'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Col, Row, Label } from 'reactstrap'
 
@@ -25,7 +25,7 @@ class SuspendModal extends Component {
     }   
 
     toggle = () => {
-        const { showSuspend } = this.props.modal
+        const { showSuspend } = this.props.activity
         this.props.showSuspend(!showSuspend)
     }   
 
@@ -45,7 +45,7 @@ class SuspendModal extends Component {
     formSuspend = (e) => {
         e.preventDefault()
         const { day, hour, minute, reason } = this.state
-        const { activityUri } = this.props.listActivity     
+        const { activityUri } = this.props.activity     
         const { user: { _id: bId } } = this.props.session
         const total = (day*86400)+(hour*3600)+(minute*60)
        
@@ -65,9 +65,8 @@ class SuspendModal extends Component {
     }
 
     render() {
-        const { activityName }=this.props.listActivity   
-        const { showSuspend } = this.props.modal     
-
+        const { activityName, showSuspend }=this.props.activity   
+       
         return (
         <div>
             <Modal isOpen={showSuspend} toggle={this.toggle} className={this.props.className}>
@@ -117,18 +116,14 @@ class SuspendModal extends Component {
     }
 }
 SuspendModal.propTypes = {
-  modal: PropTypes.object.isRequired,
-  stakeholderlistType: PropTypes.object.isRequired,
-  listActivity: PropTypes.object.isRequired,   
+  activity: PropTypes.object.isRequired,   
   suspendActivity: PropTypes.func.isRequired,
   showSuspend: PropTypes.func.isRequired,
    
 
 }
 const mapStateToProps = (state) => ({
-  modal: state.modal,
-  listActivity: state.listActivity,
-  stakeholderlistType: state.stakeholderlistType,
+  activity: state.activity,
   session: state.session,
  
 

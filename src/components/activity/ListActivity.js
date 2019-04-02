@@ -16,8 +16,8 @@ import CardView from './CardView'
 import ListView from './ListView'
 import Fab from '../../components/fab/FabActivity'
 import ReassignModal from '../activity/modal/ReassignModal'
-// import CompleteModal from '../activity/modal/CompleteModal'
-// import SuspendModal from '../activity/modal/SuspendModal'
+import CompleteModal from '../activity/modal/CompleteModal'
+import SuspendModal from '../activity/modal/SuspendModal'
 
 
 import 'rc-pagination/assets/index.css'
@@ -311,8 +311,8 @@ class ListActivity extends Component {
         />:''}
 
         <ReassignModal/>
-        {/* <CompleteModal/>
-        <SuspendModal/> */}
+        <CompleteModal/>
+        <SuspendModal/>
 
 
         <div className="modal-footer justify-content-center">
@@ -341,11 +341,11 @@ ListActivity.propTypes={
     activityName: PropTypes.func.isRequired,
     setWizardPage: PropTypes.func.isRequired,
     toggleErr: PropTypes.func.isRequired,
-    // showComplete: PropTypes.func.isRequired,
+    showComplete: PropTypes.func.isRequired,
     checkResult: PropTypes.func.isRequired,
     getResult: PropTypes.func.isRequired,
     setListActDue: PropTypes.func.isRequired,
-    // showSuspend: PropTypes.func.isRequired,
+    showSuspend: PropTypes.func.isRequired,
     
 }
 const mapStateToProps= state =>({
@@ -367,11 +367,11 @@ export default connect(mapStateToProps,
     activityName,
     setWizardPage,
     toggleErr,
-    // showComplete,
+    showComplete,
     checkResult,
     getResult,
     setListActDue,
-    // showSuspend
+    showSuspend
 
 })(ListActivity)
 

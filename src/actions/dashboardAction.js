@@ -54,7 +54,6 @@ export const getRecordTypes = recTypesParam => dispatch => {
 
   export const getTotalCreated = totalCreaParam => dispatch => {
     const url = gwUrl + converter(totalCreaParam);
-  
     fetch(url)
       .then(res => res.json())
       .then(res => {
@@ -72,7 +71,7 @@ export const getRecordTypes = recTypesParam => dispatch => {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
+        // console.log(res);
         dispatch({
           type: RECORD_MONTH,
           payload: res.totalRecordCreated
@@ -87,7 +86,7 @@ export const getRecYear = recYearParam => dispatch => {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
+        // console.log(res);
         dispatch({
           type: RECORD_YEAR,
           payload: res.totalRecordCreated

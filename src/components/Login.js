@@ -121,7 +121,7 @@ class Login extends Component {
                   <span className='text-light'>i</span>Rekod
                 </strong>
               </div>
-              <p className='text-light'>Digital Document is not simply a tool but it lets a user manage access, track and edit information stored.</p>
+              <p className='text-light'>iRekod is not simply a tool but it lets a user manage access, track and edit information stored.</p>
 
               <form style={styles.form} onSubmit={this.authUser}>
                 <div className='form-group'>

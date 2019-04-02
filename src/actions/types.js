@@ -19,6 +19,13 @@ export const SEARCH_RECTYPE = "SEARCH_RECTYPE"
 export const SET_OBJLIST = "SET_OBJLIST"
 export const SET_ADDFIELD_LIST = "SET_ADDFIELD_LIST"
 
+//Breadcrumb action and reducer link
+export const SET_BREADCRUMB = 'SET_BREADCRUMB'
+export const INSERT_NEW_BREADCRUMB = 'INSERT_NEW_BREADCRUMB'
+export const SET_BREAD_IS_PARENT = 'SET_BREAD_IS_PARENT'
+export const CLEAR_NEWBREAD = 'CLEAR_NEWBREAD'
+export const PREV_NAV = 'PREV_NAV'
+
 //record action and reducer link
 export const SET_REC_CONF = "SET_REC_CONF"
 // export const SET_MULTI_FAB = "SET_MULTI_FAB"
@@ -89,10 +96,13 @@ export const SHOW_SUSPEND = 'SHOW_SUSPEND'
 // export const ACTIVITY_STATUS = ''
 // export const PAGE_SIZE = ''
 // export const TOTAL_COUNT = ''
+
+//Dashboard action and reducer link
 export const RECORD_TYPES = 'RECORD_TYPES'
 export const TOTAL_MONTH = 'TOTAL_MONTH'
 export const TOTAL_YEAR = 'TOTAL_YEAR'
 export const TOTAL_CREATED = 'TOTAL_CREATED'
 export const RECORD_MONTH = 'RECORD_MONTH'
 export const RECORD_YEAR ='RECORD_YEAR'
+
 

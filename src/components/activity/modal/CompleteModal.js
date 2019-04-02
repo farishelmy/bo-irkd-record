@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { connect } from 'react-redux'
 
-import { showComplete, completeActivity } from '../../../../actions/activityAction/listActivity/modal'
+import { showComplete, completeActivity } from '../../../actions/activityAction'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
 
@@ -25,17 +25,17 @@ class CompleteModal extends Component {
     }    
 
     componentDidUpdate(prevProps){
-        if(prevProps.listActivity.result !== this.props.listActivity.result){   
-            const lab = this.props.listActivity.result.boxLabel             
-            const val = this.props.listActivity.result.inputValue            
+        if(prevProps.activity.result !== this.props.activity.result){   
+            const lab = this.props.activity.result.boxLabel             
+            const val = this.props.activity.result.inputValue            
             const resultOpt = [{ value:val, label:lab}]
             this.setState({
                 resultOptions:resultOpt,
             })
         }
     
-        // if(prevProps.listActivity.activityDet !== this.props.listActivity.activityDet){
-        //     const { activityDet } = this.props.listActivity
+        // if(prevProps.activity.activityDet !== this.props.activity.activityDet){
+        //     const { activityDet } = this.props.activity
         //     const  assigned = activityDet.map(itm => ({label: itm.boxLabel, value: itm.inputValue }))       
         //     this.setState({
         //         assignee: assigned
@@ -45,7 +45,7 @@ class CompleteModal extends Component {
     } 
   
     toggle = () => {
-        const { showComplete } = this.props.modal
+        const { showComplete } = this.props.activity
         this.props.showComplete(!showComplete)
     }
 
@@ -61,7 +61,7 @@ class CompleteModal extends Component {
     formSubmit = (e) => {
         e.preventDefault()
         const { result } = this.state
-        const { activityUri } = this.props.listActivity     
+        const { activityUri } = this.props.activity     
         const { user: { _id: bId } } = this.props.session
     
         const param = {
@@ -81,7 +81,7 @@ class CompleteModal extends Component {
     formComplete = (e) => {
         e.preventDefault()
         const { result } = this.state
-        const { activityUri } = this.props.listActivity     
+        const { activityUri } = this.props.activity     
         const { user: { _id: bId } } = this.props.session
     
         const param = {
@@ -97,8 +97,7 @@ class CompleteModal extends Component {
     }
 
     render() {
-        const { checkResult, activityName }=this.props.listActivity   
-        const { showComplete } = this.props.modal        
+        const { checkResult, activityName, showComplete }=this.props.activity   
         const { resultOptions } = this.state        
         // console.log(result.inputValue)
 
@@ -154,9 +153,7 @@ class CompleteModal extends Component {
     }
 }
 CompleteModal.propTypes = {
-  modal: PropTypes.object.isRequired,
-  stakeholderlistType: PropTypes.object.isRequired,
-  listActivity: PropTypes.object.isRequired,   
+  activity: PropTypes.object.isRequired,   
   showComplete: PropTypes.func.isRequired,
   completeActivity: PropTypes.func.isRequired,
  
@@ -164,9 +161,7 @@ CompleteModal.propTypes = {
 
 }
 const mapStateToProps = (state) => ({
-  modal: state.modal,
-  listActivity: state.listActivity,
-  stakeholderlistType: state.stakeholderlistType,
+  activity: state.activity,
   session: state.session,
  
 

@@ -70,7 +70,7 @@ class AnalyticComps extends Component {
     }
     this.setState({ yearOptions });
 
-    const { totalCreated } = this.props.totalCrea;
+    const { totalCreated } = this.props.dashboard;
     if (totalCreated.length === 0) {
       getTotalCreated({
         _action: "GETTOTALRECORDCREATED",
@@ -81,7 +81,7 @@ class AnalyticComps extends Component {
       });
     }
 
-    const { recordMonth } = this.props.recMonth;
+    const { recordMonth } = this.props.dashboard;
     if (recordMonth.length === 0) {
       getRecMonth({
         _action: "GETTOTALRECORDCREATED",
@@ -92,7 +92,8 @@ class AnalyticComps extends Component {
       });
     }
 
-    const { recordYear } = this.props.recYear;
+    const { recordYear } = this.props.dashboard;
+    console.log(recordYear)
     if (recordYear.length === 0) {
       getRecYear({
         _action: "GETTOTALRECORDCREATED",
@@ -102,8 +103,8 @@ class AnalyticComps extends Component {
         fltRecordTyp: []
       });
     } else {
-      const recYear = recordYear.map(itm => ({ value: itm.totalCount }));
-      this.setState({ recYear: recYear });
+      // const recYear = recordYear.map(itm => ({ value: itm.totalCount }));
+      this.setState({ recYear: recordYear });
     }
 
     getRecordTypes({
@@ -140,8 +141,8 @@ class AnalyticComps extends Component {
     // for (var i = 0; i < 18; i++) {
     //   console.log(getRandomRgb());
     // }
-    if (prevProps.recTypes.recordTypes !== this.props.recTypes.recordTypes) {
-      const { recordTypes } = this.props.recTypes;
+    if (prevProps.dashboard.recordTypes !== this.props.dashboard.recordTypes) {
+      const { recordTypes } = this.props.dashboard;
       const chartData = {
         labels: recordTypes.map(itm => itm.rtname),
         datasets: [
@@ -180,9 +181,9 @@ class AnalyticComps extends Component {
       }));
       this.setState({ chartData, recTypesOption });
     } else if (
-      prevProps.totalMon.totalMonth !== this.props.totalMon.totalMonth
+      prevProps.dashboard.totalMonth !== this.props.dashboard.totalMonth
     ) {
-      const { totalMonth } = this.props.totalMon;
+      const { totalMonth } = this.props.dashboard;
       const day = [],
         dayVal = [];
       for (let val of totalMonth) {
@@ -202,8 +203,8 @@ class AnalyticComps extends Component {
       this.setState({ chartMonth });
       // console.log(totalMonth);
       // console.log(day);
-    } else if (prevProps.totalYe.totalYear !== this.props.totalYe.totalYear) {
-      const { totalYear } = this.props.totalYe;
+    } else if (prevProps.dashboard.totalYear !== this.props.dashboard.totalYear) {
+      const { totalYear } = this.props.dashboard;
       const mon = [],
         monVal = [];
       for (let val of totalYear) {
@@ -309,18 +310,16 @@ class AnalyticComps extends Component {
       endDate
     } = this.state;
     // console.log(monthVal);
-    const { totalCreated } = this.props.totalCrea;
-    const { recordMonth } = this.props.recMonth;
-    const { recordYear } = this.props.recYear;
-
+    const { totalCreated } = this.props.dashboard
+    const { recordMonth } = this.props.dashboard
+    const { recordYear } = this.props.dashboard
+  
     return (
       <div>
-        <section className='statistics mt-4'>
-          <div className='container-fluid'>
+        <section className='statistics'>  
             <div className='row d-flex'>
               <div className='col-lg-12 col-md-12 col-sm-12'>
                 <Card className='col-lg-12 col-md-12 col-sm-12'>
-                  <header>
                     <div className=' card-header '>
                       <div className='d-flex align-items-center justify-content-between'>
                         <h1 className='h3 display'>
@@ -328,15 +327,14 @@ class AnalyticComps extends Component {
                         </h1>
                       </div>
                     </div>
-                  </header>
+                  <div className='card-body mt-4'>
                   <div className='row d-flex'>
                     <div className='col-lg-6 col-md-6 col-sm-6'>
                       {/* <Card> */}
                       <div className='col'>
                         <div className='d-flex align-items-center justify-content-between'>
                           {/* <h1 className='h1 display'>Statistic Users in </h1> */}
-
-                          <div className='col-md-4'>
+                          <div className='col-md-6'>
                             <label>Statistic Users In Month </label>
                             <Select
                               value={monthVal}
@@ -349,7 +347,7 @@ class AnalyticComps extends Component {
                           </div>
                         </div>
                         <div>
-                          <div className='chart' />
+                          <div className='chart mt-2' />
                           <Month data={chartMonth} legendPosition='top' />
                         </div>
                       </div>
@@ -359,10 +357,9 @@ class AnalyticComps extends Component {
                     <div className='col-lg-6 col-md-6 col-sm-6'>
                       <div className='col'>
                         <div className='d-flex align-items-center justify-content-between'>
-                          <div className='col-md-4'>
+                          <div className='col-md-6'>
                             <label>Statistic Users In Year </label>
                             {/* <h4 className='h4 display'>Statistic Users in </h4> */}
-
                             <Select
                               value={yearVal}
                               name='totalYear'
@@ -377,34 +374,33 @@ class AnalyticComps extends Component {
                         </div>
 
                         <div>
-                          <div className='chart'>
+                          <div className='chart mt-2'>
                             <Year data={chartYear} legendPosition='top' />
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  </div>
                 </Card>
               </div>
             </div>
-          </div>
         </section>
 
         <section className='statistics mt-4'>
-          <div className='container-fluid'>
             <div className='row d-flex'>
-              <div className='col-lg-4 col-md-4 col-sm-4'>
+              <div className='col-lg-4 col-md-4 col-sm-4 col-4'>
                 <Card>
                   <div className='row d-flex align-items-center'>
-                    <div className='col-sm-6'>
+                    <div className='col-sm-4'>
                       <img
                         src={require("../../img/totalrecord.svg")}
                         alt='group'
                         className='card-img-top img-fluid'
                       />
                     </div>
-                    <div className='col-sm-6'>
-                      <h3 className='h4 display'>Total Record Created :</h3>
+                    <div className='col-sm-8'>
+                      <h4 className='display'>Total Record Created:</h4>
                       <strong className='text-primary'>{totalCreated}</strong>
                       <span />
                     </div>
@@ -412,18 +408,18 @@ class AnalyticComps extends Component {
                 </Card>
               </div>
 
-              <div className='col-lg-4 col-md-4 col-sm-4'>
+              <div className='col-lg-4 col-md-4 col-sm-4 col-4'>
                 <Card>
                   <div className='row d-flex align-items-center'>
-                    <div className='col-sm-6'>
+                    <div className='col-sm-4'>
                       <img
                         src={require("../../img/month.svg")}
                         alt='group'
                         className='card-img-top img-fluid'
                       />
                     </div>
-                    <div className='col-sm-6'>
-                      <h3 className='h4 display'>Total Record This Month :</h3>
+                    <div className='col-sm-8'>
+                      <h4 className='display'>Total Record This Month:</h4>
                       <strong className='text-primary'>{recordMonth}</strong>
                       <span />
                     </div>
@@ -431,82 +427,86 @@ class AnalyticComps extends Component {
                   {/* </div> */}
                 </Card>
               </div>
-              <div className='col-lg-4 col-md-4 col-sm-4'>
+              <div className='col-lg-4 col-md-4 col-sm-4 col-4'>
                 <Card>
                   <div className='row d-flex align-items-center'>
-                    <div className='col-sm-6'>
+                    <div className='col-sm-4'>
                       <img
                         src={require("../../img/year.svg")}
                         alt='group'
                         className='card-img-top img-fluid'
                       />
                     </div>
-                    <div className='col-sm-6'>
-                      <h3 className='h4 display'>Total Record This Year :</h3>
+                    <div className='col-sm-8'>
+                      <h4 className='display'>Total Record This Year:</h4>
                       <strong className='text-primary'>{recordYear}</strong>
                       <span />
                     </div>
                   </div>
                 </Card>
               </div>
-            </div>
           </div>
         </section>
 
         <section className='statistics mt-4'>
-          <div className='container-fluid'>
             <div className='row d-flex'>
               <div className='col-lg-12 col-md-12 col-sm-12'>
                 <Card className='col-lg-12 col-md-12 col-sm-12'>
-                  <header>
-                    <div className=' card-header '>
-                      <div className='d-flex align-items-center justify-content-between'>
-                        <h1 className='h3 display'>
-                          Total Record Statistics :
-                        </h1>
-                      </div>
+                    <div className='card-header '>
+                      <h1 className='h3 display'>
+                        Total Record Statistics :
+                      </h1>
                     </div>
-                  </header>
-
                   <div className='card-body'>
-                    <div className='row'>
-                      <div className='col-xl-4 col-lg-4 col-md-4 col-sm-4'>
-                        <FormGroup>
-                          <label>Date From</label>
+                    <div className='d-flex justify-content-center'>
+                      <div className='row'>
+                        <div className='col-lg-6 col-md-6 col-sm-6'>                      
                           <FormGroup>
-                            <DatePicker
-                              // placeholderText='Date From'
-                              selected={startDate}
-                              selectsStart
-                              startDate={startDate}
-                              endDate={endDate}
-                              onChange={this.handleChangeStart}
-                              className='form-control'
-                              dateFormat='DD/MM/YYYY'
-                            />
+                            <label>Date From</label>
+                            <FormGroup>
+                              <DatePicker
+                                // placeholderText='Date From'
+                                selected={startDate}
+                                selectsStart
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={this.handleChangeStart}
+                                className='form-control'
+                                dateFormat='DD/MM/YYYY'
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select" 
+                                todayButton={"Today"}  
+                              />
+                            </FormGroup>
                           </FormGroup>
-                        </FormGroup>
-                      </div>
+                        </div>
 
-                      <div className='col-xl-4 col-lg-4 col-md-4 col-sm-4'>
-                        <FormGroup>
-                          <label>Date To</label>
+                        <div className='col-lg-6 col-md-6 col-sm-6'>
                           <FormGroup>
-                            <DatePicker
-                              placeholderText='Date To'
-                              selected={endDate}
-                              selectsEnd
-                              startDate={startDate}
-                              endDate={endDate}
-                              onChange={this.handleChangeEnd}
-                              className='form-control'
-                              dateFormat='DD/MM/YYYY'
-                            />
-                          </FormGroup>
-                        </FormGroup>
-                      </div>
+                            <label>Date To</label>
+                              <FormGroup>
+                                <DatePicker
+                                  placeholderText='Date To'
+                                  selected={endDate}
+                                  selectsEnd
+                                  startDate={startDate}
+                                  endDate={endDate}
+                                  onChange={this.handleChangeEnd}
+                                  className='form-control'
+                                  dateFormat='DD/MM/YYYY'
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select" 
+                                  todayButton={"Today"}  
+                                />
+                              </FormGroup>
+                            </FormGroup>
+                          </div>
+                        </div>
+                    </div>
 
-                      <div className='col-xl-4 col-lg-4 col-md-4 col-sm-4'>
+                    <div className='col-lg-12 col-md-12 col-sm-12'>
                         <FormGroup>
                           <label>Record Types</label>
                           <Select
@@ -521,7 +521,6 @@ class AnalyticComps extends Component {
                           />
                         </FormGroup>
                       </div>
-                    </div>
                   </div>
 
                   <div className='chart'>
@@ -530,7 +529,6 @@ class AnalyticComps extends Component {
                 </Card>
               </div>
             </div>
-          </div>
         </section>
       </div>
     );
@@ -538,28 +536,20 @@ class AnalyticComps extends Component {
 }
 AnalyticComps.propTypes = {
   session: PropTypes.object.isRequired,
+  dashboard: PropTypes.object.isRequired,
   getRecordTypes: PropTypes.func.isRequired,
-  recTypes: PropTypes.object.isRequired,
   getTotalMonth: PropTypes.func.isRequired,
-  totalMon: PropTypes.object.isRequired,
   getTotalYear: PropTypes.func.isRequired,
-  totalYe: PropTypes.object.isRequired,
   getTotalCreated: PropTypes.func.isRequired,
-  totalCrea: PropTypes.object.isRequired,
   getRecMonth: PropTypes.func.isRequired,
-  recMonth: PropTypes.object.isRequired,
   getRecYear: PropTypes.func.isRequired,
-  recYear: PropTypes.object.isRequired
+ 
 };
 
 const mapStateToProps = state => ({
-  recTypes: state.recTypes,
   session: state.session,
-  totalCrea: state.totalCrea,
-  totalMon: state.totalMon,
-  totalYe: state.totalYe,
-  recMonth: state.recMonth,
-  recYear: state.recYear
+  dashboard: state.dashboard,
+ 
 });
 
 export default connect(
