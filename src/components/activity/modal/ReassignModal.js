@@ -4,10 +4,15 @@ import Select from 'react-select'
 import DatePicker from 'react-datepicker'
 import moment, { isMoment } from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
+import DetailCard from '../DetailCard'
+import Pagination from 'rc-pagination'
+import 'rc-pagination/assets/index.css' 
+
 
 import { connect } from 'react-redux'
 
 import { toggleErr, changeAssignee } from '../../../actions/activityAction'
+import { setStakehType } from '../../../actions/location'
 
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
@@ -19,23 +24,28 @@ class ReassignModal extends Component {
     this.state = {
       stakehList: [],
       assignee: [],
+      current: 1,
+      test:[]
     }
   }
 
   componentWillMount(){
     const {locType}=this.props.location   
-    const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
+    // const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
     this.setState({
-      stakehList:stakehOptions,
+      // stakehList:stakehOptions,
+      test:locType
+
     })
   }
 
   componentDidUpdate(prevProps){
     if(prevProps.location.locType !== this.props.location.locType){
       const {locType}=this.props.location   
-      const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
+      // const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
       this.setState({
-        stakehList:stakehOptions,
+        // stakehList:stakehOptions,
+        test:locType
       })
     }
     
@@ -79,9 +89,43 @@ class ReassignModal extends Component {
 
   }
 
+  addBtn=()=>{
+    console.log("test")
+  }
+
+  onChangePaging = (page) => {
+    const { user: { _id: bId }} = this.props.session
+    const { pageSize, stakehLabel } = this.props.location      
+    // console.log(page)          
+
+    const param = {             
+        _action: 'LISTLOCATION',
+        _id: bId,
+        page: page,
+        start: (page-1)*pageSize,
+        filterType: stakehLabel === "All Locations"?stakehLabel
+            :stakehLabel === "Organization"?stakehLabel
+            :stakehLabel === "Position"?stakehLabel
+            :stakehLabel === "Person"?stakehLabel
+            :stakehLabel === "Unknown"?stakehLabel
+            :null,
+    }
+    // console.log(param)
+    this.props.setStakehType(param)           
+    
+    this.setState({
+        current: page,
+    })
+             
+
+}
+
+
   render() {
     const { showErr } = this.props.activity
-    const { stakehList, assignee } = this.state
+    const { totalCount,pageSize } = this.props.location
+    const { stakehList, assignee, test, current } = this.state
+    // console.log(test)
     // console.log(assignee)
 
 
@@ -94,15 +138,39 @@ class ReassignModal extends Component {
 
               <FormGroup>
                 <label>Reassign Location</label>
-                <Select 
+
+                {test.map(item=>
+                  <DetailCard                                         
+                    key={item.uri} 
+                    stakehId={item.uri}
+                    name={item.Name}
+                    typeName={item.iconCls}
+                    isSel={item.isSel}
+                    markOnSel={this.markOnSel}
+                    addBtn={this.addBtn} />
+                )}
+
+
+
+
+
+                {/* <Select 
                   name="assignee"
                   options={stakehList}
                   onChange={this.handleAssignee}
                   value={assignee===""?null:assignee} 
                   placeholder="Location"
                   isClearable
-                /> 
+                />  */}
+
+              
+
               </FormGroup>
+
+              <div className="d-flex justify-content-end p-2">
+                <Pagination onChange={this.onChangePaging} current={current} pageSize={pageSize} total={totalCount} />    
+              </div>
+              
                   
             </ModalBody>
 
@@ -124,6 +192,7 @@ ReassignModal.propTypes = {
   activity: PropTypes.object.isRequired,
   toggleErr: PropTypes.func.isRequired,
   changeAssignee: PropTypes.func.isRequired,
+  setStakehType: PropTypes.func.isRequired,
    
 
 }
@@ -137,7 +206,8 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps,
   {
     toggleErr,
-    changeAssignee
+    changeAssignee,
+    setStakehType
   
   })
   (ReassignModal)

@@ -270,6 +270,11 @@ img.desaturate {
   overflow-y: auto;
   height:350px
 }
+.btn-circle {
+  border-radius: 50%;
+}
+
+
 /* div.childList {
   overflow-x: auto;
   white-space: nowrap;

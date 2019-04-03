@@ -98,7 +98,7 @@ class ListWorkflow extends Component {
     }
 
   //Selection
-  markOnSel = ( workflowName,markOnSel,workflowUri,isSel,supervisor,icon,dateStart,dateDue,jobNo,priority ) => {
+  markOnSel = ( workflowName,markOnSel,workflowUri,isSel,supervisor,iconCls,dateStart,dateDue,jobNo,priority ) => {
     const {
       user: { _id: bId }
     } = this.props.session;
@@ -109,7 +109,7 @@ class ListWorkflow extends Component {
         workflowUri,
         isSel,
         supervisor,
-        icon,
+        iconCls,
         dateStart,
         dateDue,
         jobNo,
@@ -187,7 +187,7 @@ class ListWorkflow extends Component {
           key={itm.workflowUri}
           workflowName={itm.workflowName}
           workflowUri={itm.workflowUri}
-          icon={itm.iconCls}
+          iconCls={itm.iconCls}
           markOnSel={this.markOnSel}
           isSel={itm.isSel}
           supervisor={itm.supervisor}
@@ -203,7 +203,7 @@ class ListWorkflow extends Component {
           workflowUri={itm.workflowUri}
           markOnSel={this.markOnSel}
           isSel={itm.isSel}
-          icon={itm.iconCls}
+          iconCls={itm.iconCls}
           dateStart={itm.dateStarted}
           dateDue={itm.dateDue}
           jobNo={itm.jobNumber}

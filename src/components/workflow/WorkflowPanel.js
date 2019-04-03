@@ -47,6 +47,7 @@ class WorkflowPanel extends Component {
     render() {
          
         const { workflow } = this.state
+        console.log(workflow)
 
         return (
             <Fragment>
@@ -59,7 +60,7 @@ class WorkflowPanel extends Component {
                         </div>
                         <div className="card-body">    
                             <div className="media">
-                            <span style={{backgroundImage: `url(${require('../../img/'+item.icon+'.svg')})` }} className="img-card mr-3"></span>
+                            <span style={{backgroundImage: `url(${require('../../img/'+item.iconCls+'.svg')})` }} className="img-card mr-3"></span>
                                 <div className="media-body">     
                                     <p className="text-muted mb-0"><label className="text-body">Supervisor:</label> {item.supervisor}</p>
                                     <p className="text-muted mb-0"><label className="text-body">Priority:</label> {item.priority}</p>   

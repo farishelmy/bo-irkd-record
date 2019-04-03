@@ -10,8 +10,10 @@ import { setWizardPage, setRecordStore } from "../../actions/workflowAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
 import { toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
 import { getResult } from '../../actions/activityAction'
+import { setStakehType } from '../../actions/location'
 
-// import ReassignModal from '../activity/listActivity/modal/ReassignModal'
+
+import ReassignModal from '../activity/modal/ReassignModal'
 // import CompleteModal from '../activity/listActivity/modal/CompleteModal'
 // import SuspendModal from '../activity/listActivity/modal/SuspendModal'
 
@@ -99,7 +101,11 @@ class FabActivityContent extends Component {
             break   
 
             case 'assign':                
-                
+                const stakehList = {
+                    _action: "LISTLOCATION",
+                    _id: bId,
+                }
+                this.props.setStakehType(stakehList)
                 this.props.toggleErr(true)               
                   
             break   
@@ -218,8 +224,8 @@ class FabActivityContent extends Component {
         </ul>
     </div>
 
-    {/* <ReassignModal/>
-    <CompleteModal/>
+    <ReassignModal/>
+    {/* <CompleteModal/>
     <SuspendModal/> */}
 
     </section>
@@ -241,6 +247,7 @@ FabActivityContent.propTypes={
     showComplete:PropTypes.func.isRequired,
     getResult:PropTypes.func.isRequired,
     showSuspend:PropTypes.func.isRequired,
+    setStakehType:PropTypes.func.isRequired,
     
  
      
@@ -261,7 +268,8 @@ export default connect(mapStateToProps,{
     toggleErr,
     showComplete,
     getResult,
-    showSuspend
+    showSuspend,
+    setStakehType
    
 
 })(FabActivityContent)

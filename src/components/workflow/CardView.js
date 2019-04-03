@@ -2,10 +2,10 @@ import React from 'react'
 import Tooltip from "rc-tooltip"
 import "rc-tooltip/assets/bootstrap.css"
 
-export default function Workflow({workflowName, markOnSel,workflowUri, isSel,supervisor,icon,dateStart,dateDue,jobNo,priority}) {
+export default function Workflow({workflowName, markOnSel,workflowUri, isSel,supervisor,iconCls,dateStart,dateDue,jobNo,priority}) {
     
     const handleClick=(e)=>{
-        markOnSel(workflowName, markOnSel,workflowUri, isSel,supervisor,icon,dateStart,dateDue,jobNo,priority)
+        markOnSel(workflowName, markOnSel,workflowUri, isSel,supervisor,iconCls,dateStart,dateDue,jobNo,priority)
     }
       
     return (
@@ -18,12 +18,12 @@ export default function Workflow({workflowName, markOnSel,workflowUri, isSel,sup
               placement="top"
               overlay={
                 <div style={{ height: 20, width: "100%" }}>
-                  Status: {icon}
+                  Status: {iconCls}
                 </div>
               }
               arrowContent={<div className="rc-tooltip-arrow-inner" />}
               >
-              <img className="img-card mt-4" src={require('../../img/'+icon+'.svg')} alt="activity"/>
+              <img className="img-card mt-4" src={require('../../img/'+iconCls+'.svg')} alt="activity"/>
             </Tooltip>
 
                </div>

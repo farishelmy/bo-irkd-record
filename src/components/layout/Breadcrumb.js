@@ -2,11 +2,13 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import update from "immutability-helper"
+import moment from 'moment'
+
 import { setBread, resetNav, backPrev } from "../../actions/breadcrumbAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setStakeholderItemDetail, viewStakehMember, setStakehType } from "../../actions/location"
 import { setListActDue } from '../../actions/activityAction'
-import { toggleSearchWorkflow, setShowFab, setWizardPage, setListActivity, setRecordStore} from '../../actions/workflowAction'
+import { toggleSearchWorkflow, setShowFab, setWizardPage, setListActivity, setRecordStore, populateWorkflow, panelContent, getDetailsWorkflow } from '../../actions/workflowAction'
 // import { setPageTitle } from '../../actions/recordAction'
 // import { getAdvSearch } from "../../actions/searchAction"
 // import { setActiveEditor } from "../../actions/editorAction"
@@ -85,6 +87,20 @@ class Breadcrumb extends Component {
     const selNavIdx = breadList.findIndex(list => list.id === navId)
     console.log(selNavIdx)
 
+    const { 
+      session: {
+        user:{ _id }
+      },
+      location: {
+        locLabel
+      },
+      workflow: {
+        wrkflSel,
+        workflowName
+      }
+    } = this.props
+
+
     if (selNavIdx !== 0) {
       const filterBread = breadList.slice(0, selNavIdx + 1)
       const newNav = update(filterBread, {
@@ -108,18 +124,32 @@ class Breadcrumb extends Component {
         // this.props.setActivePage(activePage)
         // this.props.setPageTitle(pageTitle)
 
-        const {user:{_id}} = this.props.session
-        const { locLabel } = this.props.location
         
-        // Workflow
-        const stakehObj={
-          _action:'LISTLOCATION',
-          _id,                        
-          filterType: locLabel,
-        }
-        this.props.setStakehType(stakehObj)
 
-          //Search Workflow
+        ////////////////////Workflow////////////////////////
+        if(activePage==="List Workflow"){
+          const workflow = {
+            startDateFrom: '01/01/2000',
+            startDateTo: moment(),
+            _action: 'SEARCHWORKFLOW',
+            _id
+          }      
+          this.props.populateWorkflow(workflow)
+          this.props.setShowFab(false)  // Fav True False
+          this.props.setActivePage("listAllWorkflow")
+        }
+        
+        
+          const stakehObj={
+            _action:'LISTLOCATION',
+            _id,                        
+            filterType: locLabel,
+          }
+          this.props.setStakehType(stakehObj)
+         
+        
+
+           ////////////////////Search Workflow////////////////////////
           if(activePage==='searchWorkflow'){
             this.props.toggleSearchWorkflow(true)            
           }
@@ -168,20 +198,29 @@ class Breadcrumb extends Component {
        
         ////////////////////Workflow////////////////////////
 
-        if(activePage==="viewWorkflow"){
-
-          // this.props.setActivePage(activePage)     
+        if(activePage==="workflowContent"){
+            
           this.props.setShowFab(false)
+          this.props.setActivePage('workflowContent')
           this.props.setWizardPage("general")
+          this.props.panelContent(true)
 
-          //Activity Wizard
+          const workflow = {
+            workflowName: workflowName,
+            _action: 'SEARCHWORKFLOW',
+            _id
+          }  
+          this.props.getDetailsWorkflow(workflow)
+      
+          //List Activity
           const workflowDet = {
             _action: "SEARCHACTIVITY",
-            workflowUri: id,
+            workflowUri: wrkflSel,
             _id
-          }          
+          }
+           
           this.props.setListActivity(workflowDet)
-
+      
           //Record Wizard
           const recordDet = {
             _id,
@@ -190,12 +229,12 @@ class Breadcrumb extends Component {
               {
                 op: "EQUALS",
                 field: "%26%26Related+Records+of+Workflow",
-                value1: label
+                value1: workflowName
               }
             ]),
             searchOrder: "0"
-          }
-          this.props.setRecordStore(recordDet)
+          };
+          this.props.setRecordStore(recordDet);
 
         }
         
@@ -242,6 +281,7 @@ Breadcrumb.propTypes = {
   breadcrumb: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
+  workflow: PropTypes.object.isRequired,
   // records: PropTypes.object.isRequired,
   setBread: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
@@ -258,13 +298,17 @@ Breadcrumb.propTypes = {
   setShowFab: PropTypes.func.isRequired,
   setListActivity: PropTypes.func.isRequired,
   setRecordStore: PropTypes.func.isRequired,
+  populateWorkflow: PropTypes.func.isRequired,
+  panelContent: PropTypes.func.isRequired,
+  getDetailsWorkflow: PropTypes.func.isRequired,
 
 }
 const mapStateToProps = state => ({
   breadcrumb: state.breadcrumb,
   session: state.session,
   location: state.location,
-  layout:state.layout,   
+  layout: state.layout,   
+  workflow: state.workflow
 })
 
 export default connect(
@@ -285,5 +329,8 @@ export default connect(
     setShowFab,
     setListActivity,
     setRecordStore,
+    populateWorkflow, 
+    panelContent,
+    getDetailsWorkflow
   }
 )(Breadcrumb)

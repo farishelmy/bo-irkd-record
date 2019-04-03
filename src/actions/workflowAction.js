@@ -165,21 +165,21 @@ export const setContinerLine=(param)=>{
     }
 }
 
-// //Get Activity Detail
-// export const getDetails = (param) => dispatch =>{
-//     // console.log(param)
-//     const url=gwUrl+converter(param)
-//     // console.log(url)
-//         fetch(url)
-//         .then(res=>res.json())
-//         .then(res=>{
-//             // console.log(res)
-//             dispatch({
-//                 type:ACTIVITY_DETAIL,
-//                 payload:res.data
-//             })
-//         })
-// }
+//Get Activity Detail
+export const getDetailsWorkflow = (param) => dispatch =>{
+    // console.log(param)
+    const url=gwUrl+converter(param)
+    // console.log(url)
+        fetch(url)
+        .then(res=>res.json())
+        .then(res=>{
+            // console.log(res)
+            dispatch({
+                type:ACTIVITY_DETAIL,
+                payload:res.data
+            })
+        })
+}
 
 //Get Activity status in Panel Dropdown
 export const setSelectAct=(param)=>{

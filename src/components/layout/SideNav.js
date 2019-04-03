@@ -123,6 +123,7 @@ class SideNav extends React.Component {
 
     this.props.setActivePage(pageName)
 
+    /////////////////////Location/////////////////////////////
     if(pageName==="location"){
 
       const stakehList = {
@@ -148,13 +149,38 @@ class SideNav extends React.Component {
 
     }     
 
+    if(pageName==="audit"){
+
+      //Breadcrumb
+      this.props.setNewBread(true, {
+        id: e.target.getAttribute('data-breadcrumb'),
+        label: e.target.getAttribute('data-breadcrumb'),
+        activePage: e.target.getAttribute('data-breadcrumb'),
+        isActive: true,
+      })   
+      
+      this.props.setStakehLabel(e.target.getAttribute("data-label"))
+      this.props.setStakehSel(null)  // ID stakeholder select to null
+      this.props.setShowFab(false) // Fab True false
+      // this.props.setStakehNumb(e.target.getAttribute('data-label'))
+
+      this.setState({ uploadToggle: false, folderToggle: false, documentToggle: false, workflowToggle: false })
+
+    }     
+
     if (pageName==="listOfActivity"){
       const listAct = {
         _action: "LISTACTDUE",
         _id: bId
       }
-  
       this.props.setListActDue(listAct)
+      
+      const stakehList = {
+        _action: "LISTLOCATION",
+        _id: bId,
+      }
+      this.props.setStakehType(stakehList)
+
     }
 
     if (pageName === "searchWorkflow"){
@@ -353,6 +379,15 @@ class SideNav extends React.Component {
                 </ul>
 
               </li>
+
+              <li>    
+                <a href="/" onClick={this.setActivePage} data-pagename="audit"  data-breadcrumb='Audit Log' data-label="All Locations">
+                  <div className="userIcon" data-pagename="audit">
+                    <img src={require(`../../img/clock-audit.svg`)} alt="location" className="img-fluid mr-1" />
+                  </div>Audit Log
+                </a>           
+              </li>
+
 
                
 

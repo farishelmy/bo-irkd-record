@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
- 
+import { Button } from 'reactstrap'
 
 // import Breadcrumb from '../layouts/Breadcrumb'
 import { setActivePage } from '../../actions/layoutInitAction'
@@ -112,9 +112,15 @@ class WorkflowContent extends Component {
         // })
     }    
 
+    handleReturn=()=>{
+        this.props.panelContent(true)
+
+
+    }
+
     render() {
 
-        const { cardView, showFab, workflowDetails, panelContent } = this.props.workflow        
+        const { cardView, showFab, workflowDetails, panelContent, workflowName } = this.props.workflow        
         const { title } = this.state
         
         
@@ -134,8 +140,23 @@ class WorkflowContent extends Component {
                    
                         <header>
                             <div className="d-flex bd-highlight">
-                                <h1 className="h3 display p-2 flex-grow-1 bd-highlight"><strong>{panelContent===true?'Workflow':title}</strong></h1>                      
-                                <div className="p-2 bd-highlight col-md-5"><PanelDropdown/></div> 
+                                <h1 className="h3 display p-2 flex-grow-1 bd-highlight"><strong>{panelContent===true?'Workflow':title}</strong></h1>
+
+                                    <div className={panelContent!==true?"p-2 bd-highlight d-flex align-items-center":"d-none"}>                          
+
+                                        <Tooltip
+                                            placement="top"
+                                            overlay={<div style={{ height: 20, width: '100%' }}>Return to {workflowName}</div>}
+                                            arrowContent={<div className="rc-tooltip-arrow-inner"></div>}>
+                                            <button className="btn-circle btn-primary" onClick={this.handleReturn}>
+                                                <i className="fa fa-arrow-circle-left"></i>
+                                            </button>                            
+                                        </Tooltip>
+                                    </div>
+                               
+                                {/* <div className={panelContent!==true?"p-2 bd-highlight":"d-none"}><Button outline color="primary" onClick={this.handleReturn}>Return to {workflowName}</Button></div>  */}
+                                
+                                    <div className="p-2 bd-highlight col-md-5"><PanelDropdown/></div> 
                             </div>            
                         </header>   
                         

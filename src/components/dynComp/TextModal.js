@@ -56,6 +56,7 @@ export class TextModal extends Component {
       },
       conf: { title, modalType, incoming }
     } = this.props
+    // console.log(modalType)
     const { modalShow, listingType, textVal } = this.state
     return (
       <FormGroup>

@@ -3,11 +3,14 @@ import posed from 'react-pose'
 import Tooltip from "rc-tooltip"
 import "rc-tooltip/assets/bootstrap.css"
 
-export default function Workflow({workflowName, activityUri, activityName, assignedTo, priority, dateStart, dateDue, iconCls, supervisor, isSel, markOnSel}) {
+export default function Workflow({workflowName, activityUri, activityName, assignedTo, priority, dateStart, dateDue, iconCls, supervisor, isSel, markOnSel }) {
     
     const handleClick=(e)=>{
         markOnSel(workflowName, activityUri, activityName, assignedTo, priority, dateStart, dateDue, iconCls, supervisor, isSel)
-    }  
+    } 
+    
+    
+
 
     return (
         <div className={isSel?"card bg-primary":"card"} onClick={handleClick}>

@@ -27,6 +27,8 @@ import ListActivity from './activity/ListActivity'
 import ActivityDetails from './activity/wizard/ActivityDetails'
 import SearchActivity from './activity/search/SearchActivity'
 import SearchWorkflow from './workflow/search/SearchWorkflow'
+import audit from './audit/index'
+
 
 
 const AnimeCont = posed.div({
@@ -71,6 +73,7 @@ class Home extends Component {
     wizardActivity: ActivityDetails,
     searchActivity: SearchActivity,
     searchWorkflow: SearchWorkflow,
+    audit: audit
 
 
     

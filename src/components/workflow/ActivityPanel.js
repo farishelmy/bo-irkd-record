@@ -97,6 +97,9 @@ class ActivityPanel extends Component {
         })
     }
 
+    
+
+
     render() {
          
         const { Activity } = this.state
@@ -107,23 +110,25 @@ class ActivityPanel extends Component {
 
                 {Activity.length !== 0? Activity.map((item,idx) =>  
                
-                    <CardPanel                                         
-                        key={item.activityUri} 
-                        workflowName={item.workflowName}
-                        activityUri={item.activityUri}
-                        activityName={item.activityName}
-                        assignedTo={item.assignedTo}
-                        priority={item.priority}
-                        dateStart={item.activityDateDue}
-                        dateDue={item.estDuration}
-                        iconCls={item.iconCls}
-                        supervisor={item.supervisor}
-                        isSel={item.isSel}
-                        markOnSel={this.markOnSel} 
-                    />
+                        <CardPanel                                         
+                            key={item.activityUri} 
+                            workflowName={item.workflowName}
+                            activityUri={item.activityUri}
+                            activityName={item.activityName}
+                            assignedTo={item.assignedTo}
+                            priority={item.priority}
+                            dateStart={item.activityDateDue}
+                            dateDue={item.estDuration}
+                            iconCls={item.iconCls}
+                            supervisor={item.supervisor}
+                            isSel={item.isSel}
+                            markOnSel={this.markOnSel} 
+                        />
 
-                ) : 
-                <strong>No Activity</strong>} 
+                    ) 
+                : 
+                    <strong>No Activity</strong>
+                } 
 
                 {
                     showFab?<Fab/>:""

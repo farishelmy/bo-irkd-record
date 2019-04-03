@@ -176,10 +176,10 @@ class GeneralWizard extends Component {
                                     <input name="day" type="number" name="day" className="form-control" placeholder="Day" onChange={this.handleChange} value={day}/> 
                                 </div>
                                 <div className="col-sm-4 form-group">
-                                    <input name="hour" type="number" name="hour" max="24" min="0" className="form-control" placeholder="Hour" onChange={this.handleChange} value={hour}/> 
+                                    <input name="hour" type="number" name="hour" max="24" min="0" className="form-control" placeholder="Hour" onChange={this.handleChange} value={hour }/> 
                                 </div>
                                 <div className="col-sm-4 form-group">
-                                    <input name="minute" type="number" name="minute" max="59" min="0" className="form-control" placeholder="Minute" onChange={this.handleChange} value={minute}/> 
+                                    <input name="minute" type="number" name="minute" max="59" min="0" className="form-control" placeholder="Minute" onChange={this.handleChange} value={minute }/> 
                                 </div>
                             </div>                                     
                         </div> 
