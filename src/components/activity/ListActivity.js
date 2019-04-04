@@ -152,13 +152,7 @@ class ListActivity extends Component {
 
 
       
-    //Delete Btn
-    delBtn=()=>{
-        // const {wrkflowSelect} = this.state
-        const {user:{_id:bId}} = this.props.session  
-        const {wrkflSel, listActivityDue}=this.props.activity 
-        alert("Successful Deleted")
-    } 
+    
 
      
 

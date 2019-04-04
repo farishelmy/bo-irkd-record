@@ -50,8 +50,8 @@ export class ItemLising extends Component {
       conf: { itmParam },
       setSearchParam
     } = this.props
-
     const { nav } = this.state
+    console.log(nav)
     const uri = e.target.getAttribute("data-uri")
     // console.log(uri)
     if (uri === "root") {
@@ -68,6 +68,7 @@ export class ItemLising extends Component {
       conf: { itmParam, incoming },
       setSearchParam
     } = this.props
+    console.log(conf)
     const { nav } = this.state
     if (!conf.leaf) {
       setSearchParam({ ...itmParam, uri: conf.uri, anode: "irekod" })
@@ -128,6 +129,7 @@ export class ItemLising extends Component {
     const {
       conf: { format, incoming }
     } = this.props
+    // console.log(nav[nav.length - 2].uri)
     const rec = itmList.map((itm, idx) => {
       if (format === "classification") {
         const title = `${itm["Record Number"]} ${itm["Title"]}`
@@ -146,7 +148,7 @@ export class ItemLising extends Component {
         return <ItmCard key={idx} conf={itm} title={title} getChild={this.iterateItem} getDetails={this.generateQuery} value={itm["Name"]} />
       }
     })
-    // console.log(nav)
+    // console.log(nav[nav.length - 2].uri)
     return (
       <>
         {nav[nav.length - 1].uri !== "root" ? (

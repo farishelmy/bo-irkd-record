@@ -12,6 +12,7 @@ export default function ItmCard({ conf, title, getChild, value, getDetails }) {
       }
     }
   }
+  
 
   const iconType =
     iconCls === "pdf" ||

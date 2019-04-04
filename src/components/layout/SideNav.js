@@ -168,6 +168,8 @@ class SideNav extends React.Component {
 
     }     
 
+    /////////////////////Actvity/////////////////////////////
+
     if (pageName==="listOfActivity"){
       const listAct = {
         _action: "LISTACTDUE",

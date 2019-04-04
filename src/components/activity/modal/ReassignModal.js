@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
-import DatePicker from 'react-datepicker'
-import moment, { isMoment } from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
-import DetailCard from '../DetailCard'
+import ListCard from '../modal/ListCard'
+import ListCardChild from '../modal/ListCardChild'
 import Pagination from 'rc-pagination'
 import 'rc-pagination/assets/index.css' 
+import update from 'immutability-helper' 
+
 
 
 import { connect } from 'react-redux'
 
 import { toggleErr, changeAssignee } from '../../../actions/activityAction'
-import { setStakehType } from '../../../actions/location'
+import { setStakehType, viewStakehMember } from '../../../actions/location'
 
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
@@ -25,16 +26,18 @@ class ReassignModal extends Component {
       stakehList: [],
       assignee: [],
       current: 1,
-      test:[]
+      listLoc:[],
+      childName:null,
+      childUri:null,
+      showChild:false,
+      nav: [{ childName: "Root", childUri: "root" }]
     }
   }
 
   componentWillMount(){
     const {locType}=this.props.location   
-    // const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
     this.setState({
-      // stakehList:stakehOptions,
-      test:locType
+      listLoc:locType
 
     })
   }
@@ -42,20 +45,18 @@ class ReassignModal extends Component {
   componentDidUpdate(prevProps){
     if(prevProps.location.locType !== this.props.location.locType){
       const {locType}=this.props.location   
-      // const stakehOptions = locType.map(itm=>({ value: itm.uri, label:itm.Name}))
       this.setState({
-        // stakehList:stakehOptions,
-        test:locType
+        listLoc:locType
       })
     }
     
-    if(prevProps.activity.activityDet !== this.props.activity.activityDet){
-      const {activityDet} = this.props.activity
-      const  assigned = activityDet.map(itm => ({label: itm.assignedTo, value: itm.assignedTo }))       
-      this.setState({
-        assignee: assigned
-      })
-    }
+    // if(prevProps.activity.activityDet !== this.props.activity.activityDet){
+    //   const {activityDet} = this.props.activity
+    //   const  assigned = activityDet.map(itm => ({label: itm.assignedTo, value: itm.assignedTo }))       
+    //   this.setState({
+    //     assignee: assigned
+    //   })
+    // }
 
   }
   
@@ -64,33 +65,76 @@ class ReassignModal extends Component {
     this.props.toggleErr(!showErr)
   }
 
-  handleAssignee=(param)=>{     
-     
-    this.setState({assignee:param})
-    // console.log(param)
-  }
+  
+  addBtn=(name)=>{
+    // console.log(name)
 
-  formSubmit = (e) => {
-    e.preventDefault()
-    const { assignee } = this.state
     const { activityUri } = this.props.activity     
     const { user: { _id: bId } } = this.props.session
  
       const param = {
         _action: "SAVEASSIGNEE",
         _activityUri: activityUri,
-        assignee: assignee.label,
+        assignee: name,
         _id: bId,
       }
       console.log(param)
       // this.props.changeAssignee(param)
       this.props.toggleErr(false)
-  
-
+   
   }
 
-  addBtn=()=>{
-    console.log("test")
+  getChild=(stakehId,name)=>{
+    const { user: { _id: bId }} = this.props.session
+    const { nav } = this.state
+
+    const param = {
+      _action: "LISTLOCATION",
+      _id: bId,
+      URI: stakehId,
+      ANODE: "A",
+    }
+    // console.log(param)
+    this.props.viewStakehMember(param)
+
+    const newNav = update(nav, {
+      $push: [
+        {
+          childName: name,
+          childUri: stakehId
+        }
+      ]
+    })
+    // console.log(newNav)
+
+    this.setState({
+      showChild:true,
+      nav: newNav
+    })
+  }
+
+  backToParent=()=>{
+    const { childUri, nav } = this.state 
+    // console.log(nav[nav.length - 2].childUri)
+    const { user: { _id: bId }} = this.props.session
+
+    const param = {
+      _action: "LISTLOCATION",
+      _id: bId,
+      URI: nav[nav.length - 2].childUri,
+      ANODE: "A",
+    }
+    // console.log(param)
+    this.props.viewStakehMember(param)
+
+    const newNav = nav.slice(0, nav.length - 1)
+    this.setState({ nav: newNav })
+    
+    if(nav[nav.length - 2].childUri === "root"){
+      this.setState({
+        showChild:false
+      })
+    }
   }
 
   onChangePaging = (page) => {
@@ -116,15 +160,13 @@ class ReassignModal extends Component {
     this.setState({
         current: page,
     })
-             
-
-}
+  }
 
 
   render() {
     const { showErr } = this.props.activity
-    const { totalCount,pageSize } = this.props.location
-    const { stakehList, assignee, test, current } = this.state
+    const { totalCount,pageSize, locationMember } = this.props.location
+    const { stakehList, assignee, listLoc, current, showChild, nav } = this.state
     // console.log(test)
     // console.log(assignee)
 
@@ -132,38 +174,55 @@ class ReassignModal extends Component {
     return (
       <div>
         <Modal isOpen={showErr} toggle={this.toggle} className={this.props.className}>
-          <Form onSubmit={this.formSubmit}>
+           
             <ModalHeader toggle={this.toggle}>Location</ModalHeader>
             <ModalBody> 
 
               <FormGroup>
                 <label>Reassign Location</label>
+                
+                {
+                  showChild!==false?
+                  <div>
+                    <div className='d-flex justify-content-between recListMenu' onClick={this.backToParent}>
+                        <div className='left-col d-flex align-items-center'  >
+                            <div className='icon mr-2'  >
+                            <i className='fa fa-angle-left' />
+                            {/* <img src={require(`../../../img/search.svg`)} className='listIcn' alt='...' /> */}
+                            </div>                          
+                            <p className='title text-primary mb-0'  >
+                                {nav[nav.length - 1].childName}
+                            </p>                            
+                        </div>
+                    </div>
+                    {locationMember.map(item=>
+                      <ListCardChild
+                        key={item.uri}
+                        name={item.Name}
+                        uri={item.uri}
+                        iconCls={item.iconCls}
+                        leaf={item.leaf}
+                        getParent={this.getChild}
+                        addBtn={this.addBtn}
+                        getChild={this.getChild} 
+                        />
+                    )}
+                  </div>
+                 
+                :
 
-                {test.map(item=>
-                  <DetailCard                                         
-                    key={item.uri} 
-                    stakehId={item.uri}
-                    name={item.Name}
-                    typeName={item.iconCls}
-                    isSel={item.isSel}
-                    markOnSel={this.markOnSel}
-                    addBtn={this.addBtn} />
-                )}
-
-
-
-
-
-                {/* <Select 
-                  name="assignee"
-                  options={stakehList}
-                  onChange={this.handleAssignee}
-                  value={assignee===""?null:assignee} 
-                  placeholder="Location"
-                  isClearable
-                />  */}
-
-              
+                  listLoc.map(item=>
+                    <ListCard                                         
+                      key={item.uri} 
+                      stakehId={item.uri}
+                      name={item.Name}
+                      typeName={item.iconCls}
+                      leaf={item.leaf}
+                      addBtn={this.addBtn}
+                      getChild={this.getChild} 
+                    />
+                  )
+                }
 
               </FormGroup>
 
@@ -174,12 +233,11 @@ class ReassignModal extends Component {
                   
             </ModalBody>
 
-            <ModalFooter>
-              <Button type="submit" color="primary">Save</Button>
+            <ModalFooter>              
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
 
-          </Form>
+          
         </Modal>
       </div>
 
@@ -193,6 +251,7 @@ ReassignModal.propTypes = {
   toggleErr: PropTypes.func.isRequired,
   changeAssignee: PropTypes.func.isRequired,
   setStakehType: PropTypes.func.isRequired,
+  viewStakehMember: PropTypes.func.isRequired,
    
 
 }
@@ -207,7 +266,8 @@ export default connect(mapStateToProps,
   {
     toggleErr,
     changeAssignee,
-    setStakehType
+    setStakehType,
+    viewStakehMember
   
   })
   (ReassignModal)
