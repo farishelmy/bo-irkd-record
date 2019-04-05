@@ -48,15 +48,19 @@ class ListWorkflow extends Component {
 
   ///TESTING
   setActivePage = FabRec => {
-      const {
-        user: { _id: bId }
-      } = this.props.session;
 
-      const {
-        wrkflSel,
-        workflowTemplate,
-        workflowName
-      } = this.props.workflow;
+      const { 
+        workflow: {  
+          wrkflSel,
+          workflowTemplate,
+          workflowName 
+        },
+        session:{ 
+          user: { 
+            _id: bId 
+          }
+        }
+      }= this.props
   
       this.props.setShowFab(false)
       this.props.setActivePage('workflowContent')
@@ -214,12 +218,6 @@ class ListWorkflow extends Component {
 
     return (
       <Fragment>
-        {/* <div className="breadcrumb-holder">
-          <div className="container-fluid">
-            <Breadcrumb />
-          </div>
-        </div> */}
-
         <section className="forms">
           <div className="container-fluid">
             <header>
@@ -304,8 +302,8 @@ class ListWorkflow extends Component {
             </header>
 
             <div className="row">
-              {cardView === false ? 
-                workList.length!==0?
+              {cardView === false ?
+                workList.length !== 0 ?
                   <div className="row">
                     <div className="col-12">
                       <div className="d-flex justify-content-between align-items-center">
@@ -329,18 +327,18 @@ class ListWorkflow extends Component {
                     </div>
                     {rec}
                   </div>
-                :"":rec}
+                  : "" : rec}
             </div>
 
             {showFab ? (
               <Fab FabRec={this.setActivePage} delBtn={this.delBtn} />
             ) : (
-              ""
-            )}
+                ""
+              )}
 
-              
+
             <div className="modal-footer justify-content-center">
-                <Pagination onChange={this.onChangePaging} current={current}  pageSize={pageSize} total={totalCount} />    
+              <Pagination onChange={this.onChangePaging} current={current} pageSize={pageSize} total={totalCount} />
             </div>
 
           </div>

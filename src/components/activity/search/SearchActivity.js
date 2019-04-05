@@ -2,15 +2,18 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-// import Breadcrumb from '../../../layouts/Breadcrumb'
 import { setActivePage } from '../../../actions/layoutInitAction'
-import { setCardView, activityUri, setShowFab, getDetails, activityName, setWizardPage } from '../../../actions/activityAction'
-// import { setNewBread } from '../../../../actions/breadcrumbAction'
+import { setCardView, activityUri, setShowFab, getDetails, activityName, setWizardPage, toggleErr, showComplete, showSuspend } from '../../../actions/activityAction'
+import { setNewBread } from '../../../actions/breadcrumbAction'
+import { getDetailsWorkflow, setRecordStore, setListActivity } from '../../../actions/workflowAction'
 
-// import Fab from '../../../fab/FabActivity'
+import Fab from '../../fab/FabActivity'
 import Search from '../search/ModalActivity'
 import CardView from '../CardView'
 import ListView from '../ListView'
+import ReassignModal from '../modal/ReassignModal'
+import CompleteModal from '../modal/CompleteModal'
+import SuspendModal from '../modal/SuspendModal'
 
 import Tooltip from 'rc-tooltip'
 import update from 'immutability-helper'
@@ -41,30 +44,102 @@ class SearchActivity extends Component {
     }
 
     //Direct Page To WorkFlow Detail
-    setActivePage = (FabRec) => {
+    setActivePage = (page) => {
+        console.log(page)
 
         const { user: { _id: bId } } = this.props.session
-        const {activityName}=this.props.activity          
+        const { activityName, checkResult, activityDet }=this.props.activity  
+        const workflowName = activityDet.map(itm => itm.workflowName).toString()  
 
-       
-        this.props.setActivePage(FabRec)
-        this.props.setWizardPage("general") 
-        this.props.setShowFab(false)    
+      
+        if (page === 'wizardActivity'){
 
-        //Breadcrumb
-        this.props.setNewBread(false,{
-            id: 'viewAct', 
-            label: activityName, 
-            activePage: 'viewAct', 
-            isActive: true,
-        })          
+            // console.log(page)          
+
+            // this.props.setPageSubject(workflowTemplate)
+            this.props.setActivePage(page)
+            this.props.setWizardPage("general") 
+            this.props.setShowFab(false)      
+
+            // Breadcrumb
+            this.props.setNewBread(false,{
+                id: activityUri, 
+                label: activityName, 
+                activePage: page, 
+                isActive: true,
+            })  
+        }         
+        
+        else if (page === 'reassignActivity'){
+            this.props.toggleErr(true)
+        }
+
+        else if (page === 'suspend'){
+            this.props.showSuspend(true)
+        }
+
+        else if (page === 'complete'){          
+            this.props.showComplete(true)
+            if (checkResult=== true){
+                const param ={
+
+                    _action: "GETRESULT",
+                    _activityUri: activityUri, 
+                    _id: bId,
+                }
+                this.props.getResult(param)
+            }
+        }
+
+        else if (page === 'workflow'){
+
+            this.props.setActivePage('workflowContent')
+
+            // Breadcrumb
+            this.props.setNewBread(false,{
+                id: workflowName, 
+                label: workflowName, 
+                activePage: page, 
+                isActive: true,
+            }) 
+
+            const workflow = {
+                workflowName: workflowName,
+                _action: "SEARCHWORKFLOW",
+                _id: bId,
+            }
+            this.props.getDetailsWorkflow(workflow)
+
+             //Record Wizard
+            const recordDet = {
+                _id: bId,
+                _action: "SEARCHRECORD",
+                jsonQuery: JSON.stringify([
+                {
+                    op: "EQUALS",
+                    field: "%26%26Related+Records+of+Workflow",
+                    value1: workflowName
+                }
+                ]),
+                searchOrder: "0"
+            };
+            this.props.setRecordStore(recordDet)
+
+             //List Activity
+            const workflowDet = {
+                _action: "SEARCHACTIVITY",
+                workflowName: workflowName,
+                _id: bId
+            }
+            this.props.setListActivity(workflowDet)
+        }
     }
 
 
     //Selection
-    markOnSel = (activityName, activityUri, markOnSel, workflowName, assignedTo, activityDateDue, icon, isSel, supervisor, priority, estDuration) => {
+    markOnSel = (activityName, activityUri, markOnSel, workflowName, assignedTo, activityDateDue, iconCls, isSel, supervisor, priority, estDuration) => {
 
-        const val = [{ activityName, activityUri, markOnSel, workflowName, assignedTo, activityDateDue, icon, isSel, supervisor, priority, estDuration }]
+        const val = [{ activityName, activityUri, markOnSel, workflowName, assignedTo, activityDateDue, iconCls, isSel, supervisor, priority, estDuration }]
 
         this.props.getDetails(val) //Set Workflow Details
         this.props.activityUri(activityUri)  //Set Workflow Uri
@@ -152,13 +227,7 @@ class SearchActivity extends Component {
 
 
         return (
-            <Fragment>
-
-                {/* <div className="breadcrumb-holder">
-                    <div className="container-fluid">
-                        <Breadcrumb/>
-                    </div>
-                </div>  */}
+            <Fragment>                
 
                 <section className="forms">
                     <div className="container-fluid">
@@ -234,10 +303,14 @@ class SearchActivity extends Component {
 
 
 
-                        {/* {showFab ? <Fab
+                        {showFab ? <Fab
                             FabRec={this.setActivePage}
                             delBtn={this.delBtn}
-                        /> : ''} */}
+                        /> : ''}
+
+                        <ReassignModal/>
+                        <CompleteModal/>
+                        <SuspendModal/>
 
                     </div>
                 </section>
@@ -255,8 +328,14 @@ SearchActivity.propTypes = {
     activityName: PropTypes.func.isRequired,
     setShowFab: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
-    // setNewBread: PropTypes.func.isRequired,
+    setNewBread: PropTypes.func.isRequired,
     setWizardPage: PropTypes.func.isRequired,
+    toggleErr: PropTypes.func.isRequired,
+    showComplete: PropTypes.func.isRequired,
+    showSuspend: PropTypes.func.isRequired,
+    getDetailsWorkflow: PropTypes.func.isRequired,
+    setRecordStore: PropTypes.func.isRequired,
+    setListActivity: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
     session: state.session,
@@ -271,9 +350,15 @@ export default connect(mapStateToProps,
         activityUri,
         getDetails,
         setShowFab,
-        // setNewBread,
+        setNewBread,
         // setPageTitle,
         setWizardPage,
+        toggleErr,
+        showComplete,
+        showSuspend,
+        getDetailsWorkflow,
+        setRecordStore,
+        setListActivity
 
 
 

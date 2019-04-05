@@ -37,9 +37,13 @@ export class index extends Component {
       session: {
         user: { _id }
       },
-      recProps: { rtUri }
+      record: {
+        recConf: {
+          recProps: { rtUri }
+        }
+      }
     } = this.props
-
+    console.log(formVal)
     this.props.recSave({ _action: "SAVEFORM", _id, ...formVal, recordTypeUri: rtUri })
   }
   render() {
@@ -47,6 +51,7 @@ export class index extends Component {
     const [activeTabConf] = sectionTab.filter(itm => itm.active === true)
     const secTab = sectionTab.map((itm, idx) => <EditorHeader key={idx} secId={idx} active={itm.active} title={itm.name} />)
     const activeTab = <TabEditor conf={activeTabConf} sendFormVal={this.submitForm} />
+    console.log()
 
     return (
       <section className='statistics'>

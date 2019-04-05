@@ -26,16 +26,16 @@ class WorkflowPanel extends Component {
 
     }     
 
-    // componentDidUpdate(prevProps){
-    //     if(prevProps.workflow.workflowDetails !== this.props.workflow.workflowDetails){
-    //         const { workflowDetails } = this.props.workflow  
-    //         console.log(workflowDetails)
-    //         this.setState({
-    //             workflow: workflowDetails
-    //         })
-    //     }
+    componentDidUpdate(prevProps){
+        if(prevProps.workflow.workflowDetails !== this.props.workflow.workflowDetails){
+            const { workflowDetails } = this.props.workflow  
+            console.log(workflowDetails)
+            this.setState({
+                workflow: workflowDetails
+            })
+        }
 
-    // }
+    }
     
     componentWillMount(){
         const { workflowDetails } = this.props.workflow       
@@ -47,7 +47,7 @@ class WorkflowPanel extends Component {
     render() {
          
         const { workflow } = this.state
-        console.log(workflow)
+        // console.log(workflow)
 
         return (
             <Fragment>

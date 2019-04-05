@@ -49,7 +49,7 @@ class SideNav extends React.Component {
         this.props.setNewBread(true, {
           id: e.target.getAttribute('data-breadcrumb'),
           label: e.target.getAttribute('data-breadcrumb'),
-          activePage: e.target.getAttribute('data-breadcrumb'),
+          activePage: e.target.getAttribute('name'),
           isActive: true,
         })
         break
@@ -64,7 +64,7 @@ class SideNav extends React.Component {
         this.props.setNewBread(true, {
           id: e.target.getAttribute('data-breadcrumb'),
           label: e.target.getAttribute('data-breadcrumb'),
-          activePage: e.target.getAttribute('data-breadcrumb'),
+          activePage: e.target.getAttribute('name'),
           isActive: true,
         })
         break
@@ -123,6 +123,14 @@ class SideNav extends React.Component {
 
     this.props.setActivePage(pageName)
 
+    //Breadcrumb
+    this.props.setNewBread(true, {
+      id: e.target.getAttribute('data-breadcrumb'),
+      label: e.target.getAttribute('data-breadcrumb'),
+      activePage: e.target.getAttribute('data-pagename'),
+      isActive: true,
+    })   
+
     /////////////////////Location/////////////////////////////
     if(pageName==="location"){
 
@@ -130,34 +138,7 @@ class SideNav extends React.Component {
         _action: "LISTLOCATION",
         _id: bId,
       }
-      this.props.setStakehType(stakehList)
-
-      //Breadcrumb
-      this.props.setNewBread(true, {
-        id: e.target.getAttribute('data-breadcrumb'),
-        label: e.target.getAttribute('data-breadcrumb'),
-        activePage: e.target.getAttribute('data-breadcrumb'),
-        isActive: true,
-      })   
-      
-      this.props.setStakehLabel(e.target.getAttribute("data-label"))
-      this.props.setStakehSel(null)  // ID stakeholder select to null
-      this.props.setShowFab(false) // Fab True false
-      // this.props.setStakehNumb(e.target.getAttribute('data-label'))
-
-      this.setState({ uploadToggle: false, folderToggle: false, documentToggle: false, workflowToggle: false })
-
-    }     
-
-    if(pageName==="audit"){
-
-      //Breadcrumb
-      this.props.setNewBread(true, {
-        id: e.target.getAttribute('data-breadcrumb'),
-        label: e.target.getAttribute('data-breadcrumb'),
-        activePage: e.target.getAttribute('data-breadcrumb'),
-        isActive: true,
-      })   
+      this.props.setStakehType(stakehList)      
       
       this.props.setStakehLabel(e.target.getAttribute("data-label"))
       this.props.setStakehSel(null)  // ID stakeholder select to null
@@ -193,10 +174,15 @@ class SideNav extends React.Component {
     if (pageName === "searchActivity"){
       this.props.toggleSearchActivity(true)
       this.props.setActivePage("searchActivity")
+      
+      const stakehList = {
+        _action: "LISTLOCATION",
+        _id: bId,
+      }
+      this.props.setStakehType(stakehList)
     }
 
-    
-
+  
 
     // console.log(pageName)
     // if (pageName === "record") {
@@ -224,7 +210,7 @@ class SideNav extends React.Component {
         <div className='side-navbar-wrapper'>
           <div className='sidenav-header d-flex align-items-center justify-content-center'>
             <div className='sidenav-header-inner text-center'>
-              <img src={require("../../img/user.svg")} alt='user' className='img-fluid ' />
+              <img src={require("../../img/user2.svg")} alt='user' className='img-fluid ' />
               <h2 className='h5'>{stakehName}</h2>
               <span>{title}</span>
             </div>
@@ -258,9 +244,9 @@ class SideNav extends React.Component {
 
                 <ul id='chartsDropdown' className={this.state.folderToggle ? "collapse list-unstyled show" : "collapse list-unstyled"}>
                   <li>
-                    <a href='/' onClick={this.setActivePage} data-pagename='recordCreate'>
-                      <div className='userIcon' data-pagename='recordCreate'>
-                        <img src={require(`../../img/folder3.svg`)} alt='doc' className='img-fluid p-1' data-pagename='recordCreate' />
+                    <a href='/' onClick={this.setActivePage} data-pagename='recordCreate' data-breadcrumb='Create'>
+                      <div className='userIcon' data-pagename='recordCreate' data-breadcrumb='Create'>
+                        <img src={require(`../../img/folder3.svg`)} alt='doc' className='img-fluid p-1' data-pagename='recordCreate' data-breadcrumb='Create' />
                       </div>
                       Create
                     </a>
@@ -293,9 +279,9 @@ class SideNav extends React.Component {
 
                 <ul id='chartsDropdown' className={this.state.documentToggle ? "collapse list-unstyled show" : "collapse list-unstyled"}>
                   <li>
-                    <a href='/' data-pagename='advSearch' onClick={this.setActivePage}>
-                      <div className='userIcon' data-pagename='advSearch'>
-                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='advSearch' />
+                    <a href='/' data-pagename='advSearch' data-breadcrumb='Advance Search' onClick={this.setActivePage}>
+                      <div className='userIcon' data-pagename='advSearch'  data-breadcrumb='Advance Search'>
+                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='advSearch'  data-breadcrumb='Advance Search' />
                       </div>
                       Advance Search
                     </a>
@@ -312,9 +298,9 @@ class SideNav extends React.Component {
               {/********************************************************** Browse by Classification ****************************************************/}
 
                   <li>
-                    <a href='/' data-pagename='searchClass' onClick={this.setActivePage}>
-                      <div className='userIcon' data-pagename='searchClass'>
-                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchClass' />
+                    <a href='/' data-pagename='searchClass'  data-breadcrumb='Browse by Classification' onClick={this.setActivePage}>
+                      <div className='userIcon' data-pagename='searchClass'  data-breadcrumb='Browse by Classification'>
+                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchClass'  data-breadcrumb='Browse by Classification'/>
                       </div>
                       Browse by Classification
                     </a>
@@ -352,27 +338,27 @@ class SideNav extends React.Component {
 
                 <ul id='chartsDropdown' className={this.state.workflowToggle ? "collapse list-unstyled show" : "collapse list-unstyled"}>
                   <li>
-                    <a href='/' onClick={this.setActivePage} data-pagename='listOfActivity'>
-                      <div className='userIcon' data-pagename='listOfActivity'>
-                        <img src={require(`../../img/activity.svg`)} alt='activity' className='img-fluid p-1' data-pagename='listOfActivity' />
+                    <a href='/' onClick={this.setActivePage} data-pagename='listOfActivity' data-breadcrumb='Activity List Due'>
+                      <div className='userIcon' data-pagename='listOfActivity' data-breadcrumb='Activity List Due'>
+                        <img src={require(`../../img/activity.svg`)} alt='activity' className='img-fluid p-1' data-pagename='listOfActivity' data-breadcrumb='Activity List Due' />
                       </div>
                       Activity List Due 
                     </a>
                   </li>
 
                   <li>
-                    <a href='/' onClick={this.setActivePage} data-pagename='searchWorkflow'>
-                      <div className='userIcon' data-pagename='searchWorkflow'>
-                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchWorkflow' />
+                    <a href='/' onClick={this.setActivePage} data-pagename='searchWorkflow' data-breadcrumb='Search Workflow'>
+                      <div className='userIcon' data-pagename='searchWorkflow' data-breadcrumb='Search Workflow'>
+                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchWorkflow' data-breadcrumb='Search Workflow' />
                       </div>
                       Search Workflow
                     </a>
                   </li> 
 
                    <li>
-                    <a href='/' onClick={this.setActivePage} data-pagename='searchActivity'>
-                      <div className='userIcon' data-pagename='searchActivity'>
-                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchActivity' />
+                    <a href='/' onClick={this.setActivePage} data-pagename='searchActivity' data-breadcrumb='Search Activity'>
+                      <div className='userIcon' data-pagename='searchActivity' data-breadcrumb='Search Activity'>
+                        <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchActivity' data-breadcrumb='Search Activity' />
                       </div>
                       Search Activity
                     </a>
@@ -382,13 +368,7 @@ class SideNav extends React.Component {
 
               </li>
 
-              <li>    
-                <a href="/" onClick={this.setActivePage} data-pagename="audit"  data-breadcrumb='Audit Log' data-label="All Locations">
-                  <div className="userIcon" data-pagename="audit">
-                    <img src={require(`../../img/clock-audit.svg`)} alt="location" className="img-fluid mr-1" />
-                  </div>Audit Log
-                </a>           
-              </li>
+              
 
 
                

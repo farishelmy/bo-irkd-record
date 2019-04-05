@@ -14,8 +14,8 @@ import { setStakehType } from '../../actions/location'
 
 
 import ReassignModal from '../activity/modal/ReassignModal'
-// import CompleteModal from '../activity/listActivity/modal/CompleteModal'
-// import SuspendModal from '../activity/listActivity/modal/SuspendModal'
+import CompleteModal from '../activity/modal/CompleteModal'
+import SuspendModal from '../activity/modal/SuspendModal'
 
 
 
@@ -225,8 +225,8 @@ class FabActivityContent extends Component {
     </div>
 
     <ReassignModal/>
-    {/* <CompleteModal/>
-    <SuspendModal/> */}
+    <CompleteModal/>
+    <SuspendModal/>
 
     </section>
     )

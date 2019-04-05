@@ -101,6 +101,7 @@ export const recDetails = fetchParam => dispatch => {
     })
 }
 export const recSave = fetchParam => dispatch => {
+  console.log(fetchParam)
   const url = gwUrl + converter(fetchParam)
   fetch(url)
     .then(res => res.json())

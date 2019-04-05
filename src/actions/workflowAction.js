@@ -173,7 +173,7 @@ export const getDetailsWorkflow = (param) => dispatch =>{
         fetch(url)
         .then(res=>res.json())
         .then(res=>{
-            // console.log(res)
+            // console.log(res.data)
             dispatch({
                 type:ACTIVITY_DETAIL,
                 payload:res.data

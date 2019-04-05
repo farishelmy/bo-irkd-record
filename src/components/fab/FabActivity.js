@@ -18,7 +18,7 @@ const sendActive=(e)=>{
         <span className="fab-action-button">
             <Tooltip
                 placement="left"
-                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Edit Details</div>}
+                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>View Activity</div>}
                 arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                  >
                  <img name="wizardActivity" src={require('../../img/fab-update.svg')} alt='view' className='img-fluid' onClick={sendActive}   />
@@ -58,6 +58,18 @@ const sendActive=(e)=>{
                         arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                         >
                             <img name="complete" src={require('../../img/complete.svg')} alt='complete' className='img-fluid' onClick={sendActive}/>
+                    </Tooltip>
+                </span>
+            </li>
+
+            <li className="fab-buttons-item">
+                    <span className="fab-buttons-link">
+                        <Tooltip
+                        placement="left"
+                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Workflow</div>}
+                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                        >
+                            <img name="workflow" src={require('../../img/fab-workflow.svg')} alt='workflow' className='img-fluid' onClick={sendActive}/>
                     </Tooltip>
                 </span>
             </li>

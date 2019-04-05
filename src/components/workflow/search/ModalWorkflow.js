@@ -192,16 +192,10 @@ class ModalWorkflow extends Component {
 
 
 
-
   }
 
   render() {
     const { showSearchModal } = this.props.workflow
-
-
-
-
-
 
     return (
       <div>
@@ -366,26 +360,19 @@ ModalWorkflow.propTypes = {
   workflow: PropTypes.object.isRequired,
   toggleSearchWorkflow: PropTypes.func.isRequired,
   populateWorkflow: PropTypes.func.isRequired,
-  // getListAudit:PropTypes.func.isRequired,
-  // getRecordList : PropTypes.func.isRequired,
-  // getActionTypes : PropTypes.func.isRequired
+   
 
 }
 const mapStateToProps = (state) => ({
   workflow: state.workflow,
   session: state.session,
 
-
-
-
 })
 export default connect(mapStateToProps,
   {
     toggleSearchWorkflow,
     populateWorkflow,
-    // getRecordList,
-    // getActionTypes,
-    // getListAudit
+     
   })
   (ModalWorkflow)
 

@@ -2,11 +2,10 @@ import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-// import Breadcrumb from '../layouts/Breadcrumb'
 import { setActivePage } from '../../actions/layoutInitAction' 
-import { getDetails, activityUri, activityName, setCardView, setShowFab, setWizardPage, checkResult, getResult, setListActDue } from '../../actions/activityAction'
+import { getDetails, activityUri, activityName, setCardView, setShowFab, setWizardPage, checkResult, getResult, setListActDue, toggleSearchActivity } from '../../actions/activityAction'
 import { toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
-// import { setNewBread} from '../../actions/breadcrumbAction'
+import { setNewBread } from '../../actions/breadcrumbAction'
 
 import Pagination from 'rc-pagination'
 import Tooltip from 'rc-tooltip'
@@ -15,6 +14,7 @@ import update from 'immutability-helper'
 import CardView from './CardView'
 import ListView from './ListView'
 import Fab from '../../components/fab/FabActivity'
+import Search from '../activity/search/ModalActivity'
 import ReassignModal from '../activity/modal/ReassignModal'
 import CompleteModal from '../activity/modal/CompleteModal'
 import SuspendModal from '../activity/modal/SuspendModal'
@@ -63,13 +63,13 @@ class ListActivity extends Component {
             this.props.setWizardPage("general") 
             this.props.setShowFab(false)      
 
-            //Breadcrumb
-            // this.props.setNewBread(false,{
-            //     id: 'viewAct', 
-            //     label: activityName, 
-            //     activePage: 'viewAct', 
-            //     isActive: true,
-            // })  
+            // Breadcrumb
+            this.props.setNewBread(false,{
+                id: activityUri, 
+                label: activityName, 
+                activePage: page, 
+                isActive: true,
+            })  
         }
 
         else if (page === 'reassignActivity'){
@@ -78,13 +78,10 @@ class ListActivity extends Component {
 
         else if (page === 'suspend'){
             this.props.showSuspend(true)
-            
         }
 
         else if (page === 'complete'){          
-             
             this.props.showComplete(true)
-
             if (checkResult=== true){
                 const param ={
 
@@ -94,10 +91,11 @@ class ListActivity extends Component {
                 }
                 this.props.getResult(param)
             }
-
-
         }
          
+        
+
+
 
     }
 
@@ -150,17 +148,15 @@ class ListActivity extends Component {
         })
     }
 
-
-      
-    
-
-     
-
     //Change view Card and List
     changeToViewCard=(e)=>{
         const{cardView}=this.props.activity
         this.props.setCardView(!cardView)
     }     
+
+    searchActivity=()=>{
+        this.props.toggleSearchActivity(true)         
+    }
 
     onChangePaging = (page) => {
         const { user: { _id: bId }} = this.props.session
@@ -220,13 +216,7 @@ class ListActivity extends Component {
        
     return (
       <Fragment>  
-
-        {/* <div className="breadcrumb-holder">
-        <div className="container-fluid">
-        <Breadcrumb/>
-        </div>
-        </div> */}
-    
+       
       <section className="forms">
           <div className="container-fluid">
           <header>
@@ -235,15 +225,15 @@ class ListActivity extends Component {
                 
                     <div className="d-flex align-items-center">                          
 
-                    {/* <Tooltip
+                    <Tooltip
                         placement="top"
-                        overlay={<div style={{ height: 20, width: '100%' }}>Create new activity</div>}
+                        overlay={<div style={{ height: 20, width: '100%' }}>Search activity</div>}
                         arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                     >
-                    <button className="btn btn-sm btn-primary" onClick={this.createNewActivity} name="createNewAct" data-name="Create New" data-pagename="createNewAct">
-                    <i className="fa fa-tasks" name="createNewAct" data-name="Create New" data-pagename="createNewAct"></i>
+                    <button className="btn btn-sm btn-primary" onClick={this.searchActivity} name="createNewAct" data-pagename="createNewAct">
+                    <i className="fa fa-tasks" name="createNewAct" data-pagename="createNewAct"></i>
                     </button>
-                    </Tooltip> */}
+                    </Tooltip>
 
                     <Tooltip
                         placement="top"
@@ -307,6 +297,7 @@ class ListActivity extends Component {
         <ReassignModal/>
         <CompleteModal/>
         <SuspendModal/>
+        <Search />
 
 
         <div className="modal-footer justify-content-center">
@@ -325,12 +316,11 @@ ListActivity.propTypes={
     activity: PropTypes.object.isRequired,
     setActivePage: PropTypes.func.isRequired,
     setCardView:PropTypes.func.isRequired,
-    // setSelWorkFlow:PropTypes.func.isRequired,
     setShowFab:PropTypes.func.isRequired,
     getDetails: PropTypes.func.isRequired,   
     // setDelBtn:PropTypes.func.isRequired,
     // setPageTitle:PropTypes.func.isRequired,    
-    // setNewBread: PropTypes.func.isRequired,
+    setNewBread: PropTypes.func.isRequired,
     activityUri: PropTypes.func.isRequired,
     activityName: PropTypes.func.isRequired,
     setWizardPage: PropTypes.func.isRequired,
@@ -340,6 +330,7 @@ ListActivity.propTypes={
     getResult: PropTypes.func.isRequired,
     setListActDue: PropTypes.func.isRequired,
     showSuspend: PropTypes.func.isRequired,
+    toggleSearchActivity: PropTypes.func.isRequired,
     
 }
 const mapStateToProps= state =>({
@@ -353,7 +344,7 @@ export default connect(mapStateToProps,
     setCardView,    
     setShowFab,     
     getDetails, 
-    // setNewBread,     
+    setNewBread,     
     // setDelBtn, 
     // setPageTitle,     
     // setPageSubject,
@@ -365,7 +356,8 @@ export default connect(mapStateToProps,
     checkResult,
     getResult,
     setListActDue,
-    showSuspend
+    showSuspend,
+    toggleSearchActivity
 
 })(ListActivity)
 

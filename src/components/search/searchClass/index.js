@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { fetchClassList } from "../../../actions/backendAction"
 import { setSearchParam } from "../../../actions/searchAction"
 import { setActivePage } from "../../../actions/layoutInitAction"
+import { setNewBread } from "../../../actions/breadcrumbAction"
 import SearchCard from "../../layout/SearchCard"
 
 export class index extends Component {
@@ -55,6 +56,16 @@ export class index extends Component {
         jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Classification", value1: title, value2: "" }]))
       })
       setActivePage("record")
+
+      //Breadcrumb
+        this.props.setNewBread(false, {
+        id: searchId,
+        label: title,
+        activePage: "record",
+        isActive: true
+      })
+
+
     }
   }
   render() {
@@ -92,7 +103,8 @@ index.propTypes = {
   searchConf: PropTypes.object.isRequired,
   fetchClassList: PropTypes.func.isRequired,
   setSearchParam: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  setActivePage: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -102,5 +114,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchClassList, setSearchParam, setActivePage }
+  { fetchClassList, setSearchParam, setActivePage, setNewBread }
 )(index)

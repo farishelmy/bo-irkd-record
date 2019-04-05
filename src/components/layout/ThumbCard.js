@@ -23,7 +23,7 @@ export default function ThumbCard({ record_type_icon, isSel, title, date_created
     titleColor = isSel ? "text-light" : "text-primary"
 
   const handleClick = e => {
-    getDetails(recId)
+    getDetails(recId, title)
     // console.log(recId, recType, recProps)
   }
   return (

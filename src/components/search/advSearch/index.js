@@ -7,6 +7,7 @@ import { fetchAdditionalField } from "../../../actions/backendAction"
 import { setSearchParam } from "../../../actions/searchAction"
 import { setActivePage } from "../../../actions/layoutInitAction"
 import { searchAttr } from "../../../model/recProp"
+import { setNewBread } from "../../../actions/breadcrumbAction"
 
 import TextField from "../../dynComp/TextField"
 import DateField from "../../dynComp/DateField"
@@ -178,6 +179,8 @@ export class index extends Component {
       setActivePage
     } = this.props
     const { queryParam } = this.state
+    // console.log(queryParam)
+    const label = queryParam.map(itm => itm.query).map(itm => itm.value1)
     const queryString = queryParam.map(itm => itm.query)
     setSearchParam({
       _action: "SEARCHRECORD",
@@ -186,6 +189,15 @@ export class index extends Component {
       jsonQuery: encodeURIComponent(JSON.stringify(queryString))
     })
     setActivePage("record")
+
+    //Breadcrumb
+    this.props.setNewBread(false, {
+      id: label,
+      label: "Search Value: "+label,
+      activePage: "record",
+      isActive: true
+    })
+
   }
   getAc = queParam => {
     const { inputText } = this.state
@@ -311,7 +323,8 @@ index.propTypes = {
   searchConf: PropTypes.object.isRequired,
   setSearchParam: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  fetchAdditionalField: PropTypes.func.isRequired
+  fetchAdditionalField: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -324,6 +337,7 @@ export default connect(
   {
     setSearchParam,
     setActivePage,
-    fetchAdditionalField
+    fetchAdditionalField,
+    setNewBread
   }
 )(index)

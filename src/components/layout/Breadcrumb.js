@@ -121,10 +121,8 @@ class Breadcrumb extends Component {
         //   limit: limit
         // })
         
-        // this.props.setActivePage(activePage)
+        this.props.setActivePage(activePage)
         // this.props.setPageTitle(pageTitle)
-
-        
 
         ////////////////////Workflow////////////////////////
         if(activePage==="List Workflow"){

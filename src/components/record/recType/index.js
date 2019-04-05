@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { setActivePage } from "../../../actions/layoutInitAction"
 import { recTypeFetch, recDetails } from "../../../actions/backendAction"
 import ThumbCard from "../../layout/ThumbCard"
+import { setNewBread } from '../../../actions/breadcrumbAction' 
 
 export class index extends Component {
   constructor() {
@@ -41,7 +42,8 @@ export class index extends Component {
       this.setState({ recTypeList: data })
     }
   }
-  markOnSel = rtId => {
+  markOnSel = (rtId, title) => {
+
     const {
       session: {
         user: { _id }
@@ -51,6 +53,15 @@ export class index extends Component {
     } = this.props
     recDetails({ _action: "VIEWPROPERTIES", _id, _recordTypeUri: rtId, _recordUri: "", _containerRecordNum: "", _isSearchForm: "" })
     setActivePage("recEdit")
+
+     //Breadcrumb
+     this.props.setNewBread(false, {
+      id: rtId,
+      label: title,
+      activePage: "recEdit",
+      isActive: true
+    })
+
   }
   render() {
     const { recTypeList, titlePage } = this.state
@@ -90,7 +101,8 @@ index.propTypes = {
   record: PropTypes.object.isRequired,
   recTypeFetch: PropTypes.func.isRequired,
   recDetails: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  setActivePage: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -100,5 +112,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { recTypeFetch, recDetails, setActivePage }
+  { recTypeFetch, recDetails, setActivePage, setNewBread }
 )(index)

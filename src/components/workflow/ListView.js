@@ -7,7 +7,7 @@ export default function ListView({workflowName, markOnSel,workflowUri, isSel,sup
   return (
      
 
-        <div className="col-12">
+        <div className="col-lg-12 col-md-12">
         <div className={isSel?"card mb-3 bg-primary":"card mb-3"} onClick={handleClick} >
             <div className=" d-flex justify-content-between align-items-center">
                 <img className="p-2 img-fluid img-scale" src={require('../../img/'+iconCls+'.svg')} alt="activity"/>

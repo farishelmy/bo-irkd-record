@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import { fetchSavedSearch } from "../../actions/backendAction"
 import { setSearchParam } from "../../actions/searchAction"
 import { setActivePage } from "../../actions/layoutInitAction"
+import { setNewBread } from "../../actions/breadcrumbAction"
 import SearchCard from "../layout/SearchCard"
 
 export class index extends Component {
@@ -53,6 +54,14 @@ export class index extends Component {
       node: "root"
     })
     setActivePage("record")
+
+     //Breadcrumb
+     this.props.setNewBread(false, {
+      id: searchId,
+      label: title,
+      activePage: "record",
+      isActive: true
+    })
   }
   render() {
     const { savedSearchList, totalRec, currentPage } = this.state
@@ -90,7 +99,8 @@ index.propTypes = {
   searchConf: PropTypes.object.isRequired,
   fetchSavedSearch: PropTypes.func.isRequired,
   setSearchParam: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  setActivePage: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -100,5 +110,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchSavedSearch, setSearchParam, setActivePage }
+  { fetchSavedSearch, setSearchParam, setActivePage,setNewBread }
 )(index)
