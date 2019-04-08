@@ -204,7 +204,7 @@ class Breadcrumb extends Component {
           this.props.panelContent(true)
 
           const workflow = {
-            workflowName: workflowName,
+            workflowName: label,
             _action: 'SEARCHWORKFLOW',
             _id
           }  
@@ -227,7 +227,7 @@ class Breadcrumb extends Component {
               {
                 op: "EQUALS",
                 field: "%26%26Related+Records+of+Workflow",
-                value1: workflowName
+                value1: label
               }
             ]),
             searchOrder: "0"

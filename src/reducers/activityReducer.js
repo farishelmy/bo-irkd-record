@@ -19,7 +19,8 @@ import{
     SHOW_MODAL_SEARCH,
     SHOW_ERR,
     SHOW_COMPLETE,
-    SHOW_SUSPEND
+    SHOW_SUSPEND,
+    ACTIVITY_PARAM
 } from '../actions/types'
 
 const initialState={
@@ -42,6 +43,7 @@ const initialState={
     pageSize:null,
     showSearchModal:false,
     showErr:false,
+    activityParam:null
 
     
   
@@ -173,6 +175,12 @@ export default function(state = initialState, action){
         return {
             ...state,
             showSuspend:action.payload
+        }
+
+        case ACTIVITY_PARAM:
+        return {
+            ...state,
+            activityParam:action.payload
         }
 
         default:

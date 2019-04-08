@@ -6,6 +6,7 @@ import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
 import { recFetch, recDelete, recDetails } from "../../actions/backendAction"
+import { setActivePage } from "../../actions/layoutInitAction"
 import ThumbCard from "../layout/ThumbCard"
 import SingleFab from "../fab/SingleFab"
 
@@ -87,7 +88,8 @@ export class index extends Component {
         user: { _id }
       },
       recDelete,
-      recDetails
+      recDetails,
+      setActivePage
     } = this.props
     const { selRec } = this.state
 
@@ -102,9 +104,15 @@ export class index extends Component {
       case "download":
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
         break
+      case "details":
+        recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })                  //<<<<<< NEW
+        setActivePage("recEdit")
+        break
       default:
-        // recDetails({ _action: "GENFORM", _id, _recType: selRec.uri })
-        console.log("generate form")
+      // recDetails({ _action: "GENFORM", _id, _recType: selRec.uri })
+      console.log("generate form")
+      console.log(recDelete)
+        
     }
     console.log(selRec)
     console.log(actionName)
@@ -156,16 +164,17 @@ index.propTypes = {
   searchConf: PropTypes.object.isRequired,
   recFetch: PropTypes.func.isRequired,
   recDelete: PropTypes.func.isRequired,
-  recDetails: PropTypes.func.isRequired
+  recDetails: PropTypes.func.isRequired,
+  setActivePage: PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
   layout: state.layout,
   session: state.session,
   record: state.rec,
-  searchConf: state.searchConf
+  searchConf: state.searchConf,
 })
 
 export default connect(
   mapStateToProps,
-  { recFetch, recDelete, recDetails }
+  { recFetch, recDelete, recDetails, setActivePage }
 )(index)

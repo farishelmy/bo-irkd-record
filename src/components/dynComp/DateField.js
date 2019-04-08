@@ -1,12 +1,34 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
 import { FormGroup, Label, Form } from "reactstrap"
 
-export default function DateField({ conf: { param, title, format, query, incoming, name }, onInputChange }) {
-  const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment())
-  const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") : moment())
+export default function DateField({ conf: { param, title, format, query, incoming, name, value }, onInputChange }) {
+  const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY")
+  // : value!==null? moment(value, "DD/MM/YYYY")
+  : moment())
+  const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY")
+  // : value!==null? moment(value, "DD/MM/YYYY")  
+  : moment())
+  // const [startDateVal, setStartDate] = useState() 
+  // const [endDateVal, setEndDate] = useState() 
+
+
+  // useEffect(() => {
+    // if (value !== undefined) {
+    //   console.log(query)
+    //   setStartDate(moment(value, "DD/MM/YYYY"))
+    //   setEndDate(moment(value, "DD/MM/YYYY"))
+    // }
+
+  //   if(value!== undefined){
+  //     console.log(value)      
+  //     setStartDate(moment(value, "DD/MM/YYYY"))
+  //     setEndDate(moment(value, "DD/MM/YYYY"))
+  //   }
+
+  // }, [value,query])
 
   const changeStartDate = startDate => {
     if (startDate.isAfter(endDateVal)) {

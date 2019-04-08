@@ -3,10 +3,10 @@ import posed from 'react-pose'
 import Tooltip from "rc-tooltip";
 import "rc-tooltip/assets/bootstrap.css";
 
-export default function Workflow({activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,icon,isSel,supervisor,priority,estDuration}) {
+export default function Workflow({activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,iconCls,isSel,supervisor,priority,estDuration}) {
     
     const handleClick=(e)=>{
-        markOnSel(activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,icon,isSel,supervisor,priority,estDuration)
+        markOnSel(activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,iconCls,isSel,supervisor,priority,estDuration)
     }
 
     return (
@@ -20,13 +20,13 @@ export default function Workflow({activityName,activityUri,markOnSel,workflowNam
                     placement="top"
                     overlay={
                       <div style={{ height: 20, width: "100%" }}>
-                        Status: {icon}
+                        Status: {iconCls}
                       </div>
                     }
                     arrowContent={<div className="rc-tooltip-arrow-inner" />}
                   >
 
-                <img className="img-card mt-4" src={require('../../img/'+icon+'.svg')} alt="activity"/>
+                <img className="img-card mt-4" src={require('../../img/'+iconCls+'.svg')} alt="activity"/>
 
  </Tooltip>
 
@@ -48,7 +48,7 @@ export default function Workflow({activityName,activityUri,markOnSel,workflowNam
       // <div className="col-md-6 col-xl-4">                       
       // <div className={isSel?"card bg-primary":"card"} onClick={handleClick}>              
       //   <div className="card-body">
-      //     <div className="media align-items-center"><img src={require('../../img/Icon/'+icon+'.svg')} alt={icon} className="img-card mr-3"/>           
+      //     <div className="media align-items-center"><img src={require('../../img/Icon/'+iconCls+'.svg')} alt={iconCls} className="img-card mr-3"/>           
       //       <div className="media-body overflow-hidden">              
       //         <h5 className={isSel?"card-text text-truncate mb-0 text-light":"card-text text-truncate mb-0 text-muted"}>{activityName}</h5>               
       //         <p className={isSel?"card-text text-truncate text-light":"card-text text-truncate text-muted"}><img className="userIcon mr-2" src={require('../../img/Icon/supervisor.svg')}/>{supervisor}</p> 

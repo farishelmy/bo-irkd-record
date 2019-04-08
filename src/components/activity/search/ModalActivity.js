@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { connect } from 'react-redux'
 
-import { toggleSearchActivity, populateActivity, setListActDue } from '../../../actions/activityAction'
+import { toggleSearchActivity, populateActivity } from '../../../actions/activityAction'
 
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, } from 'reactstrap'
@@ -171,11 +171,9 @@ class ModalActivity extends Component {
       excludeCompletedActivity: CompletedActivity,
       _id: bId
     }
-    // this.props.populateActivity(param)
-    this.props.setListActDue(param)    
+    this.props.populateActivity(param)
     // console.log(param)
     this.props.toggleSearchActivity(false)    
-
   }
 
   render() {
@@ -418,8 +416,7 @@ ModalActivity.propTypes = {
   location: PropTypes.object.isRequired,
   toggleSearchActivity: PropTypes.func.isRequired,  
   populateActivity: PropTypes.func.isRequired,
-  setListActDue:  PropTypes.func.isRequired,
-
+   
 
 }
 const mapStateToProps = (state) => ({
@@ -432,7 +429,7 @@ export default connect(mapStateToProps,
   {
     toggleSearchActivity,
     populateActivity,
-    setListActDue
+     
   })
   (ModalActivity)
 

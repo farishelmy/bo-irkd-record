@@ -180,6 +180,10 @@ class ListWorkflow extends Component {
     });
   }
 
+  searchWorkflow=()=>{
+    this.props.toggleSearchActivity(true) 
+}
+
   render() {
     const { cardView, showFab, pageSize, totalCount } = this.props.workflow;
     const { workList, current } = this.state;
@@ -228,30 +232,15 @@ class ListWorkflow extends Component {
 
                 <div className="d-flex align-items-center">
 
-                  {/* <Tooltip
-                    placement="top"
-                    overlay={
-                      <div style={{ height: 20, width: "100%" }}>
-                        Create new activity
-                      </div>
-                    }
-                    arrowContent={<div className="rc-tooltip-arrow-inner" />}
-                  >
-                    <button
-                      className="btn btn-sm btn-primary"
-                      onClick={this.createNewActivity}
-                      name="createNewAct"
-                      data-name="Create New"
-                      data-pagename="createNewAct"
+                  <Tooltip
+                        placement="top"
+                        overlay={<div style={{ height: 20, width: '100%' }}>Search Workflow</div>}
+                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                     >
-                      <i
-                        className="fa fa-tasks"
-                        name="createNewAct"
-                        data-name="Create New"
-                        data-pagename="createNewAct"
-                      />
+                    <button className="btn btn-sm btn-primary" onClick={this.searchWorkflow}>
+                    <i className="fa fa-search"></i>
                     </button>
-                  </Tooltip> */}
+                    </Tooltip>
 
                   <Tooltip
                     placement="top"

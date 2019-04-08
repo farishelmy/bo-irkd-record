@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { FormGroup, Label, Input } from "reactstrap"
-export default function TextField({ conf: { param, title, format, query, textType, incoming, name }, onInputChange }) {
-  const [inputVal, setInputVal] = useState(query !== undefined ? query.value1 : "")
+export default function TextField({ conf: { param, title, format, query, textType, incoming, name, value }, onInputChange }) {
+  const [inputVal, setInputVal] = useState(query !== undefined ? query.value1 : value)
   const inputType = textType !== undefined ? textType : "text"
 
   const changeVal = e => {

@@ -48,10 +48,10 @@ export class index extends Component {
   }
   render() {
     const { formTitle, sectionTab } = this.state
+    // const { record: { recConf : { recProps } } } = this.props
     const [activeTabConf] = sectionTab.filter(itm => itm.active === true)
     const secTab = sectionTab.map((itm, idx) => <EditorHeader key={idx} secId={idx} active={itm.active} title={itm.name} />)
     const activeTab = <TabEditor conf={activeTabConf} sendFormVal={this.submitForm} />
-    console.log()
 
     return (
       <section className='statistics'>

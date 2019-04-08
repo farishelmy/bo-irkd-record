@@ -338,11 +338,11 @@ class SideNav extends React.Component {
 
                 <ul id='chartsDropdown' className={this.state.workflowToggle ? "collapse list-unstyled show" : "collapse list-unstyled"}>
                   <li>
-                    <a href='/' onClick={this.setActivePage} data-pagename='listOfActivity' data-breadcrumb='Activity List Due'>
-                      <div className='userIcon' data-pagename='listOfActivity' data-breadcrumb='Activity List Due'>
-                        <img src={require(`../../img/activity.svg`)} alt='activity' className='img-fluid p-1' data-pagename='listOfActivity' data-breadcrumb='Activity List Due' />
+                    <a href='/' onClick={this.setActivePage} data-pagename='listOfActivity' data-breadcrumb='List Activity Due'>
+                      <div className='userIcon' data-pagename='listOfActivity' data-breadcrumb='List Activity Due'>
+                        <img src={require(`../../img/activity.svg`)} alt='activity' className='img-fluid p-1' data-pagename='listOfActivity' data-breadcrumb='List Activity Due' />
                       </div>
-                      Activity List Due 
+                      List Activity Due 
                     </a>
                   </li>
 

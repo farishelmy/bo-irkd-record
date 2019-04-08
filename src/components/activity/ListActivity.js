@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { setActivePage } from '../../actions/layoutInitAction' 
-import { getDetails, activityUri, activityName, setCardView, setShowFab, setWizardPage, checkResult, getResult, setListActDue, toggleSearchActivity } from '../../actions/activityAction'
-import { toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
+import { getDetails, activityUri, activityName, setCardView, setShowFab, setWizardPage, checkResult, getResult, setListActDue, toggleSearchActivity, populateActivity, toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
+import { getDetailsWorkflow, setRecordStore, setListActivity  } from '../../actions/workflowAction'
 import { setNewBread } from '../../actions/breadcrumbAction'
 
 import Pagination from 'rc-pagination'
@@ -31,6 +31,7 @@ class ListActivity extends Component {
         this.state={
             listAct:[],
             current:1,
+            searchToggle:false        
         }
     
     }
@@ -45,14 +46,25 @@ class ListActivity extends Component {
             this.setState({
                 listAct:act
             })
-        }          
+        }   
+        if(prevProps.activity.listActivity!==this.props.activity.listActivity){
+            const {listActivity}=this.props.activity  
+            // console.log(listActivityDue)
+            const act= listActivity.map(res=>({...res,isSel:false}))
+            //  console.log(listWkflw)
+            this.setState({
+                listAct:act,
+                searchToggle:true, 
+            })
+        }       
     }
 
     //Direct Page To WorkFlow Detail
     setActivePage=(page)=>{         
         
         const {user:{_id:bId}}=this.props.session
-        const {activityName, listActivityDue, activityUri, checkResult }=this.props.activity      
+        const {activityName, listActivityDue, activityUri, checkResult, activityDet }=this.props.activity 
+        const workflowName = activityDet.map(itm => itm.workflowName).toString()         
          
         if (page === 'wizardActivity'){
 
@@ -92,6 +104,49 @@ class ListActivity extends Component {
                 this.props.getResult(param)
             }
         }
+
+        else if (page === 'workflow'){
+
+            this.props.setActivePage('workflowContent')
+
+            // Breadcrumb
+            this.props.setNewBread(false,{
+                id: workflowName, 
+                label: workflowName, 
+                activePage: "workflowContent", 
+                isActive: true,
+            }) 
+
+            const workflow = {
+                workflowName: workflowName,
+                _action: "SEARCHWORKFLOW",
+                _id: bId,
+            }
+            this.props.getDetailsWorkflow(workflow)
+
+             //Record Wizard
+            const recordDet = {
+                _id: bId,
+                _action: "SEARCHRECORD",
+                jsonQuery: JSON.stringify([
+                {
+                    op: "EQUALS",
+                    field: "%26%26Related+Records+of+Workflow",
+                    value1: workflowName
+                }
+                ]),
+                searchOrder: "0"
+            };
+            this.props.setRecordStore(recordDet)
+
+             //List Activity
+            const workflowDet = {
+                _action: "SEARCHACTIVITY",
+                workflowName: workflowName,
+                _id: bId
+            }
+            this.props.setListActivity(workflowDet)
+        }
          
         
 
@@ -101,10 +156,10 @@ class ListActivity extends Component {
 
 
     //Selection
-    markOnSel=(activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,icon,isSel,supervisor,priority,estDuration)=>{        
+    markOnSel=(activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,iconCls,isSel,supervisor,priority,estDuration)=>{        
         const {user:{_id:bId}}=this.props.session
          
-        const val = [{activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,icon,isSel,supervisor,priority,estDuration}]
+        const val = [{activityName,activityUri,markOnSel,workflowName,assignedTo,activityDateDue,iconCls,isSel,supervisor,priority,estDuration}]
 
         this.props.getDetails(val) //Set Workflow Details
         this.props.activityUri(activityUri)  //Set Workflow Uri
@@ -155,33 +210,67 @@ class ListActivity extends Component {
     }     
 
     searchActivity=()=>{
-        this.props.toggleSearchActivity(true)         
+        this.props.toggleSearchActivity(true) 
     }
 
     onChangePaging = (page) => {
         const { user: { _id: bId }} = this.props.session
-        const { pageSize } = this.props.activity
-    
-        const param = {           
-          _action: 'LISTACTDUE',
-          page: page,
-          start: (page-1)*pageSize,
-          _id: bId
-        }
+        const { pageSize, activityParam } = this.props.activity
+        const { searchToggle } = this.state
+
+        if(searchToggle!==true){
+            const param = {           
+            _action: 'LISTACTDUE',
+            page: page,
+            start: (page-1)*pageSize,
+            _id: bId
+            }
+        
+            this.props.setListActDue(param)
+        
+            this.setState({
+                current: page,
+            })
+        }   
       
-        this.props.setListActDue(param)
-    
-        this.setState({
-          current: page,
-        })
-      }
+        if(searchToggle===true){
+            // console.log(activityParam)
+            const param = { 
+                _action: "SEARCHACTIVITY",
+                activityName: activityParam.activityName,
+                workflowName: activityParam.workflowName,
+                assignedTo: activityParam.assignedTo,
+                supervisor: activityParam.supervisor,
+                escalatedTo: activityParam.escalatedTo,
+                dueDateFrom: activityParam.dueDateFrom,
+                dueDateTo: activityParam.dueDateTo,
+                startDateFrom: activityParam.startDateFrom,
+                startDateTo: activityParam.startDateTo,
+                completeDateFrom: activityParam.completeDateFrom,
+                completeDateTo: activityParam.completeDateTo,
+                excludeActivityNotStart: activityParam.excludeActivityNotStart,
+                excludeCompletedActivity: activityParam.excludeCompletedActivity,
+                page: page,
+                start: (page-1)*pageSize,
+                _id: bId,                
+            }
+            this.props.populateActivity(param)
+            // console.log(param)
+
+            this.setState({
+                current: page,
+            })
+        }
+
+    }
 
   render() {
+    
 
     const{ cardView, showFab, pageSize, totalCount }=this.props.activity  
      
-    const{ listAct, current }=this.state
-    // console.log(listAct)
+    const{ listAct, current, searchToggle }=this.state
+    // console.log(searchToggle)
     
     const rec = listAct.map(itm=>cardView?
         <CardView
@@ -191,7 +280,7 @@ class ListActivity extends Component {
             workflowName={itm.workflowName}
             assignedTo={itm.assignedTo}
             activityDateDue={itm.activityDateDue}           
-            icon={itm.iconCls}
+            iconCls={itm.iconCls}
             markOnSel={this.markOnSel}  
             isSel={itm.isSel}
             supervisor={itm.supervisor}             
@@ -205,7 +294,7 @@ class ListActivity extends Component {
             workflowName={itm.workflowName}
             assignedTo={itm.assignedTo}
             activityDateDue={itm.activityDateDue}           
-            icon={itm.iconCls}
+            iconCls={itm.iconCls}
             markOnSel={this.markOnSel}  
             isSel={itm.isSel}
             supervisor={itm.supervisor}             
@@ -221,8 +310,8 @@ class ListActivity extends Component {
           <div className="container-fluid">
           <header>
             <div className="d-flex align-items-center justify-content-between mb-2">
-                <h1 className="h3 display"><strong>List of Activity</strong></h1>  
-                
+                <h1 className="h3 display"><strong>{searchToggle!==true?"List Activity Due":"Search Activity"}</strong></h1>  
+                   
                     <div className="d-flex align-items-center">                          
 
                     <Tooltip
@@ -230,8 +319,8 @@ class ListActivity extends Component {
                         overlay={<div style={{ height: 20, width: '100%' }}>Search activity</div>}
                         arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                     >
-                    <button className="btn btn-sm btn-primary" onClick={this.searchActivity} name="createNewAct" data-pagename="createNewAct">
-                    <i className="fa fa-tasks" name="createNewAct" data-pagename="createNewAct"></i>
+                    <button className="btn btn-sm btn-primary" onClick={this.searchActivity}>
+                    <i className="fa fa-search"></i>
                     </button>
                     </Tooltip>
 
@@ -297,12 +386,13 @@ class ListActivity extends Component {
         <ReassignModal/>
         <CompleteModal/>
         <SuspendModal/>
-        <Search />
+        <Search/>
 
-
+        
         <div className="modal-footer justify-content-center">
             <Pagination onChange={this.onChangePaging} current={current}  pageSize={pageSize} total={totalCount} />    
         </div>
+       
 
 </div>
 </section>
@@ -331,6 +421,10 @@ ListActivity.propTypes={
     setListActDue: PropTypes.func.isRequired,
     showSuspend: PropTypes.func.isRequired,
     toggleSearchActivity: PropTypes.func.isRequired,
+    populateActivity: PropTypes.func.isRequired,
+    getDetailsWorkflow: PropTypes.func.isRequired, 
+    setRecordStore: PropTypes.func.isRequired,
+    setListActivity: PropTypes.func.isRequired,
     
 }
 const mapStateToProps= state =>({
@@ -357,7 +451,11 @@ export default connect(mapStateToProps,
     getResult,
     setListActDue,
     showSuspend,
-    toggleSearchActivity
+    toggleSearchActivity,
+    populateActivity,
+    getDetailsWorkflow, 
+    setRecordStore,
+    setListActivity
 
 })(ListActivity)
 

@@ -15,6 +15,7 @@ import {
     SHOW_SUSPEND,
     LIST_ACTIVITY,
     SHOW_MODAL_SEARCH,
+    ACTIVITY_PARAM,
 
 } from './types'
     
@@ -31,7 +32,7 @@ export const setListActDue=(param)=>dispatch=>{
         dispatch({           
             type: LIST_ACTIVITY_DUE,
             payload: res.data
-        })
+        })       
         dispatch({           
             type: PAGE_SIZE,
             payload: res.pageSize
@@ -195,7 +196,19 @@ export const populateActivity=(param)=>dispatch=>{
         // console.log(res)
         dispatch({           
             type: LIST_ACTIVITY,
-            payload: res.data
+            payload: res.data,
+        })
+        dispatch({           
+            type: ACTIVITY_PARAM,
+            payload: param
+        })
+        dispatch({           
+            type: PAGE_SIZE,
+            payload: res.pageSize,
+        })
+        dispatch({           
+            type: TOTAL_COUNT,
+            payload: parseInt(res.totalCount)
         })
     })
   
@@ -206,6 +219,7 @@ export const toggleSearchActivity = (param) => ({
     type: SHOW_MODAL_SEARCH,
     payload: param
 })
+
 
 
  

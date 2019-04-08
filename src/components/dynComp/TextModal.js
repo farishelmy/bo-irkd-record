@@ -43,10 +43,17 @@ export class TextModal extends Component {
   getSelItem = val => {
     const {
       conf: { name },
-      onInputChange
+      onInputChange,
     } = this.props
     this.setState({ textVal: val, modalShow: false })
     onInputChange({ name, value: val })
+  }
+
+  componentWillMount(){
+    const {
+      conf: { value }
+    } = this.props
+    this.setState({textVal:value})
   }
 
   render() {
@@ -56,7 +63,7 @@ export class TextModal extends Component {
       },
       conf: { title, modalType, incoming }
     } = this.props
-    // console.log(modalType)
+    // console.log(contValue)
     const { modalShow, listingType, textVal } = this.state
     return (
       <FormGroup>
