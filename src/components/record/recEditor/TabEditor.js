@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react"
 
 import DateField from "../../dynComp/DateField"
+import DateField2 from "../../dynComp/DateField2"
 import TextField from "../../dynComp/TextField"
 import TextModal from "../../dynComp/TextModal"
 import UploadField from "../../dynComp/UploadField"
 import { Button, FormGroup } from "reactstrap"
 
-export default function TabEditor({ conf, sendFormVal}) {
+export default function TabEditor({ conf, sendFormVal, accConf}) {
   const [tabTitle, setTabTitle] = useState("")
   const [formCmp, setFormCmp] = useState([])
   const [formVal, setFormVal] = useState({})
@@ -18,6 +19,9 @@ export default function TabEditor({ conf, sendFormVal}) {
       const childTempered = conf.child.map(itm => ({ ...itm, incoming: "dynForm" }))
       console.log(childTempered)
       setFormCmp(childTempered)      
+    }
+    if(accConf !== undefined){
+      console.log(accConf)
     }
   }, [conf])
 
@@ -76,7 +80,7 @@ export default function TabEditor({ conf, sendFormVal}) {
         )
       case "fDate":
         return (
-          <DateField
+          <DateField2
             key={idx}
             conf={{ title: itm.fieldLabel, incoming: itm.incoming, name: itm.name, value:itm.value }}
             onInputChange={setVal}

@@ -5,31 +5,32 @@ import moment from "moment"
 import { FormGroup, Label, Form } from "reactstrap"
 
 export default function DateField({ conf: { param, title, format, query, incoming, name, value }, onInputChange }) {
-  const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY")
-  // : value!==null? moment(value, "DD/MM/YYYY")
-  : moment())
-  const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY")
-  // : value!==null? moment(value, "DD/MM/YYYY")  
-  : moment())
-  // const [startDateVal, setStartDate] = useState() 
-  // const [endDateVal, setEndDate] = useState() 
-
+  const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment(value, "DD/MM/YYYY"))
+  const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") :  moment(value, "DD/MM/YYYY"))
+  // const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment())
+  // const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") :  moment())
 
   // useEffect(() => {
-    // if (value !== undefined) {
-    //   console.log(query)
-    //   setStartDate(moment(value, "DD/MM/YYYY"))
-    //   setEndDate(moment(value, "DD/MM/YYYY"))
-    // }
+  //   // if (query!==undefined){
+  //   //   setStartDate(query.value1, "DD/MM/YYYY")
+  //   //   setEndDate(query.value2, "DD/MM/YYYY")
+  //   //   console.log(value)
+  //   //   console.log(query)
+  //   // }
 
-  //   if(value!== undefined){
-  //     console.log(value)      
+  //   if(value===""){
+  //     setStartDate(moment.isValid())
+  //     setEndDate(moment.isValid())
+  //   }
+  //   else{
   //     setStartDate(moment(value, "DD/MM/YYYY"))
   //     setEndDate(moment(value, "DD/MM/YYYY"))
   //   }
-
-  // }, [value,query])
-
+    
+    
+    
+  // }, [value])
+  
   const changeStartDate = startDate => {
     if (startDate.isAfter(endDateVal)) {
       setEndDate(startDate)
@@ -65,7 +66,7 @@ export default function DateField({ conf: { param, title, format, query, incomin
         <FormGroup>
           <DatePicker
             placeholderText='Date Start'
-            selected={startDateVal}
+            selected={startDateVal===""?null:startDateVal}
             onChange={changeStartDate}
             onBlur={sendVal}
             className='form-control'
@@ -80,7 +81,7 @@ export default function DateField({ conf: { param, title, format, query, incomin
           <FormGroup>
             <DatePicker
               placeholderText='Date End'
-              selected={endDateVal}
+              selected={endDateVal===""?null:endDateVal}
               onChange={changeEndDate}
               onBlur={sendVal}
               className='form-control ml-3'

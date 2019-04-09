@@ -6,7 +6,8 @@ import {
   SEARCH_RECTYPE,
   SET_OBJLIST,
   SET_ADDFIELD_LIST,
-  SET_REC_CONF
+  SET_REC_CONF,
+  SET_REC_ACC
 } from "./types"
 import { gwUrl } from "../config/appConf"
 import { converter } from "../utilis/queryStringConverter"
@@ -83,6 +84,7 @@ export const recDelete = fetchParam => dispatch => {
 }
 export const recDetails = fetchParam => dispatch => {
   const url = gwUrl + converter(fetchParam)
+  // console.log(url)
   fetch(url)
     .then(res => res.json())
     .then(res => {
@@ -109,5 +111,24 @@ export const recSave = fetchParam => dispatch => {
       const { success, message, ...response } = res
       console.log(res)
       // dispatch({ type: SET_ADDFIELD_LIST, payload: response })
+    })
+}
+export const recAcc = fetchParam => dispatch => {
+  const url = gwUrl + converter(fetchParam)
+  fetch(url)
+    .then(res => res.json())
+    .then(res => {
+      const { success, message, secLevel, ...response } = res
+      // const data = response.data
+      // const newObj = data.reduce((total, cmp) => {
+      //   // if (cmp.fieldType === "fTab") {
+      //   if (cmp.fieldType.includes("fTab")) {
+      //     total.push({ ...cmp, child: [] })
+      //   } else {
+      //     total[total.length - 1].child.push({ ...cmp })
+      //   }
+      //   return total
+      // }, [])
+      dispatch({ type: SET_REC_ACC, payload: { secLevel , sec: response.data } })
     })
 }

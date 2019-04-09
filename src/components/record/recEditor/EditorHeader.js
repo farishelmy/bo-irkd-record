@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 
-export default function EditorHeader({ active, title, secId }) {
+export default function EditorHeader({ var: { secId, active, title}, value }) {
+ 
   const setIcon = title => {
     if (title.includes("Email")) {
       return "fab-email.svg"
@@ -10,19 +11,21 @@ export default function EditorHeader({ active, title, secId }) {
       return "fab-tab.svg"
     }
   }
-  const activeTab = () => {
-    // getSection(secId)
+  
+  const handleTab = () => {
+    value(secId)
   }
+
   return (
     <div className='col-2 colContainer'>
       <div className={active ? "tab activeTab mx-auto" : "tab mx-auto"}>
         <img
           src={require(`../../../img/${setIcon(title)}`)}
           className={active ? "img-fluid desaturate" : "img-fluid"}
-          onClick={activeTab}
+          onClick={handleTab}
           alt={title}
         />
-      </div>
+      </div>       
     </div>
   )
 }

@@ -5,7 +5,7 @@ import update from "immutability-helper"
 import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
-import { recFetch, recDelete, recDetails } from "../../actions/backendAction"
+import { recFetch, recDelete, recDetails, recAcc } from "../../actions/backendAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import ThumbCard from "../layout/ThumbCard"
 import SingleFab from "../fab/SingleFab"
@@ -89,7 +89,8 @@ export class index extends Component {
       },
       recDelete,
       recDetails,
-      setActivePage
+      setActivePage,
+      recAcc
     } = this.props
     const { selRec } = this.state
 
@@ -105,7 +106,8 @@ export class index extends Component {
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
         break
       case "details":
-        recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })                  //<<<<<< NEW
+        recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })          //<<<<<< NEW
+        recAcc({ _action: "getAC", _recordUri: selRec.uri, _id })                                                                                                                                   
         setActivePage("recEdit")
         break
       default:
@@ -114,7 +116,7 @@ export class index extends Component {
       console.log(recDelete)
         
     }
-    console.log(selRec)
+    // console.log(selRec)
     console.log(actionName)
   }
   render() {
@@ -165,7 +167,8 @@ index.propTypes = {
   recFetch: PropTypes.func.isRequired,
   recDelete: PropTypes.func.isRequired,
   recDetails: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  setActivePage: PropTypes.func.isRequired,
+  recAcc: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -176,5 +179,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { recFetch, recDelete, recDetails, setActivePage }
+  { recFetch, recDelete, recDetails, setActivePage, recAcc }
 )(index)
