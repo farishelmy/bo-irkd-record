@@ -5,7 +5,7 @@ import DateField2 from "../../dynComp/DateField2"
 import TextField from "../../dynComp/TextField"
 import TextModal from "../../dynComp/TextModal"
 import UploadField from "../../dynComp/UploadField"
-import { Button, FormGroup } from "reactstrap"
+import { Button, FormGroup, Col } from "reactstrap"
 
 export default function TabEditor({ conf, sendFormVal, accConf}) {
   const [tabTitle, setTabTitle] = useState("")
@@ -19,10 +19,7 @@ export default function TabEditor({ conf, sendFormVal, accConf}) {
       const childTempered = conf.child.map(itm => ({ ...itm, incoming: "dynForm" }))
       console.log(childTempered)
       setFormCmp(childTempered)      
-    }
-    if(accConf !== undefined){
-      console.log(accConf)
-    }
+    }     
   }, [conf])
 
    
@@ -104,13 +101,15 @@ export default function TabEditor({ conf, sendFormVal, accConf}) {
 
   return (
     <div>
+      <Col>
       <h1 className='h3 display text-primary text-center'>{tabTitle}</h1>
-      {field}
-      <FormGroup>
-        <Button className='btn btn-primary' onClick={submitForm}>
-          Save
-        </Button>
-      </FormGroup>
+        {field}
+        <FormGroup>
+          <Button className='btn btn-primary' onClick={submitForm}>
+            Save
+          </Button>
+        </FormGroup>
+      </Col>
     </div>
   )
 }

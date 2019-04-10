@@ -142,6 +142,7 @@ export class ComboField extends Component {
   render() {
     const { optionList, optionVal } = this.state
     const { title } = this.props.conf
+    console.log(title)
     return (
       <FormGroup>
         <Label>{title !== undefined ? title : "Operand"}</Label>

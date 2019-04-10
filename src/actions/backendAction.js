@@ -132,3 +132,5 @@ export const recAcc = fetchParam => dispatch => {
       dispatch({ type: SET_REC_ACC, payload: { secLevel , sec: response.data } })
     })
 }
+ 
+
