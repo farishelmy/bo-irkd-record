@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import EditorHeader from "./EditorHeader"
 import TabEditor from "./TabEditor"
-import TabAccess from "./TabAccess"
+import TabAccess from "../recAccess/TabAccess"
 import TabNotes from "./TabNotes"
 
 import { recSave } from "../../../actions/backendAction"
@@ -27,6 +27,7 @@ export class index extends Component {
           cmp
         },
       }= this.props.record
+      // console.log(recAcc)
       const tabFilter = cmp.map((itm, idx) => ({ ...itm, active: idx !== 0 ? false : true , hide: idx <= 2 ? false : true }))
       const sectionTab = tabFilter.filter(itm => itm.hide === false )
       this.setState({ formTitle, sectionTab })
@@ -61,8 +62,7 @@ export class index extends Component {
       record: {
         recConf: {
           cmp
-        },
-        recAcc
+        }         
       }
     } = this.props
     
@@ -74,7 +74,7 @@ export class index extends Component {
     if(val === 1 ){
       const tabFilter = cmp.map((itm, idx) => ({ ...itm, active: idx !== 1 ? false : true, hide: idx <= 2 ? false : true }))
       const sectionTab = tabFilter.filter(itm => itm.hide === false)
-      this.setState({ sectionTab,  tab: val, sectionAcc: recAcc  })
+      this.setState({ sectionTab,  tab: val })
     }
     if(val === 2 ){
       const tabFilter = cmp.map((itm, idx) => ({ ...itm, active: idx !== 2 ? false : true, hide: idx <= 2 ? false : true }))
@@ -88,8 +88,8 @@ export class index extends Component {
     const [activeTabConf] = sectionTab.filter(itm => itm.fieldType === "fTab" && itm.active === true )
     const secTab = sectionTab.map((itm, idx) => <EditorHeader key={idx} var={{ secId:idx, active:itm.active, title:itm.name }} value={this.setChangeVal} />)
     const genTab = <TabEditor conf={activeTabConf} sendFormVal={this.submitForm} />
-    const accTab = <TabAccess conf={sectionAcc}/>
-    const notesTab = <TabNotes conf={sectionAcc}/>
+    const accTab = <TabAccess />
+    const notesTab = <TabNotes />
 
 
     return (

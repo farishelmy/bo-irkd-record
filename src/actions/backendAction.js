@@ -7,7 +7,8 @@ import {
   SET_OBJLIST,
   SET_ADDFIELD_LIST,
   SET_REC_CONF,
-  SET_REC_ACC
+  SET_REC_ACC,
+  SET_SEC_CAV
 } from "./types"
 import { gwUrl } from "../config/appConf"
 import { converter } from "../utilis/queryStringConverter"
@@ -130,6 +131,17 @@ export const recAcc = fetchParam => dispatch => {
       //   return total
       // }, [])
       dispatch({ type: SET_REC_ACC, payload: { secLevel , sec: response.data } })
+    })
+}
+export const recSecCav = fetchParam => dispatch => {
+  // console.log(fetchParam)
+  const url = gwUrl + converter(fetchParam)
+  fetch(url)
+    .then(res => res.json())
+    .then(res => {
+      const { success, message, ...response } = res
+      // console.log(res)
+      dispatch({ type: SET_SEC_CAV, payload: response.data })
     })
 }
  

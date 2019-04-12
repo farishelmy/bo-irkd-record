@@ -90,7 +90,7 @@ export class index extends Component {
       recDelete,
       recDetails,
       setActivePage,
-      recAcc
+      recAcc,
     } = this.props
     const { selRec } = this.state
 
@@ -107,7 +107,7 @@ export class index extends Component {
         break
       case "details":
         recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })          //<<<<<< NEW
-        recAcc({ _action: "getAC", _recordUri: selRec.uri, _id })                                                                                                                                   
+        recAcc({ _action: "getAC", _recordUri: selRec.uri, _id })      
         setActivePage("recEdit")
         break
       default:
@@ -168,7 +168,7 @@ index.propTypes = {
   recDelete: PropTypes.func.isRequired,
   recDetails: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  recAcc: PropTypes.func.isRequired,
+  recAcc: PropTypes.func.isRequired,   
 }
 const mapStateToProps = state => ({
   layout: state.layout,

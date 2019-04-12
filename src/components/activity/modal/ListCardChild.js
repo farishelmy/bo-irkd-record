@@ -6,7 +6,7 @@ import { Button } from 'reactstrap';
 export default function ListCardChild({name,uri,iconCls,leaf,getParent,addBtn,getChild}) {   
 
     const handleAdd=()=>{
-        addBtn(name)
+        addBtn(name,uri)
         
     }
 

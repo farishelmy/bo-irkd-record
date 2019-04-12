@@ -1,86 +1,98 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
-import 'react-datepicker/dist/react-datepicker.css'
-import ListCard from '../modal/ListCard'
-import ListCardChild from '../modal/ListCardChild'
-import Pagination from 'rc-pagination'
-import 'rc-pagination/assets/index.css' 
+  
+import ListCard from '../../activity/modal/ListCard'
+import ListCardChild from '../../activity/modal/ListCardChild'
+
 import update from 'immutability-helper' 
+import Pagination from 'rc-pagination'
+import Select from "react-select";
+import 'rc-pagination/assets/index.css' 
 
 
 
 import { connect } from 'react-redux'
 
-import { toggleErr, changeAssignee } from '../../../actions/activityAction'
+import { changeAssignee } from '../../../actions/activityAction'
 import { setStakehType, viewStakehMember } from '../../../actions/location'
 
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody, Input } from 'reactstrap'
 
 
-class ReassignModal extends Component {
+class CustomizeAccess extends Component {
   constructor() {
     super()
     this.state = {
-      stakehList: [],
       assignee: [],
       current: 1,
       listLoc:[],
       childName:null,
       childUri:null,
       showChild:false,
-      nav: [{ childName: "Root", childUri: "root" }]
+      nav: [{ childName: "Root", childUri: "root" }],
+      customVal:[],
+      presentVal:[],
     }
   }
 
   componentWillMount(){
-    const {locType}=this.props.location   
-    this.setState({
-      listLoc:locType
+    const {
+        user: { _id }     
+    } = this.props.session
+    this.props.setStakehType({_action: "LISTLOCATION", _id})
 
+    const {accessCont} =this.props
+    const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
+    this.setState({
+      customVal:customVal,
+      presentVal: customVal
     })
+
+   
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps,prevState){
     if(prevProps.location.locType !== this.props.location.locType){
       const {locType}=this.props.location   
       this.setState({
         listLoc:locType
       })
     }
-    
-    // if(prevProps.activity.activityDet !== this.props.activity.activityDet){
-    //   const {activityDet} = this.props.activity
-    //   const  assigned = activityDet.map(itm => ({label: itm.assignedTo, value: itm.assignedTo }))       
-    //   this.setState({
-    //     assignee: assigned
-    //   })
-    // }
+    if(prevState.customVal !== this.state.customVal){
+      // console.log("yeya")
+      
+      // this.setState({
+      //   customVal:customVal
+      // })
+
+    }
 
   }
   
   toggle = () => {
-    const { showErr } = this.props.activity
-    this.props.toggleErr(!showErr)
+    const { modalShow } = this.props
+    this.props.toggleClose(!modalShow)
   }
 
   
-  addBtn=(name)=>{
-    // console.log(name)
+  addBtn=(name,id)=>{   
+     
+    const val = {label:name, value:id}
+    // const { presentVal } = this.state
+    
+    const {accessCont} =this.props
+    const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
+    customVal.push(val)
+    // customVal.push(val)
+    // console.log(customVal)
 
-    const { activityUri } = this.props.activity     
-    const { user: { _id: bId } } = this.props.session
- 
-      const param = {
-        _action: "SAVEASSIGNEE",
-        _activityUri: activityUri,
-        assignee: name,
-        _id: bId,
-      }
-      console.log(param)
-      // this.props.changeAssignee(param)
-      this.props.toggleErr(false)
+    this.setState({       
+      customVal:customVal,
+       
+    })
+
+    // this.props.toggleClose(false)
    
   }
 
@@ -94,7 +106,7 @@ class ReassignModal extends Component {
       URI: stakehId,
       ANODE: "A",
     }
-    // console.log(param)
+    console.log(param)
     this.props.viewStakehMember(param)
 
     const newNav = update(nav, {
@@ -162,25 +174,46 @@ class ReassignModal extends Component {
     })
   }
 
+  handleSelectChange=(val)=>{
+    console.log(val)
+
+    this.setState({customVal:val})
+  }
+   
+
 
   render() {
-    const { showErr } = this.props.activity
+    const { modalShow } = this.props
     const { totalCount,pageSize, locationMember } = this.props.location
-    const { stakehList, assignee, listLoc, current, showChild, nav } = this.state
-    // console.log(test)
-    // console.log(assignee)
+    const { listLoc, current, showChild, nav, customVal, presentVal } = this.state
 
+    console.log(customVal)
+     
 
     return (
       <div>
-        <Modal isOpen={showErr} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={modalShow} toggle={this.toggle} className={this.props.className}>
            
             <ModalHeader toggle={this.toggle}>Location</ModalHeader>
             <ModalBody> 
 
               <FormGroup>
                 <label>Reassign Location</label>
-                
+
+                <Select
+                  placeholder="New Group"
+                  isMulti                   
+                  value={customVal}
+                  noOptionsMessage={() => null}
+                  // onChange={this.handleSelectChange}
+                  components= {
+                    { 
+                      DropdownIndicator: () => null,
+                      IndicatorSeparator: () => null 
+                    }
+                  }
+                />
+                  
                 {
                   showChild!==false?
                   <div>
@@ -244,14 +277,15 @@ class ReassignModal extends Component {
     )
   }
 }
-ReassignModal.propTypes = {
+CustomizeAccess.propTypes = {
   activity: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   activity: PropTypes.object.isRequired,
-  toggleErr: PropTypes.func.isRequired,
+  record: PropTypes.object.isRequired,
   changeAssignee: PropTypes.func.isRequired,
   setStakehType: PropTypes.func.isRequired,
   viewStakehMember: PropTypes.func.isRequired,
+  
    
 
 }
@@ -260,16 +294,15 @@ const mapStateToProps = (state) => ({
   activity: state.activity,
   location: state.location,
   session: state.session,
+  record: state.rec
 
 })
 export default connect(mapStateToProps,
   {
-    toggleErr,
     changeAssignee,
     setStakehType,
     viewStakehMember
-  
   })
-  (ReassignModal)
+  (CustomizeAccess)
 
 

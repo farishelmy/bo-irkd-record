@@ -1,12 +1,9 @@
 import React from 'react'
-import posed from 'react-pose'
-import { Button } from 'reactstrap';
  
-
-export default function ListCard({stakehId,name,typeName,leaf,addBtn,getChild}) {
+export default function ListCard({stakehId,name,iconCls,leaf,addBtn,getChild}) {
 
     const handleAdd=()=>{
-        addBtn(name)
+        addBtn(name,stakehId)
         
     }
 
@@ -22,7 +19,7 @@ return (
             <div className='left-col d-flex align-items-center'>
                 <div className='icon mr-2 d-flex align-items-start'>
                     <i className='fa fa-plus mr-2' onClick={handleAdd}/>
-                    <img src={require('../../../img/'+typeName+'.svg')} className='listIcn' alt="typeName" />
+                    <img src={require('../../../img/'+iconCls+'.svg')} className='listIcn' alt="typeName" />
                 </div>
                 <div>
                 <p className='title text-primary mb-0'>{name}</p>

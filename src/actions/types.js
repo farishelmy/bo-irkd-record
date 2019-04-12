@@ -29,6 +29,7 @@ export const PREV_NAV = 'PREV_NAV'
 //record action and reducer link
 export const SET_REC_CONF = "SET_REC_CONF"
 export const SET_REC_ACC = 'SET_REC_ACC'
+export const SET_SEC_CAV = 'SET_SEC_CAV'
 // export const SET_MULTI_FAB = "SET_MULTI_FAB"
 // export const ENABLE_MULTI_SEL = "ENABLE_MULTI_SEL"
 // export const ENABLE_SEL_ALL = "ENABLE_SEL_ALL"
