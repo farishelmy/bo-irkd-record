@@ -5,31 +5,22 @@ import moment from "moment"
 import { FormGroup, Label, Form } from "reactstrap"
 
 export default function DateField({ conf: { param, title, format, query, incoming, name, value }, onInputChange }) {
-  // const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment(value, "DD/MM/YYYY"))
-  // const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") :  moment(value, "DD/MM/YYYY"))
-  const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment())
-  const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") :  moment())
-
-  // useEffect(() => {
-  //   // if (query!==undefined){
-  //   //   setStartDate(query.value1, "DD/MM/YYYY")
-  //   //   setEndDate(query.value2, "DD/MM/YYYY")
-  //   //   console.log(value)
-  //   //   console.log(query)
-  //   // }
-
-  //   if(value===""){
-  //     setStartDate(moment.isValid())
-  //     setEndDate(moment.isValid())
-  //   }
-  //   else{
-  //     setStartDate(moment(value, "DD/MM/YYYY"))
-  //     setEndDate(moment(value, "DD/MM/YYYY"))
-  //   }
-    
-    
-    
-  // }, [value])
+  // const [startDateVal, setStartDate] = useState(query !== undefined ? moment(query.value1, "DD/MM/YYYY") : moment())
+  // const [endDateVal, setEndDate] = useState(query !== undefined ? moment(query.value2, "DD/MM/YYYY") :  moment())
+  const [startDateVal, setStartDate] = useState()
+  const [endDateVal, setEndDate] = useState()
+ 
+  useEffect(() => {
+    if(query !== undefined){
+      setStartDate(moment(query.value1, "DD/MM/YYYY"))
+      setEndDate(moment(query.value2, "DD/MM/YYYY"))
+    }
+    else{
+      setStartDate(moment(value, "DD/MM/YYYY"))
+      setEndDate(moment(value, "DD/MM/YYYY"))
+    }
+   
+  }, [value])
   
   const changeStartDate = startDate => {
     if (startDate.isAfter(endDateVal)) {

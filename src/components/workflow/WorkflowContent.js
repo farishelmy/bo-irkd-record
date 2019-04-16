@@ -7,6 +7,7 @@ import { Button } from 'reactstrap'
 import { setActivePage } from '../../actions/layoutInitAction'
 import { setSelWorkFlow, setShowFab, getDetails, setWorkflowName, panelContent } from '../../actions/workflowAction'
 import { setRecordStore, setListActivity } from '../../actions/workflowAction'
+import { populateActivity } from '../../actions/activityAction'
 // import { setNewBread } from '../../actions/breadcrumbAction'
 
 // import Fab from '../fab/FabWorkflow'
@@ -14,6 +15,7 @@ import { setRecordStore, setListActivity } from '../../actions/workflowAction'
 import WorkflowPanel from '../workflow/WorkflowPanel'
 import PanelDropdown from '../workflow/PanelDropdown'
 import ActivityPanel from '../workflow/ActivityPanel'
+import CreateWorkflow from '../workflow/CreateWorkflow'
 
 import Tooltip from 'rc-tooltip'
 import update from 'immutability-helper'
@@ -26,7 +28,6 @@ class WorkflowContent extends Component {
         super()  
         this.state = {
             title:null,
-
         }  
     }     
 
@@ -70,9 +71,20 @@ class WorkflowContent extends Component {
                     title:titleValue
                 })
             }
-        }
+        }      
 
-    }
+        // if(prevProps.activity.listActivity !== this.props.activity.listActivity){
+        //     const {  
+        //         session: {
+        //           user: { _id }
+        //         }
+        //     } = this.props
+        //     this.props.populateActivity({workflowName: workflowName, _action: "SEARCHACTIVITY", _id})
+        //     const { listActivity } = this.props.activity
+        //     console.log(listActivity)
+        // }
+
+    }    
 
     //Direct Page To WorkFlow Detail
     setActivePage = (FabRec) => {
@@ -114,15 +126,12 @@ class WorkflowContent extends Component {
 
     handleReturn=()=>{
         this.props.panelContent(true)
-
-
     }
-
+     
     render() {
 
         const { cardView, showFab, workflowDetails, panelContent, workflowName } = this.props.workflow        
-        const { title } = this.state
-        
+        const { title } = this.state      
         
 
         return (
@@ -156,25 +165,25 @@ class WorkflowContent extends Component {
                                
                                 {/* <div className={panelContent!==true?"p-2 bd-highlight":"d-none"}><Button outline color="primary" onClick={this.handleReturn}>Return to {workflowName}</Button></div>  */}
                                 
-                                    <div className="p-2 bd-highlight col-md-5"><PanelDropdown/></div> 
+                                <div className="p-2 bd-highlight col-md-5"><PanelDropdown/></div> 
                             </div>            
-                        </header>   
-                        
+                        </header>                           
                   
 
                         <div className="row">
-                            {/* <div className="col-lg-3">
-                                <SidePanel/>  
-                            </div> */}
 
-                            <div className="col-lg-12">    
-                                { 
-                                    panelContent === true?
-                                        <WorkflowPanel/>
-                                    :
-                                        <ActivityPanel/>
-                                }    
-                            </div>                          
+                         
+                           
+                                <div className="col-lg-12">    
+                                    { 
+                                        panelContent === true?
+                                            <WorkflowPanel/>
+                                        :
+                                            <ActivityPanel/>
+                                    }    
+                                </div>
+
+                           
                         </div>
                     </div>
                 </section>
@@ -197,6 +206,7 @@ WorkflowContent.propTypes = {
     setListActivity: PropTypes.func.isRequired,
     // setNewBread: PropTypes.func.isRequired,
     panelContent: PropTypes.func.isRequired,
+    populateActivity: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
     session: state.session,
@@ -215,7 +225,8 @@ export default connect(mapStateToProps,
         setRecordStore,
         // setPageTitle,
         setWorkflowName,
-        panelContent
+        panelContent,
+        populateActivity
 
     })(WorkflowContent)
 

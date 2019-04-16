@@ -8,12 +8,12 @@ import CustomizeAccess from '../recAccess/CustomizeAccess'
 
 
 
-export default function AccessControl({ conf }) {
+export default function AccessControl({ conf, onInputChange }) {
     const [access, setAccess] = useState(conf)
     const [custom, setCustom] = useState(false)
     const [accessVal, setAccessVal] = useState([])
 
-    console.log(access)
+    // console.log(access)
     // console.log(custom)
 
     useEffect(() => {
@@ -26,13 +26,10 @@ export default function AccessControl({ conf }) {
     
     const handlechange =  idx => () =>{  
       const selItm=access.filter((itm,key)=>itm[key]===itm[idx]) 
-      console.log(access[idx])
-      console.log(selItm)
+      // console.log(access[idx])
+      // console.log(selItm)
       setCustom(true)  
       setAccessVal(access[idx])
-           
-
-
     }
 
     const handleClose=()=>{

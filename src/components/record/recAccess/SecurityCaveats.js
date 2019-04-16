@@ -5,7 +5,7 @@ import Tooltip from "rc-tooltip";
 import { FormGroup, Label, Col, Button } from "reactstrap";
 
 
-export default function SecurityCaveats({conf, onInputChange }) {
+export default function SecurityCaveats({conf, getCaveats, onInputChange }) {
     const [caveatsOpt, setCaveatsOpt] = useState([])
     const [caveatsVal, setCaveatsVal] = useState()
     const [addCaveats, setAddCaveats] = useState()
@@ -14,6 +14,8 @@ export default function SecurityCaveats({conf, onInputChange }) {
 
     useEffect(() => {
         if (conf !== undefined) {
+            console.log(conf)
+            onInputChange(conf.caveatUri)
             const opt = conf.map(itm => ({ value: itm.caveatUri, label:itm.caveatAbv}))
             // console.log(opt)
             setCaveatsOpt(opt)             
@@ -22,7 +24,8 @@ export default function SecurityCaveats({conf, onInputChange }) {
     }, [conf])
 
     const handleChangeCaveats= idx => selected => {
-        const {label,value}  = selected 
+        const {label,value}  = selected
+        onInputChange(caveats)
         const newCaveats = [...caveats]
         newCaveats[idx]={
             caveats: caveats[idx], 
@@ -41,7 +44,7 @@ export default function SecurityCaveats({conf, onInputChange }) {
     }
  
     const handleAddCaveats = () => {
-        onInputChange()       
+        getCaveats()       
         const item = {
             sort_order: caveats.length + 1,                         
         }

@@ -346,7 +346,7 @@ class SideNav extends React.Component {
                     </a>
                   </li>
 
-                  <li>
+                  {/* <li>
                     <a href='/' onClick={this.setActivePage} data-pagename='searchWorkflow' data-breadcrumb='Search Workflow'>
                       <div className='userIcon' data-pagename='searchWorkflow' data-breadcrumb='Search Workflow'>
                         <img src={require(`../../img/loupe.svg`)} alt='doc' className='img-fluid p-1' data-pagename='searchWorkflow' data-breadcrumb='Search Workflow' />
@@ -362,7 +362,7 @@ class SideNav extends React.Component {
                       </div>
                       Search Activity
                     </a>
-                  </li>        
+                  </li>         */}
 
                 </ul>
 

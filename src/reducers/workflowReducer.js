@@ -18,7 +18,8 @@ import{
     PANEL_CONTENT,
     SHOW_SUB_BTN,
     ACTIVITY_DETAIL,
-    SHOW_MODAL_SEARCH
+    SHOW_MODAL_SEARCH,
+    WORKFLOW_SEARCH_PARAM,
 } from '../actions/types'
 
 const initialState={
@@ -39,7 +40,7 @@ const initialState={
     cardView:true,
     isSel:false,
     showSearchModal:false,
-
+    workflowSearchParam:null,   
     // showSubBtn:false,  
     // isMultiSel:false,
    
@@ -160,7 +161,12 @@ export default function(state = initialState, action){
             ...state,
             showSearchModal:action.payload
         } 
-       
+
+        case WORKFLOW_SEARCH_PARAM:
+        return {
+            ...state,
+            workflowSearchParam:action.payload
+        } 
         default:
         return state
     }

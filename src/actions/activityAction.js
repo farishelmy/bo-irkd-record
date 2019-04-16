@@ -188,12 +188,12 @@ export const suspendActivity=(param)=>dispatch=>{
 
 //Search Workflow
 export const populateActivity=(param)=>dispatch=>{
-    // console.log(param)
+    console.log(param)
     const url=gwUrl+converter(param)  
     fetch(url)
     .then(res=>res.json())
     .then(res=>{ 
-        // console.log(res)
+        console.log(res)
         dispatch({           
             type: LIST_ACTIVITY,
             payload: res.data,

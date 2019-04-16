@@ -22,6 +22,7 @@ export class TabAccess extends Component {
       access:[],
       secLevel:null,
       caveats:[],
+      formValue:null,
     };
   }
 
@@ -39,12 +40,10 @@ export class TabAccess extends Component {
       secLevel:secLevel,
       caveats:recSecCav 
     })
-   
-         
   }
 
   getCaveats=()=>{
-    console.log("test")
+    // console.log("test")
     const {
       session: {
         user: { _id }
@@ -53,14 +52,27 @@ export class TabAccess extends Component {
     this.props.recSecCav({ _action:"GETCAVEATS", _id})
   }
 
-   
+  formVal=(val)=>{
+    // console.log(val)
 
+    this.setState({
+      formValue:val
+    })
+  }
+
+   
+  submitForm = () => {
+    const { formValue } = this.state
+    console.log(formValue)
+    
+
+  }
+   
   render() {
     const { access, caveats, secLevel } = this.state
-    console.log(secLevel)
-    const securityLevel = <SecurityLevel conf={secLevel} /> 
-    const securityCaveats = <SecurityCaveats conf={caveats} onInputChange={this.getCaveats} />
-    const accessControl = <AccessControl conf={access} />
+    const securityLevel = <SecurityLevel conf={secLevel} onInputChange={this.formVal} /> 
+    const securityCaveats = <SecurityCaveats conf={caveats} getCaveats={this.getCaveats} onInputChange={this.formVal}/>
+    const accessControl = <AccessControl conf={access} onInputChange={this.formVal} />
     
 
     return (
@@ -82,7 +94,7 @@ export class TabAccess extends Component {
 
         <Col>
         <FormGroup>
-          <Button className='btn btn-primary' >
+          <Button className='btn btn-primary' onClick={this.submitForm} >
             Save
           </Button>
         </FormGroup>

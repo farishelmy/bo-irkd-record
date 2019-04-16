@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 
 import { toggleSearchWorkflow, populateWorkflow } from '../../../actions/workflowAction'
 
-
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
 
 
@@ -147,51 +146,18 @@ class ModalWorkflow extends Component {
     // console.log(DateDueStart)        
     const { user: { _id: bId } } = this.props.session
 
-    if (WorkflowName !== null) {
-      const param = {
-        workflowName: WorkflowName,
-        _action: "SEARCHWORKFLOW",
-        _id: bId,
-      }
-      this.props.populateWorkflow(param)
-      this.props.toggleSearchWorkflow(false)
-    }
-
-    if (DateDueStart !== null && DateDueEnd !== null) {
-      const param = {
-        dueDateFrom: moment(DateDueStart).format("DD/MM/YYYY"),
-        dueDateTo: moment(DateDueEnd).format("DD/MM/YYYY"),
-        _action: "SEARCHWORKFLOW",
-        _id: bId,
-      }
-      this.props.populateWorkflow(param)
-      this.props.toggleSearchWorkflow(false)
-    }
-
-    if (DateStartedStart !== null && DateStartedEnd !== null) {
-      const param = {
-        startDateFrom: moment(DateStartedStart).format("DD/MM/YYYY"),
-        startDateTo: moment(DateStartedEnd).format("DD/MM/YYYY"),
-        _action: "SEARCHWORKFLOW",
-        _id: bId,
-      }
-      this.props.populateWorkflow(param)
-      this.props.toggleSearchWorkflow(false)
-    }
-
-    if (DateCompletedStart !== null && DateCompletedEnd !== null) {
-      const param = {
-        completeDateFrom: moment(DateCompletedStart).format("DD/MM/YYYY"),
-        completeDateTo: moment(DateCompletedEnd).format("DD/MM/YYYY"),
-        _action: "SEARCHWORKFLOW",
-        _id: bId,
-      }
-      this.props.populateWorkflow(param)
-      this.props.toggleSearchWorkflow(false)
-    }
-
-
-
+    this.props.toggleSearchWorkflow(false)
+    this.props.populateWorkflow({
+      workflowName: WorkflowName!==null?WorkflowName:null,
+      dueDateFrom: DateDueStart!==null?moment(DateDueStart).format("DD/MM/YYYY"):null,
+      dueDateTo: DateDueEnd!==null?moment(DateDueEnd).format("DD/MM/YYYY"):null,
+      startDateFrom: DateStartedStart!==null?moment(DateStartedStart).format("DD/MM/YYYY"):null,
+      startDateTo: DateStartedEnd!==null?moment(DateStartedEnd).format("DD/MM/YYYY"):null,
+      completeDateFrom: DateCompletedStart!==null?moment(DateCompletedStart).format("DD/MM/YYYY"):null,
+      completeDateTo: DateCompletedEnd!==null?moment(DateCompletedEnd).format("DD/MM/YYYY"):null,
+      _action: "SEARCHWORKFLOW",
+      _id: bId,
+    })
   }
 
   render() {
@@ -288,6 +254,7 @@ class ModalWorkflow extends Component {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select"
+                      todayButton={"Today"}
                     />
                   </FormGroup>
                 </Col>

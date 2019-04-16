@@ -144,5 +144,16 @@ export const recSecCav = fetchParam => dispatch => {
       dispatch({ type: SET_SEC_CAV, payload: response.data })
     })
 }
+export const addAccessControl = fetchParam => dispatch => {
+  console.log(fetchParam)
+  const url = gwUrl + converter(fetchParam)
+  fetch(url)
+    .then(res => res.json())
+    .then(res => {
+      const { success, message, ...response } = res
+      console.log(res)
+      // dispatch({ type: SET_ADDFIELD_LIST, payload: response })
+    })
+}
  
 

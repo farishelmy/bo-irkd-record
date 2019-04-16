@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
   
 import ListCard from '../../activity/modal/ListCard'
 import ListCardChild from '../../activity/modal/ListCardChild'
@@ -9,12 +10,9 @@ import Pagination from 'rc-pagination'
 import Select from "react-select";
 import 'rc-pagination/assets/index.css' 
 
-
-
-import { connect } from 'react-redux'
-
 import { changeAssignee } from '../../../actions/activityAction'
 import { setStakehType, viewStakehMember } from '../../../actions/location'
+import { addAccessControl } from '../../../actions/backendAction'
 
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody, Input } from 'reactstrap'
@@ -89,11 +87,10 @@ class CustomizeAccess extends Component {
 
     this.setState({       
       customVal:customVal,
-       
     })
 
+    this.props.addAccessControl(customVal)
     // this.props.toggleClose(false)
-   
   }
 
   getChild=(stakehId,name)=>{
@@ -176,18 +173,17 @@ class CustomizeAccess extends Component {
 
   handleSelectChange=(val)=>{
     console.log(val)
-
     this.setState({customVal:val})
   }
    
-
 
   render() {
     const { modalShow } = this.props
     const { totalCount,pageSize, locationMember } = this.props.location
     const { listLoc, current, showChild, nav, customVal, presentVal } = this.state
 
-    console.log(customVal)
+    // console.log(customVal)
+    console.log(this.props.className)
      
 
     return (
@@ -205,7 +201,7 @@ class CustomizeAccess extends Component {
                   isMulti                   
                   value={customVal}
                   noOptionsMessage={() => null}
-                  // onChange={this.handleSelectChange}
+                  onChange={this.handleSelectChange}
                   components= {
                     { 
                       DropdownIndicator: () => null,
@@ -285,6 +281,7 @@ CustomizeAccess.propTypes = {
   changeAssignee: PropTypes.func.isRequired,
   setStakehType: PropTypes.func.isRequired,
   viewStakehMember: PropTypes.func.isRequired,
+  addAccessControl: PropTypes.func.isRequired,
   
    
 
@@ -301,7 +298,8 @@ export default connect(mapStateToProps,
   {
     changeAssignee,
     setStakehType,
-    viewStakehMember
+    viewStakehMember,
+    addAccessControl
   })
   (CustomizeAccess)
 

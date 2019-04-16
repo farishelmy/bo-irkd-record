@@ -5,15 +5,14 @@ import PropTypes from "prop-types"
 
 // import Breadcrumb from "../layouts/Breadcrumb"
 import { setActivePage } from "../../actions/layoutInitAction"
-import { setCardView, setSelWorkFlow, setShowFab, getDetails, setWorkflowName, populateWorkflow, panelContent } from "../../actions/workflowAction"
-import { setRecordStore, setListActivity, setWizardPage } from "../../actions/workflowAction"
+import { setCardView, setSelWorkFlow, setShowFab, getDetails, setWorkflowName, populateWorkflow, panelContent,  toggleSearchWorkflow, setRecordStore, setListActivity, setWizardPage } from "../../actions/workflowAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
 
 import Tooltip from "rc-tooltip"
 import update from "immutability-helper"
 import Pagination from 'rc-pagination'
 
-// import Search from "../workflow/searchWorkflow/modal/ModalWorkflow"
+import Search from "../workflow/search/ModalWorkflow"
 import CardView from "./CardView"
 import ListView from "./ListView"
 import Fab from "../fab/FabWorkflow"
@@ -29,24 +28,23 @@ class ListWorkflow extends Component {
     this.state = {
       workList: [],
       current: 1,
+      searchToggle:false        
     };
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.workflow.listWorkflow !== this.props.workflow.listWorkflow
-    ) {
+    if (prevProps.workflow.listWorkflow !== this.props.workflow.listWorkflow) {
       const { listWorkflow } = this.props.workflow;
       // console.log(listWorkflow)
       const listWkflw = listWorkflow.map(res => ({ ...res, isSel: false }));
       //  console.log(listWkflw)
       this.setState({
-        workList: listWkflw
+        workList: listWkflw,
       });
     }
   }
 
-  ///TESTING
+  ///Direct Page
   setActivePage = FabRec => {
 
       const { 
@@ -162,32 +160,57 @@ class ListWorkflow extends Component {
     const {
       user: { _id: bId }
     } = this.props.session
-    const { pageSize } = this.props.workflow
+    const { pageSize, workflowSearchParam } = this.props.workflow
+    const { searchToggle } = this.state
 
-    const workflow = {
-      startDateFrom: '01/01/2000',
-      startDateTo: moment(),
-      _action: 'SEARCHWORKFLOW',
-      page: page,
-      start: (page-1)*pageSize,
-      _id: bId
+    if(searchToggle!==true){
+      const workflow = {
+        startDateFrom: '01/01/2000',
+        startDateTo: moment(),
+        _action: 'SEARCHWORKFLOW',
+        page: page,
+        start: (page-1)*pageSize,
+        _id: bId
+      }
+    
+      this.props.populateWorkflow(workflow)
+
+      this.setState({
+        current: page,
+      })
     }
-  
-    this.props.populateWorkflow(workflow)
 
-    this.setState({
-      current: page,
-    });
+    if(searchToggle===true){
+
+      this.props.toggleSearchWorkflow(false)
+      this.props.populateWorkflow({
+        workflowName: workflowSearchParam.WorkflowName,
+        dueDateFrom: workflowSearchParam.DateDueStart,
+        dueDateTo: workflowSearchParam.DateDueEnd, 
+        startDateFrom: workflowSearchParam.DateStartedStart ,
+        startDateTo: workflowSearchParam.DateStartedEnd,
+        completeDateFrom: workflowSearchParam.DateCompletedStart ,
+        completeDateTo: workflowSearchParam.DateCompletedEnd ,
+        _action: "SEARCHWORKFLOW",
+        page: page,
+        start: (page-1)*pageSize,
+        _id: bId,
+      })
+
+      this.setState({
+        current: page,
+      })
+    }
   }
 
   searchWorkflow=()=>{
-    this.props.toggleSearchActivity(true) 
-}
+    this.props.toggleSearchWorkflow(true) 
+  }
 
   render() {
     const { cardView, showFab, pageSize, totalCount } = this.props.workflow;
-    const { workList, current } = this.state;
-    // console.log(workList)
+    const { workList, current, searchToggle } = this.state;
+    // console.log(searchToggle)
 
     const rec = workList.map(itm =>
       cardView ? (
@@ -227,7 +250,7 @@ class ListWorkflow extends Component {
             <header>
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <h1 className="h3 display">
-                  <strong>List Workflow</strong>
+                  <strong>{searchToggle!==true?"List Workflow":"Search Workflow"}</strong>
                 </h1>
 
                 <div className="d-flex align-items-center">
@@ -325,6 +348,7 @@ class ListWorkflow extends Component {
                 ""
               )}
 
+            <Search/>
 
             <div className="modal-footer justify-content-center">
               <Pagination onChange={this.onChangePaging} current={current} pageSize={pageSize} total={totalCount} />
@@ -352,7 +376,8 @@ ListWorkflow.propTypes = {
   setWorkflowName: PropTypes.func.isRequired,
   setNewBread: PropTypes.func.isRequired,
   populateWorkflow: PropTypes.func.isRequired,
-  panelContent:  PropTypes.func.isRequired,
+  panelContent: PropTypes.func.isRequired,
+  toggleSearchWorkflow: PropTypes.func.isRequired,
   
 }
 const mapStateToProps = state => ({
@@ -375,6 +400,7 @@ export default connect(
     setWorkflowName,
     setWizardPage,
     populateWorkflow,
-    panelContent
+    panelContent,
+    toggleSearchWorkflow
   }
 )(ListWorkflow);

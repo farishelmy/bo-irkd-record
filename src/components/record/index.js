@@ -6,9 +6,12 @@ import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
 import { recFetch, recDelete, recDetails, recAcc } from "../../actions/backendAction"
+import { toggleSearchWorkflow } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import ThumbCard from "../layout/ThumbCard"
 import SingleFab from "../fab/SingleFab"
+import CreateWorkflow from "../workflow/CreateWorkflow"
+ 
 
 export class index extends Component {
   constructor() {
@@ -21,7 +24,8 @@ export class index extends Component {
       showFabMulti: true,
       isMultiSel: false,
       isSelAll: false,
-      selRec: null
+      selRec: null,   
+      recDet: null,
     }
   }
   componentDidMount() {
@@ -91,9 +95,11 @@ export class index extends Component {
       recDetails,
       setActivePage,
       recAcc,
+      toggleSearchWorkflow
     } = this.props
-    const { selRec } = this.state
-
+    const { selRec } = this.state     
+    console.log(selRec)
+     
     switch (actionName) {
       case "delete":
         //confirmation box
@@ -104,6 +110,10 @@ export class index extends Component {
         break
       case "download":
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
+        break
+      case "initWorkflow":
+        // recWorkflow({ _action: "INITIATEWF", _recordUri: selRec.uri, _recordNo: selRec["Record Number"], createWf: true })
+        toggleSearchWorkflow(true)
         break
       case "details":
         recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })          //<<<<<< NEW
@@ -120,7 +130,8 @@ export class index extends Component {
     console.log(actionName)
   }
   render() {
-    const { recList, totalRec, currentPage, showFabSingle, selRec } = this.state
+    const { recList, totalRec, currentPage, showFabSingle, selRec } = this.state    
+    // console.log(selRec.uri) 
     const rec = recList.map((itm, idx) => (
       <ThumbCard
         key={idx}
@@ -154,7 +165,8 @@ export class index extends Component {
           ) : (
             ""
           )}
-        </div>
+        </div>   
+        <CreateWorkflow conf={selRec} />     
       </section>
     )
   }
@@ -168,7 +180,8 @@ index.propTypes = {
   recDelete: PropTypes.func.isRequired,
   recDetails: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  recAcc: PropTypes.func.isRequired,   
+  recAcc: PropTypes.func.isRequired,  
+  toggleSearchWorkflow: PropTypes.func.isRequired,     
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -179,5 +192,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { recFetch, recDelete, recDetails, setActivePage, recAcc }
+  { recFetch, recDelete, recDetails, setActivePage, recAcc, toggleSearchWorkflow }
 )(index)
