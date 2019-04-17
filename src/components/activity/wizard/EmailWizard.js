@@ -116,13 +116,13 @@ class EmailWizard extends Component {
           Email Notifications
         </h1>
         <form className="mt-3 mr-3 ml-3" onSubmit={this.formSubmit}>
-          <div className="text-center mt-3 mb-2">
+          {/* <div className="text-center mt-3 mb-2">
             <img
               src={require("../../../img/management.svg")}
               alt="management"
               className=" img-dash"
             />
-          </div>
+          </div> */}
           <div className="row justify-content-start mb-5">
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="form-group">

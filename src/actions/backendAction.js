@@ -8,7 +8,8 @@ import {
   SET_ADDFIELD_LIST,
   SET_REC_CONF,
   SET_REC_ACC,
-  SET_SEC_CAV
+  SET_SEC_CAV,
+  SET_SHOW_EMAIL
 } from "./types"
 import { gwUrl } from "../config/appConf"
 import { converter } from "../utilis/queryStringConverter"
@@ -154,6 +155,13 @@ export const addAccessControl = fetchParam => dispatch => {
       console.log(res)
       // dispatch({ type: SET_ADDFIELD_LIST, payload: response })
     })
+}
+
+export const toggleEmail=(param)=>{
+  return {
+      type:SET_SHOW_EMAIL,
+      payload:param
+  }
 }
  
 

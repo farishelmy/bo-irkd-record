@@ -66,7 +66,7 @@ class Home extends Component {
     //Workflow
     listAllWorkflow: listWorkflow,
     workflowContent: WorkflowContent,
-    viewWorkflow: WorkflowDetails,    
+    viewWorkflow: WorkflowDetails,   
 
     listOfActivity: ListActivity,
     wizardActivity: ActivityDetails,

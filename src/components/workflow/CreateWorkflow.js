@@ -5,9 +5,10 @@ import { connect } from 'react-redux'
 import Select from "react-select";
 import 'rc-pagination/assets/index.css' 
 
-import { toggleSearchWorkflow, recWorkflow, ListWorkflowTemplate, setShowFab, setWizardPage, panelContent, setRecordStore } from '../../actions/workflowAction'
+import { toggleCreateWF, recWorkflow, ListWorkflowTemplate, setShowFab, setWizardPage, panelContent, setRecordStore } from '../../actions/workflowAction'
 import { populateActivity } from '../../actions/activityAction'
 import { setActivePage } from "../../actions/layoutInitAction"
+import { setNewBread } from "../../actions/breadcrumbAction"
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody, Input } from 'reactstrap'
 
@@ -41,8 +42,8 @@ class CreateWorkflow extends Component {
   }
   
   toggle = () => {
-    const { showSearchModal } = this.props.workflow
-    this.props.toggleSearchWorkflow(!showSearchModal)
+    const { showCreateWF } = this.props.workflow
+    this.props.toggleCreateWF(!showCreateWF)
   }  
 
   handleChange = (e) => {
@@ -69,17 +70,17 @@ class CreateWorkflow extends Component {
         user: { _id }
       },
       workflow:{
-        showSearchModal
+        showCreateWF
       },
       conf       
     } = this.props
     const { workflowName, tempVal } = this.state     
     this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
-    this.props.toggleSearchWorkflow(!showSearchModal)
-    this.props.setActivePage("workflowContent")
-    this.props.setShowFab(false)     
-    this.props.setWizardPage("general")
-    this.props.panelContent(true)
+    this.props.toggleCreateWF(!showCreateWF)
+    // this.props.setActivePage("workflowContent")
+    // this.props.setShowFab(false)     
+    // this.props.setWizardPage("general")
+    // this.props.panelContent(true)
     // this.props.populateActivity({workflowName: workflowName, _action: "SEARCHACTIVITY", _id})
     // this.props.setListActivity({ _action: "SEARCHACTIVITY", workflowUri: wrkflSel, _id})
     // this.props.setRecordStore({ 
@@ -102,16 +103,17 @@ class CreateWorkflow extends Component {
   }  
 
   render() {
-    const { showSearchModal } = this.props.workflow
+    const { showCreateWF } = this.props.workflow
     const { tempOpt } = this.state
+    const { newBread } = this.props.breadcrumb
+    // console.log(newBread.label)
     
     return (
       <div>
-        <Modal isOpen={showSearchModal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={showCreateWF} toggle={this.toggle} className={this.props.className}>
            
-            <ModalHeader toggle={this.toggle}>New Workflow</ModalHeader>
-            <ModalBody> 
-
+            <ModalHeader toggle={this.toggle}>New Workflow - initiating Record: {newBread.label} </ModalHeader>
+            <ModalBody>               
               <FormGroup>
                 <label>Workflow Name</label>
                 <input name="workflowName" type="text" className="form-control" placeholder="Workflow Name" onChange={this.handleChange}  />
@@ -142,7 +144,8 @@ class CreateWorkflow extends Component {
 CreateWorkflow.propTypes = {  
   session: PropTypes.object.isRequired,
   workflow: PropTypes.object.isRequired,
-  toggleSearchWorkflow: PropTypes.func.isRequired,
+  breadcrumb: PropTypes.object.isRequired,
+  toggleCreateWF: PropTypes.func.isRequired,
   recWorkflow: PropTypes.func.isRequired,
   ListWorkflowTemplate: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
@@ -156,11 +159,12 @@ CreateWorkflow.propTypes = {
 }
 const mapStateToProps = (state) => ({ 
   session: state.session,
-  workflow: state.workflow
+  workflow: state.workflow,
+  breadcrumb: state.breadcrumb
 })
 export default connect(mapStateToProps,
   {
-    toggleSearchWorkflow, 
+    toggleCreateWF, 
     recWorkflow,
     ListWorkflowTemplate,
     setActivePage,

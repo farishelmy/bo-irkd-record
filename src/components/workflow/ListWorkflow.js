@@ -210,7 +210,8 @@ class ListWorkflow extends Component {
   render() {
     const { cardView, showFab, pageSize, totalCount } = this.props.workflow;
     const { workList, current, searchToggle } = this.state;
-    // console.log(searchToggle)
+    const { newBread } = this.props.breadcrumb
+    // console.log(newBread)
 
     const rec = workList.map(itm =>
       cardView ? (
@@ -250,15 +251,15 @@ class ListWorkflow extends Component {
             <header>
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <h1 className="h3 display">
-                  <strong>{searchToggle!==true?"List Workflow":"Search Workflow"}</strong>
+                  <strong>{searchToggle!==true?newBread.label:"Search Workflow"}</strong>
                 </h1>
 
                 <div className="d-flex align-items-center">
 
                   <Tooltip
-                        placement="top"
-                        overlay={<div style={{ height: 20, width: '100%' }}>Search Workflow</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                      placement="top"
+                      overlay={<div style={{ height: 20, width: '100%' }}>Search Workflow</div>}
+                      arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                     >
                     <button className="btn btn-sm btn-primary" onClick={this.searchWorkflow}>
                     <i className="fa fa-search"></i>
@@ -267,17 +268,10 @@ class ListWorkflow extends Component {
 
                   <Tooltip
                     placement="top"
-                    overlay={
-                      <div style={{ height: 20, width: "100%" }}>
-                        Change to Card
-                      </div>
-                    }
+                    overlay={<div style={{ height: 20, width: "100%" }}>Change to Card</div>}
                     arrowContent={<div className="rc-tooltip-arrow-inner" />}
                   >
-                    <button
-                      className="btn btn-sm btn-primary ml-2"
-                      onClick={this.changeToViewCard}
-                    >
+                    <button className="btn btn-sm btn-primary ml-2" onClick={this.changeToViewCard}>
                       <i className="fa fa-th" aria-hidden="true" />
                     </button>
                   </Tooltip>
@@ -365,6 +359,7 @@ ListWorkflow.propTypes = {
   layout: PropTypes.object.isRequired,
   session: PropTypes.object.isRequired,
   workflow: PropTypes.object.isRequired,
+  breadcrumb: PropTypes.object.isRequired,
   setActivePage: PropTypes.func.isRequired,
   setCardView: PropTypes.func.isRequired,
   setSelWorkFlow: PropTypes.func.isRequired,
@@ -383,7 +378,8 @@ ListWorkflow.propTypes = {
 const mapStateToProps = state => ({
   session: state.session,
   workflow: state.workflow,
-  layout: state.layout
+  layout: state.layout,
+  breadcrumb: state.breadcrumb
 });
 export default connect(
   mapStateToProps,

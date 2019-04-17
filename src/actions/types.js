@@ -1,3 +1,5 @@
+import { resolveTxt } from "dns";
+
 //auth action and reducer link
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_FAIL = "LOGIN_FAIL"
@@ -30,6 +32,7 @@ export const PREV_NAV = 'PREV_NAV'
 export const SET_REC_CONF = "SET_REC_CONF"
 export const SET_REC_ACC = 'SET_REC_ACC'
 export const SET_SEC_CAV = 'SET_SEC_CAV'
+export const SET_SHOW_EMAIL = 'SET_SHOW_EMAIL'
 // export const SET_MULTI_FAB = "SET_MULTI_FAB"
 // export const ENABLE_MULTI_SEL = "ENABLE_MULTI_SEL"
 // export const ENABLE_SEL_ALL = "ENABLE_SEL_ALL"
@@ -67,6 +70,7 @@ export const TOTAL_COUNT = 'TOTAL_COUNT'
 export const PANEL_CONTENT = 'PANEL_CONTENT' 
 export const SHOW_SUB_BTN = 'SHOW_SUB_BTN' 
 export const SHOW_MODAL_SEARCH = 'SHOW_MODAL_SEARCH'
+export const SET_SHOW_CREATE_WF = 'SET_SHOW_CREATE_WF'
 export const WORKFLOW_SEARCH_PARAM = 'WORKFLOW_SEARCH_PARAM'
 // export const CHANGE_ISMULTI, '' 
 // export const IST_ACTIVITY, '' 

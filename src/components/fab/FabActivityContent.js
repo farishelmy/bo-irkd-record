@@ -11,6 +11,8 @@ import { setNewBread } from "../../actions/breadcrumbAction"
 import { toggleErr, showComplete, showSuspend } from '../../actions/activityAction'
 import { getResult } from '../../actions/activityAction'
 import { setStakehType } from '../../actions/location'
+import { setSearchParam } from "../../actions/searchAction"
+
 
 
 import ReassignModal from '../activity/modal/ReassignModal'
@@ -57,23 +59,16 @@ class FabActivityContent extends Component {
 
             case 'records':
                 
-                // const recordDet = {
-                //     _id: bId,
-                //     _action: "SEARCHRECORD",
-                //     jsonQuery: JSON.stringify([
-                //       {
-                //         op: "EQUALS",
-                //         field: "%26%26Related+Records+of+Workflow",
-                //         value1: workflowName
-                //       }
-                //     ]),
-                //     searchOrder: "0"
-                //   }
-                  
-                // this.props.setRecordStore(recordDet)
+                this.props.setSearchParam({
+                    _action: "SEARCHRECORD",
+                    _id:bId,
+                    searchOrder: 0,
+                    jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Related Records of Activity", value1: activityUri }]))
+                })                 
                 this.props.setActivePage('wizardActivity')
                 this.props.setWizardPage("record") 
-
+                // this.props.setActivePage('record')
+               
                  //Breadcrumb
                  this.props.setNewBread(false, {
                     id: activityUri,
@@ -248,6 +243,7 @@ FabActivityContent.propTypes={
     getResult:PropTypes.func.isRequired,
     showSuspend:PropTypes.func.isRequired,
     setStakehType:PropTypes.func.isRequired,
+    setSearchParam:PropTypes.func.isRequired,
     
  
      
@@ -269,7 +265,8 @@ export default connect(mapStateToProps,{
     showComplete,
     getResult,
     showSuspend,
-    setStakehType
+    setStakehType,
+    setSearchParam
    
 
 })(FabActivityContent)

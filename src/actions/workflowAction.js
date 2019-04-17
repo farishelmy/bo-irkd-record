@@ -20,6 +20,7 @@ import {
     ACTIVITY_STATUS,
     SHOW_MODAL_SEARCH,
     WORKFLOW_SEARCH_PARAM,
+    SET_SHOW_CREATE_WF,
 } from './types'
     
     import {gwUrl} from '../config/appConf'
@@ -146,7 +147,7 @@ export const setRecordStore = (param) => dispatch =>{
         fetch(url)
         .then(res=>res.json())
         .then(res=>{
-            // console.log(res)
+            console.log(res)
             dispatch({
                 type:SET_RECORD_STORE,
                 payload:res.data
@@ -221,6 +222,13 @@ export const titleActivitySel=(param)=>{
 export const toggleSearchWorkflow=(param)=>{
     return {
         type:SHOW_MODAL_SEARCH,
+        payload:param
+    }
+}
+
+export const toggleCreateWF=(param)=>{
+    return {
+        type:SET_SHOW_CREATE_WF,
         payload:param
     }
 }

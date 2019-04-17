@@ -5,12 +5,14 @@ import update from "immutability-helper"
 import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
-import { recFetch, recDelete, recDetails, recAcc } from "../../actions/backendAction"
-import { toggleSearchWorkflow } from "../../actions/workflowAction"
+import { recFetch, recDelete, recDetails, recAcc, toggleEmail } from "../../actions/backendAction"
+import { toggleCreateWF,  populateWorkflow } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
+import { setNewBread } from "../../actions/breadcrumbAction"
 import ThumbCard from "../layout/ThumbCard"
 import SingleFab from "../fab/SingleFab"
 import CreateWorkflow from "../workflow/CreateWorkflow"
+import EmailForm from "../record/EmailForm"
  
 
 export class index extends Component {
@@ -95,10 +97,12 @@ export class index extends Component {
       recDetails,
       setActivePage,
       recAcc,
-      toggleSearchWorkflow
+      toggleCreateWF,
+      populateWorkflow,
+      toggleEmail,
+      setNewBread
     } = this.props
     const { selRec } = this.state     
-    console.log(selRec)
      
     switch (actionName) {
       case "delete":
@@ -112,12 +116,20 @@ export class index extends Component {
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
         break
       case "initWorkflow":
-        // recWorkflow({ _action: "INITIATEWF", _recordUri: selRec.uri, _recordNo: selRec["Record Number"], createWf: true })
-        toggleSearchWorkflow(true)
+        toggleCreateWF(true)
+        break
+      case "workflow":
+        populateWorkflow({_action: "SEARCHWORKFLOW", _recordNo: selRec["Record Number"], _id})
+        setActivePage("listAllWorkflow")
+        setNewBread(false, { id: "Record", label: selRec["Record Number"], activePage: "listAllWorkflow", isActive: true })
+        break
+      case "email":
+        toggleEmail(true)
         break
       case "details":
-        recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })          //<<<<<< NEW
+        recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })       
         recAcc({ _action: "getAC", _recordUri: selRec.uri, _id })      
+        setNewBread(false, { id: "Record", label: selRec["Record Number"], activePage: "recEdit", isActive: true })
         setActivePage("recEdit")
         break
       default:
@@ -166,7 +178,8 @@ export class index extends Component {
             ""
           )}
         </div>   
-        <CreateWorkflow conf={selRec} />     
+        <CreateWorkflow conf={selRec} /> 
+        <EmailForm conf={selRec}/>  
       </section>
     )
   }
@@ -181,7 +194,10 @@ index.propTypes = {
   recDetails: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
   recAcc: PropTypes.func.isRequired,  
-  toggleSearchWorkflow: PropTypes.func.isRequired,     
+  toggleCreateWF: PropTypes.func.isRequired,    
+  populateWorkflow: PropTypes.func.isRequired,
+  setNewBread: PropTypes.func.isRequired,
+  toggleEmail: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -192,5 +208,15 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { recFetch, recDelete, recDetails, setActivePage, recAcc, toggleSearchWorkflow }
+  { 
+    recFetch, 
+    recDelete, 
+    recDetails, 
+    setActivePage, 
+    recAcc, 
+    toggleCreateWF,  
+    populateWorkflow, 
+    setNewBread, 
+    toggleEmail  
+  }
 )(index)

@@ -15,7 +15,6 @@ import { populateActivity } from '../../actions/activityAction'
 import WorkflowPanel from '../workflow/WorkflowPanel'
 import PanelDropdown from '../workflow/PanelDropdown'
 import ActivityPanel from '../workflow/ActivityPanel'
-import CreateWorkflow from '../workflow/CreateWorkflow'
 
 import Tooltip from 'rc-tooltip'
 import update from 'immutability-helper'
@@ -132,16 +131,11 @@ class WorkflowContent extends Component {
 
         const { cardView, showFab, workflowDetails, panelContent, workflowName } = this.props.workflow        
         const { title } = this.state      
+        const { newBread } = this.props.breadcrumb
         
 
         return (
             <Fragment>
-
-                {/* <div className="breadcrumb-holder">
-                    <div className="container-fluid">
-                        <Breadcrumb />
-                    </div>
-                </div> */}
 
                 <section  className="forms">
                     <div className="container-fluid">     
@@ -197,6 +191,7 @@ WorkflowContent.propTypes = {
     session: PropTypes.object.isRequired,
     workflow: PropTypes.object.isRequired,
     activity: PropTypes.object.isRequired,
+    breadcrumb: PropTypes.object.isRequired,
     getDetails: PropTypes.func.isRequired,
     setSelWorkFlow: PropTypes.func.isRequired,
     setWorkflowName: PropTypes.func.isRequired,
@@ -211,7 +206,8 @@ WorkflowContent.propTypes = {
 const mapStateToProps = state => ({
     session: state.session,
     workflow: state.workflow,
-    activity: state.activity
+    activity: state.activity,
+    breadcrumb: state.breadcrumb
 
 })
 export default connect(mapStateToProps,
