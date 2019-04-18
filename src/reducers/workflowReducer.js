@@ -41,7 +41,6 @@ const initialState = {
   cardView: true,
   isSel: false,
   showSearchModal: false,
-  showCreateWF: false,
   workflowSearchParam: null
   // showSubBtn:false,
   // isMultiSel:false,
@@ -158,12 +157,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         showSearchModal: action.payload
-      };
-
-    case SET_SHOW_CREATE_WF:
-      return {
-        ...state,
-        showCreateWF: action.payload
       };
 
     case WORKFLOW_SEARCH_PARAM:

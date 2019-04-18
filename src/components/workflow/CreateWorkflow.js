@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import Select from "react-select";
 import 'rc-pagination/assets/index.css' 
 
-import { toggleCreateWF, recWorkflow, ListWorkflowTemplate, setShowFab, setWizardPage, panelContent, setRecordStore } from '../../actions/workflowAction'
-import { populateActivity } from '../../actions/activityAction'
+import { toggleCreateWF, recWorkflow, ListWorkflowTemplate } from '../../actions/workflowAction'
+ 
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
 
@@ -42,7 +42,7 @@ class CreateWorkflow extends Component {
   }
   
   toggle = () => {
-    const { showCreateWF } = this.props.workflow
+    const { showCreateWF } = this.props.record
     this.props.toggleCreateWF(!showCreateWF)
   }  
 
@@ -69,7 +69,7 @@ class CreateWorkflow extends Component {
       session: {
         user: { _id }
       },
-      workflow:{
+      record:{
         showCreateWF
       },
       conf       
@@ -77,33 +77,10 @@ class CreateWorkflow extends Component {
     const { workflowName, tempVal } = this.state     
     this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
     this.props.toggleCreateWF(!showCreateWF)
-    // this.props.setActivePage("workflowContent")
-    // this.props.setShowFab(false)     
-    // this.props.setWizardPage("general")
-    // this.props.panelContent(true)
-    // this.props.populateActivity({workflowName: workflowName, _action: "SEARCHACTIVITY", _id})
-    // this.props.setListActivity({ _action: "SEARCHACTIVITY", workflowUri: wrkflSel, _id})
-    // this.props.setRecordStore({ 
-    //   _action: "SEARCHRECORD", 
-    //   _id, 
-    //   jsonQuery: JSON.stringify([{ 
-    //     op: "EQUALS", field: "%26%26Related+Records+of+Workflow", 
-    //     value1: workflowName 
-    //   }]), 
-    //   searchOrder: "0"
-    // })    
-    // //Breadcrumb
-    // this.props.setNewBread(false, {
-    //   id: wrkflSel,
-    //   label: workflowName,
-    //   activePage: "workflowContent",
-    //   isActive: true
-    // })
-
   }  
 
   render() {
-    const { showCreateWF } = this.props.workflow
+    const { showCreateWF } = this.props.record
     const { tempOpt } = this.state
     const { newBread } = this.props.breadcrumb
     // console.log(newBread.label)
@@ -145,22 +122,23 @@ CreateWorkflow.propTypes = {
   session: PropTypes.object.isRequired,
   workflow: PropTypes.object.isRequired,
   breadcrumb: PropTypes.object.isRequired,
+  record: PropTypes.object.isRequired,
   toggleCreateWF: PropTypes.func.isRequired,
   recWorkflow: PropTypes.func.isRequired,
   ListWorkflowTemplate: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  setShowFab: PropTypes.func.isRequired, 
-  setWizardPage: PropTypes.func.isRequired,
-  panelContent: PropTypes.func.isRequired,
-  populateActivity: PropTypes.func.isRequired,
-  setRecordStore: PropTypes.func.isRequired, 
-   
+  
+ 
+  
+ 
+  
 
 }
 const mapStateToProps = (state) => ({ 
   session: state.session,
   workflow: state.workflow,
-  breadcrumb: state.breadcrumb
+  breadcrumb: state.breadcrumb,
+  record: state.rec
 })
 export default connect(mapStateToProps,
   {
@@ -168,11 +146,10 @@ export default connect(mapStateToProps,
     recWorkflow,
     ListWorkflowTemplate,
     setActivePage,
-    setShowFab, 
-    setWizardPage, 
-    panelContent, 
-    populateActivity, 
-    setRecordStore 
+ 
+ 
+ 
+     
   })
   (CreateWorkflow)
 

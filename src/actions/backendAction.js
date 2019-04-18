@@ -9,7 +9,9 @@ import {
   SET_REC_CONF,
   SET_REC_ACC,
   SET_SEC_CAV,
-  SET_SHOW_EMAIL
+  SET_SHOW_EMAIL,
+  SET_SHOW_CHECKIN,
+  SET_SHOW_CHECKOUT
 } from "./types"
 import { gwUrl } from "../config/appConf"
 import { converter } from "../utilis/queryStringConverter"
@@ -163,5 +165,21 @@ export const toggleEmail=(param)=>{
       payload:param
   }
 }
+
+export const toggleCheckOut=(param)=>{
+  return {
+      type:SET_SHOW_CHECKOUT,
+      payload:param
+  }
+}
+
+export const toggleCheckIn=(param)=>{
+  return {
+      type:SET_SHOW_CHECKIN,
+      payload:param
+  }
+}
+
+
  
 

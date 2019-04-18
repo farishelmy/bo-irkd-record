@@ -191,25 +191,26 @@ class CustomizeAccess extends Component {
         <Modal isOpen={modalShow} toggle={this.toggle} className={this.props.className}>
            
             <ModalHeader toggle={this.toggle}>Location</ModalHeader>
-            <ModalBody> 
-
+            <ModalBody>
               <FormGroup>
                 <label>Reassign Location</label>
-
-                <Select
-                  placeholder="New Group"
-                  isMulti                   
-                  value={customVal}
-                  noOptionsMessage={() => null}
-                  onChange={this.handleSelectChange}
-                  components= {
-                    { 
-                      DropdownIndicator: () => null,
-                      IndicatorSeparator: () => null 
-                    }
-                  }
-                />
-                  
+                    <Select
+                      placeholder="New Group"
+                      isMulti                   
+                      value={customVal}
+                      noOptionsMessage={() => null}
+                      onChange={this.handleSelectChange}
+                      components= {
+                        { 
+                          DropdownIndicator: () => null,
+                          IndicatorSeparator: () => null 
+                        }
+                      }
+                    />
+                </FormGroup>
+              </ModalBody>
+            <ModalBody className="modal-list"> 
+              <FormGroup>                  
                 {
                   showChild!==false?
                   <div>

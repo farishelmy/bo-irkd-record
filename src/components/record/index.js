@@ -5,7 +5,8 @@ import update from "immutability-helper"
 import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
-import { recFetch, recDelete, recDetails, recAcc, toggleEmail } from "../../actions/backendAction"
+import { recFetch, recDelete, recDetails, recAcc, toggleEmail, toggleCheckIn, toggleCheckOut } from "../../actions/backendAction"
+import { setSearchParam } from "../../actions/searchAction"
 import { toggleCreateWF,  populateWorkflow } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
@@ -13,6 +14,8 @@ import ThumbCard from "../layout/ThumbCard"
 import SingleFab from "../fab/SingleFab"
 import CreateWorkflow from "../workflow/CreateWorkflow"
 import EmailForm from "../record/EmailForm"
+import CheckInForm from "../record/CheckInForm"
+
  
 
 export class index extends Component {
@@ -100,7 +103,9 @@ export class index extends Component {
       toggleCreateWF,
       populateWorkflow,
       toggleEmail,
-      setNewBread
+      setNewBread,
+      setSearchParam,  
+      toggleCheckIn    
     } = this.props
     const { selRec } = this.state     
      
@@ -114,6 +119,39 @@ export class index extends Component {
         break
       case "download":
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
+        break
+      case "checkin":
+        toggleCheckIn(true)
+        break
+      case "checkout":
+  
+        break
+      case "parent":
+        setSearchParam({ 
+          _action: "SEARCHRECORD",
+          _id,
+          searchOrder: 0,
+          jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Container Of", value1: selRec["Record Number"] }]))
+        })
+        this.setState({showFabSingle:false})
+        break
+      case "child":
+        setSearchParam({ 
+          _action: "SEARCHRECORD",
+          _id,
+          searchOrder: 0,
+          jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Contained Within", value1: selRec["Record Number"] }]))
+        })
+        this.setState({showFabSingle:false})
+        break
+      case "part":
+        setSearchParam({ 
+          _action: "SEARCHRECORD",
+          _id,
+          searchOrder: 0,
+          jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&All Parts", value1: selRec["Record Number"] }]))
+        })
+        this.setState({showFabSingle:false})
         break
       case "initWorkflow":
         toggleCreateWF(true)
@@ -180,6 +218,9 @@ export class index extends Component {
         </div>   
         <CreateWorkflow conf={selRec} /> 
         <EmailForm conf={selRec}/>  
+        <CheckInForm />
+        
+       
       </section>
     )
   }
@@ -198,6 +239,9 @@ index.propTypes = {
   populateWorkflow: PropTypes.func.isRequired,
   setNewBread: PropTypes.func.isRequired,
   toggleEmail: PropTypes.func.isRequired,
+  setSearchParam: PropTypes.func.isRequired,
+  toggleCheckIn: PropTypes.func.isRequired,
+  
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -217,6 +261,9 @@ export default connect(
     toggleCreateWF,  
     populateWorkflow, 
     setNewBread, 
-    toggleEmail  
+    toggleEmail,
+    setSearchParam,
+    toggleCheckIn
+   
   }
 )(index)

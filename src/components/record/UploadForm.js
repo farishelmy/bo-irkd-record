@@ -1,9 +1,8 @@
-import React, { useState } from "react"
+import React from 'react'
 import {useDropzone} from 'react-dropzone'
 import { FormGroup, Label, Input } from "reactstrap"
 
-export default function UploadField({conf : { title, incoming, name }, onInputChange }){
-    const [ attchRec, setAttchRec] = useState()
+export default function UploadForm() {
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
 
     const files = acceptedFiles.map(file => (
@@ -12,15 +11,12 @@ export default function UploadField({conf : { title, incoming, name }, onInputCh
         </div>
     ))
 
-    console.log(acceptedFiles)
+    // console.log(acceptedFiles)
 
-    // const sendVal = () =>{
-    //     onInputChange(acceptedFiles)
-    // }
-    
+   
   return (
     <FormGroup>
-    <Label>{title}</Label>         
+    <Label>Files</Label>         
         <div  {...getRootProps({className: 'dropzone'})}>
         <input {...getInputProps()} />
             {   

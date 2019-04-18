@@ -41,7 +41,8 @@ export class RecordWizard extends Component {
       const { data, totalCount } = this.props.record.recList
       const rec = data.map(itm => ({ ...itm, isSel: false }))
       this.setState({ recList: rec, totalRec: totalCount })
-    } else if (prevProps.searchConf.searchParam !== this.props.searchConf.searchParam) {
+    } 
+    else if (prevProps.searchConf.searchParam !== this.props.searchConf.searchParam) {
       const {
         searchConf: { searchParam },
         recFetch
@@ -161,7 +162,14 @@ export class RecordWizard extends Component {
              Records
             </h1>
           </header> 
-            <div className='row d-flex bg-light'>{rec}</div>
+            <div className='row d-flex bg-light'>
+            {
+              rec.length!==0?
+                rec
+            :
+              <h1 className="h3 display text-center">There is no records.</h1>
+            }
+            </div>
               {showFabSingle ? <SingleFab recConf={selRec} editRec={this.recAction} /> : ""}
 
               {totalRec > 20 ? (
