@@ -8,8 +8,7 @@ import "rc-tooltip/assets/bootstrap.css";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-import { toggleEmail } from "../../actions/backendAction";
+ 
 import { setStakehType, viewStakehMember } from "../../actions/location";
 
 import ListCard from "../activity/modal/ListCard";
@@ -47,6 +46,8 @@ class EmailForm extends Component {
       collapse: false,
       locVal: [],
       click:false,
+      email: null,
+      conf: null
     };
   }
 
@@ -54,10 +55,15 @@ class EmailForm extends Component {
     const {
       session: {
         user: { _id: bId }
-      }
+      },
+      conf,
+      email
     } = this.props;
     this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
-    // console.log(conf)
+    this.setState({
+      conf:conf,
+      email:email
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -72,8 +78,8 @@ class EmailForm extends Component {
   }
 
   toggle = () => {
-    const { showEmail } = this.props.record;
-    this.props.toggleEmail(!showEmail);
+    const { email } = this.state
+    this.props.closedModal(!email)
   };
 
   handleChange = e => {
@@ -230,7 +236,6 @@ class EmailForm extends Component {
   };
 
   render() {
-    const { showEmail } = this.props.record;
     const {
       stakehList,
       subject,
@@ -243,16 +248,15 @@ class EmailForm extends Component {
       bcc,
       cc,
       emailTo,
-      click
+      email,
+      conf
     } = this.state;
     const { totalCount, pageSize, locationMember } = this.props.location;
-    // const { conf } = this.props
-    // console.log(conf["Record Number"])
 
     return (
       <div>
         <Modal
-          isOpen={showEmail}
+          isOpen={email}
           toggle={this.toggle}
           className={this.props.className}
         >
@@ -267,6 +271,7 @@ class EmailForm extends Component {
                     name="subject"
                     className="form-control"
                     onChange={this.handleChange}
+                    value={`Record Number: ${conf['Record Number']}`}
                     // value={locVal}
                   />
                 </div>
@@ -298,6 +303,7 @@ class EmailForm extends Component {
                         className="btn btn-sm btn-primary mr-2"
                         onClick={this.btnCollapse}
                       >
+                      {}
                         <i className="fa fa-search" />
                       </button>
                     </Tooltip>
@@ -486,7 +492,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    toggleEmail,
     setStakehType,
     viewStakehMember
   }

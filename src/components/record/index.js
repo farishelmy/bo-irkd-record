@@ -5,9 +5,9 @@ import update from "immutability-helper"
 import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
-import { recFetch, recDelete, recDetails, recAcc, toggleEmail, toggleCheckIn, toggleCheckOut } from "../../actions/backendAction"
+import { recFetch, recDelete, recDetails, recAcc } from "../../actions/backendAction"
 import { setSearchParam } from "../../actions/searchAction"
-import { toggleCreateWF,  populateWorkflow } from "../../actions/workflowAction"
+import { populateWorkflow } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
 import ThumbCard from "../layout/ThumbCard"
@@ -15,6 +15,8 @@ import SingleFab from "../fab/SingleFab"
 import CreateWorkflow from "../workflow/CreateWorkflow"
 import EmailForm from "../record/EmailForm"
 import CheckInForm from "../record/CheckInForm"
+import CheckOutForm from "../record/CheckOutForm"
+
 
  
 
@@ -29,8 +31,11 @@ export class index extends Component {
       showFabMulti: true,
       isMultiSel: false,
       isSelAll: false,
-      selRec: null,   
-      recDet: null,
+      selRec: null,
+      createWF: false,
+      checkOut: false,
+      checkIn: false,
+      email: false 
     }
   }
   componentDidMount() {
@@ -64,6 +69,7 @@ export class index extends Component {
   }
   markOnSel = recId => {
     const { recList, isMultiSel } = this.state
+    // console.log(recList)
     const {
       // record: { isMultiSel }
       // fabToggle
@@ -100,14 +106,11 @@ export class index extends Component {
       recDetails,
       setActivePage,
       recAcc,
-      toggleCreateWF,
       populateWorkflow,
-      toggleEmail,
       setNewBread,
-      setSearchParam,  
-      toggleCheckIn    
+      setSearchParam,   
     } = this.props
-    const { selRec } = this.state     
+    const { selRec } = this.state   
      
     switch (actionName) {
       case "delete":
@@ -121,10 +124,10 @@ export class index extends Component {
         recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
         break
       case "checkin":
-        toggleCheckIn(true)
+        this.setState({checkIn:true})
         break
       case "checkout":
-  
+        this.setState({checkOut:true})
         break
       case "parent":
         setSearchParam({ 
@@ -154,7 +157,8 @@ export class index extends Component {
         this.setState({showFabSingle:false})
         break
       case "initWorkflow":
-        toggleCreateWF(true)
+        this.setState({createWF:true})
+
         break
       case "workflow":
         populateWorkflow({_action: "SEARCHWORKFLOW", _recordNo: selRec["Record Number"], _id})
@@ -162,7 +166,7 @@ export class index extends Component {
         setNewBread(false, { id: "Record", label: selRec["Record Number"], activePage: "listAllWorkflow", isActive: true })
         break
       case "email":
-        toggleEmail(true)
+        this.setState({email:true})
         break
       case "details":
         recDetails({ _action: "VIEWPROPERTIES", _id, _recordUri: selRec.uri })       
@@ -179,9 +183,19 @@ export class index extends Component {
     // console.log(selRec)
     console.log(actionName)
   }
+
+  closedModal=(val)=>{
+    // console.log(val)
+    this.setState({
+      email:val,
+      checkIn:val,
+      checkOut: val,
+      createWF: val
+    })
+  }
+
   render() {
-    const { recList, totalRec, currentPage, showFabSingle, selRec } = this.state    
-    // console.log(selRec.uri) 
+    const { recList, totalRec, currentPage, showFabSingle, selRec, checkIn, email, createWF, checkOut } = this.state   
     const rec = recList.map((itm, idx) => (
       <ThumbCard
         key={idx}
@@ -216,11 +230,12 @@ export class index extends Component {
             ""
           )}
         </div>   
-        <CreateWorkflow conf={selRec} /> 
-        <EmailForm conf={selRec}/>  
-        <CheckInForm />
-        
-       
+
+          {createWF!==false?<CreateWorkflow conf={selRec} createWF={createWF} closedModal={this.closedModal} />:""} 
+          {email!==false?<EmailForm conf={selRec} email={email} closedModal={this.closedModal} />:""}  
+          {checkIn!==false?<CheckInForm conf={selRec} checkIn={checkIn} closedModal={this.closedModal} />:""}
+          {checkOut!==false?<CheckOutForm conf={selRec} checkOut={checkOut} closedModal={this.closedModal} />:""}
+
       </section>
     )
   }
@@ -234,14 +249,10 @@ index.propTypes = {
   recDelete: PropTypes.func.isRequired,
   recDetails: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  recAcc: PropTypes.func.isRequired,  
-  toggleCreateWF: PropTypes.func.isRequired,    
+  recAcc: PropTypes.func.isRequired,     
   populateWorkflow: PropTypes.func.isRequired,
   setNewBread: PropTypes.func.isRequired,
-  toggleEmail: PropTypes.func.isRequired,
   setSearchParam: PropTypes.func.isRequired,
-  toggleCheckIn: PropTypes.func.isRequired,
-  
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -258,12 +269,8 @@ export default connect(
     recDetails, 
     setActivePage, 
     recAcc, 
-    toggleCreateWF,  
     populateWorkflow, 
     setNewBread, 
-    toggleEmail,
     setSearchParam,
-    toggleCheckIn
-   
   }
 )(index)

@@ -78,6 +78,7 @@ export const fetchAdditionalField = fetchParam => dispatch => {
 }
 export const recDelete = fetchParam => dispatch => {
   const url = gwUrl + converter(fetchParam)
+  console.log(url)
   fetch(url)
     .then(res => res.json())
     .then(res => {
@@ -158,28 +159,7 @@ export const addAccessControl = fetchParam => dispatch => {
       // dispatch({ type: SET_ADDFIELD_LIST, payload: response })
     })
 }
-
-export const toggleEmail=(param)=>{
-  return {
-      type:SET_SHOW_EMAIL,
-      payload:param
-  }
-}
-
-export const toggleCheckOut=(param)=>{
-  return {
-      type:SET_SHOW_CHECKOUT,
-      payload:param
-  }
-}
-
-export const toggleCheckIn=(param)=>{
-  return {
-      type:SET_SHOW_CHECKIN,
-      payload:param
-  }
-}
-
+ 
 
  
 

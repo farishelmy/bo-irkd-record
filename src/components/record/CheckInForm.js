@@ -5,9 +5,7 @@ import { connect } from 'react-redux'
 import Select from "react-select";
 import 'rc-pagination/assets/index.css' 
  
-import { toggleCheckIn } from "../../actions/backendAction"
 import { setActivePage } from "../../actions/layoutInitAction"
-import { setNewBread } from "../../actions/breadcrumbAction"
 import UploadForm from "../record/UploadForm"
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap'
@@ -18,76 +16,79 @@ class CheckInForm extends Component {
     super()
     this.state = {
       RevOpt:[],
-      valRev:[]
+      valRev:[],
+      checkIn: null,
+      conf: null,
+      comments:null,
+      files:[]
     }
   } 
 
   componentWillMount(){
+    const { checkIn, conf } = this.props
     const opt = [
         { value: "Make New Revision",label:"Make New Revision" },
         { value: "Replace Current Revision",label:"Replace Current Revision"}
     ]
     this.setState({
-        RevOpt: opt
-    })
+        RevOpt: opt,
+        checkIn: checkIn,
+        conf: conf
+    })    
   }
  
-  
   toggle = () => {
-    const { showCheckIn } = this.props.record
-    this.props.toggleCheckIn(!showCheckIn)
+    const { checkIn } = this.state
+    this.props.closedModal(!checkIn)
   }  
 
-//   handleChange = (e) => {
-//     const inputName = e.target.getAttribute('name')
-//     const inputVal = e.target.value
-//     // ===""?e.target.value=null:e.target.value  
-//     // console.log(e.target.value)    
+  handleChange = (e) => {
+    const inputName = e.target.getAttribute('name')
+    const inputVal = e.target.value
+    // ===""?e.target.value=null:e.target.value  
+    // console.log(e.target.value)    
 
-//     this.setState({
-//         [inputName]: inputVal
-//     })
-//     // console.log(inputName)   
-//     //  console.log(inputVal)
-//   }
+    this.setState({
+        [inputName]: inputVal
+    })
+    // console.log(inputName)   
+    //  console.log(inputVal)
+  }
 
   handleSelectChange = (val) => {
     const { value, label } = val
-    console.log(value)
-
+    // console.log(value)
     this.setState({ valRev: value })
   }
 
-//   submitForm = () =>{
-//     const {  
-//       session: {
-//         user: { _id }
-//       },
-//       record:{
-//         showCheckIn
-//       },
-//       conf       
-//     } = this.props
-//     const { workflowName, tempVal } = this.state     
-//     this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
-//     this.props.toggleCheckIn(!showCheckIn)
-//   }  
+  upload = (val) => {
+    console.log(val)
+  
+  }
+
+  submitForm = () =>{
+    const {  
+      session: {
+        user: { _id }
+      },   
+    } = this.props
+    const { comments, valRev, files } = this.state     
+    // this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
+    console.log({comments: comments, valRev: valRev, files:files, _id  })
+    // this.props.toggleCheckIn(!showCheckIn)
+  }  
 
   render() {
-    const { showCheckIn } = this.props.record
-    const { RevOpt } = this.state
-    const { newBread } = this.props.breadcrumb
-    // console.log(newBread.label)
-   
+    const { RevOpt, conf, checkIn } = this.state
     
     return (
       <div>
-        <Modal isOpen={showCheckIn} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={checkIn} toggle={this.toggle} className={this.props.className}>
            
-            <ModalHeader toggle={this.toggle}>New Workflow - initiating Record: {newBread.label} </ModalHeader>
+            <ModalHeader toggle={this.toggle}>Check In: {conf['Record Number']} </ModalHeader>
             <ModalBody> 
 
-                <UploadForm/>
+                <UploadForm onInputChange={this.upload}/>
 
                 <FormGroup>
                     <Label>Revision</Label>
@@ -100,7 +101,7 @@ class CheckInForm extends Component {
                
                 <FormGroup>
                     <Label>Comments</Label>
-                    <Input name="Comment" type="textarea" onChange={this.handleChange}  />
+                    <Input name="comments" type="textarea" onChange={this.handleChange}  />
                 </FormGroup>
 
                
@@ -120,19 +121,15 @@ class CheckInForm extends Component {
 }
 CheckInForm.propTypes = {  
   session: PropTypes.object.isRequired, 
-  breadcrumb: PropTypes.object.isRequired,
-  record: PropTypes.object.isRequired,
-  toggleCheckIn: PropTypes.object.isRequired,
-  setActivePage: PropTypes.func.isRequired,
+  record: PropTypes.object.isRequired,   
+  setActivePage: PropTypes.func.isRequired, 
 }
 const mapStateToProps = (state) => ({ 
   session: state.session,
-  breadcrumb: state.breadcrumb,
   record: state.rec
 })
 export default connect(mapStateToProps,
   {
-    toggleCheckIn,
     setActivePage,    
   })
   (CheckInForm)

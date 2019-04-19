@@ -132,6 +132,7 @@ class WorkflowContent extends Component {
         const { cardView, showFab, workflowDetails, panelContent, workflowName } = this.props.workflow        
         const { title } = this.state      
         const { newBread } = this.props.breadcrumb
+        const label = newBread.label
         
 
         return (
@@ -143,7 +144,7 @@ class WorkflowContent extends Component {
                    
                         <header>
                             <div className="d-flex bd-highlight">
-                                <h1 className="h3 display p-2 flex-grow-1 bd-highlight"><strong>{panelContent===true?'Workflow':title}</strong></h1>
+                                <h1 className="h3 display p-2 flex-grow-1 bd-highlight"><strong>{panelContent===true?`Workflow: ${label}`:title}</strong></h1>
 
                                     <div className={panelContent!==true?"p-2 bd-highlight d-flex align-items-center":"d-none"}>                          
 
@@ -163,12 +164,10 @@ class WorkflowContent extends Component {
                             </div>            
                         </header>                           
                   
-
-                        <div className="row">
-
-                         
+    
+                        <div className="statistics">
                            
-                                <div className="col-lg-12">    
+                                <div className="row d-flex">    
                                     { 
                                         panelContent === true?
                                             <WorkflowPanel/>

@@ -1,16 +1,17 @@
-import React from 'react'
+import React,{ useEffect } from 'react'
 import {useDropzone} from 'react-dropzone'
 import { FormGroup, Label, Input } from "reactstrap"
 
-export default function UploadForm() {
+export default function UploadForm({onInputChange}) {
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
-
+   
     const files = acceptedFiles.map(file => (
         <div key={file.path}>
         {file.path} - {file.size} bytes
         </div>
     ))
 
+    onInputChange(acceptedFiles)
     // console.log(acceptedFiles)
 
    

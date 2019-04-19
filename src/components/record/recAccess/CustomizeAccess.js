@@ -77,19 +77,24 @@ class CustomizeAccess extends Component {
   addBtn=(name,id)=>{   
      
     const val = {label:name, value:id}
-    // const { presentVal } = this.state
+    const { customVal } = this.state
+
+    const newVal = update(customVal,{$push:[val]})
     
-    const {accessCont} =this.props
-    const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
-    customVal.push(val)
+
+
+    
+    // const {accessCont} =this.props
+    // const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
     // customVal.push(val)
-    // console.log(customVal)
+    // // customVal.push(val)
+    // // console.log(customVal)
 
     this.setState({       
-      customVal:customVal,
+      customVal:newVal
     })
 
-    this.props.addAccessControl(customVal)
+    // this.props.addAccessControl(customVal)
     // this.props.toggleClose(false)
   }
 

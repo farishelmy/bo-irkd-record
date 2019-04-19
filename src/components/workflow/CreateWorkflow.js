@@ -5,10 +5,9 @@ import { connect } from 'react-redux'
 import Select from "react-select";
 import 'rc-pagination/assets/index.css' 
 
-import { toggleCreateWF, recWorkflow, ListWorkflowTemplate } from '../../actions/workflowAction'
+import { recWorkflow, ListWorkflowTemplate } from '../../actions/workflowAction'
  
 import { setActivePage } from "../../actions/layoutInitAction"
-import { setNewBread } from "../../actions/breadcrumbAction"
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody, Input } from 'reactstrap'
 
@@ -20,6 +19,8 @@ class CreateWorkflow extends Component {
       tempOpt:[],
       workflowName: null,
       tempVal:[],
+      createWF: null,
+      conf: null
     }
   } 
 
@@ -29,8 +30,14 @@ class CreateWorkflow extends Component {
         user: { _id }
       },      
       ListWorkflowTemplate,
+      createWF,
+      conf
     } = this.props
     ListWorkflowTemplate({_action:"LISTWFTEMPLATE", _id})
+    this.setState({
+      createWF:createWF,
+      conf:conf
+    })
   }
 
   componentDidUpdate(prevProps){
@@ -42,8 +49,8 @@ class CreateWorkflow extends Component {
   }
   
   toggle = () => {
-    const { showCreateWF } = this.props.record
-    this.props.toggleCreateWF(!showCreateWF)
+    const { createWF } = this.state
+    this.props.closedModal(!createWF)
   }  
 
   handleChange = (e) => {
@@ -68,28 +75,23 @@ class CreateWorkflow extends Component {
     const {  
       session: {
         user: { _id }
-      },
-      record:{
-        showCreateWF
-      },
-      conf       
+      },  
     } = this.props
+    const { conf, createWF } = this.state
     const { workflowName, tempVal } = this.state     
     this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
-    this.props.toggleCreateWF(!showCreateWF)
+    this.props.closedModal(!createWF)
   }  
 
   render() {
-    const { showCreateWF } = this.props.record
-    const { tempOpt } = this.state
-    const { newBread } = this.props.breadcrumb
-    // console.log(newBread.label)
-    
+   
+    const { tempOpt, createWF, conf } = this.state
+   
     return (
       <div>
-        <Modal isOpen={showCreateWF} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={createWF} toggle={this.toggle} className={this.props.className}>
            
-            <ModalHeader toggle={this.toggle}>New Workflow - initiating Record: {newBread.label} </ModalHeader>
+            <ModalHeader toggle={this.toggle}>New Workflow - initiating Record: {conf!==null?conf['Record Number']:""} </ModalHeader>
             <ModalBody>               
               <FormGroup>
                 <label>Workflow Name</label>
@@ -123,16 +125,9 @@ CreateWorkflow.propTypes = {
   workflow: PropTypes.object.isRequired,
   breadcrumb: PropTypes.object.isRequired,
   record: PropTypes.object.isRequired,
-  toggleCreateWF: PropTypes.func.isRequired,
   recWorkflow: PropTypes.func.isRequired,
   ListWorkflowTemplate: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
-  
- 
-  
- 
-  
-
 }
 const mapStateToProps = (state) => ({ 
   session: state.session,
@@ -141,15 +136,10 @@ const mapStateToProps = (state) => ({
   record: state.rec
 })
 export default connect(mapStateToProps,
-  {
-    toggleCreateWF, 
+  { 
     recWorkflow,
     ListWorkflowTemplate,
     setActivePage,
- 
- 
- 
-     
   })
   (CreateWorkflow)
 
