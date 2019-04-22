@@ -14,7 +14,7 @@ export default function SecurityLevel({conf, onInputChange }) {
                 setsecVal(null)
             }
             else {
-                setsecVal( [{ value: conf, label: conf }])
+                setsecVal([{ value: conf, label: conf }])
                
             }
             setOptionSec([

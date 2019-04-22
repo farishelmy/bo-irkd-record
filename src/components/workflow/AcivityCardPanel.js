@@ -35,25 +35,20 @@ export default function Workflow({workflowName, activityUri, activityName, assig
         // </div> 
 
         <div className='col-lg-4 mb-4'>
-        <div className='card data-usage' onClick={handleClick}>
-            <div className='row d-flex align-items-center'>
-            <div className='col-sm-4'>
-                <img src={require("../../img/"+iconCls+".svg")} className='img-card mr-3' alt='...' />
+            <div className={isSel?'card data-usage bg-primary':'card data-usage'} onClick={handleClick}>
+                <div className='row d-flex align-items-center'>
+                    <div className='col-sm-4'>
+                        <img src={require("../../img/"+iconCls+".svg")} className='img-card' alt='...' />
+                    </div>
+                    <div className='col-sm-8'>
+                        <span className={isSel?'font-weight-bold text-truncate text-light':'font-weight-bold text-truncate text-primary'}>{activityName}</span>
+                        <hr className='mt-3 mb-2' />               
+                        <p className={isSel?'font-weight-bold text-truncate text-light':'font-weight-bold text-truncate text-muted'}> Assigned To: {assignedTo} </p>
+                        <p className={isSel?'font-weight-bold text-truncate text-light':'font-weight-bold text-truncate text-muted'}> Date Due: {dateStart} </p>
+                        {/* <small> {dateDue}</small> */}
+                    </div>
+                </div>
             </div>
-            <div className='col-sm-8'>
-                <span className='text-primary'>{activityName}</span>
-                <hr className='mt-3 mb-2' />               
-                <p> Assigned To: {assignedTo} </p>
-                <p> Date Due: {dateDue} </p>
-
-                
-               
-               
-                
-
-            </div>
-            </div>
-        </div>
         </div>
  
 

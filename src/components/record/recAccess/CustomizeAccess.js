@@ -30,7 +30,6 @@ class CustomizeAccess extends Component {
       showChild:false,
       nav: [{ childName: "Root", childUri: "root" }],
       customVal:[],
-      presentVal:[],
     }
   }
 
@@ -39,33 +38,30 @@ class CustomizeAccess extends Component {
         user: { _id }     
     } = this.props.session
     this.props.setStakehType({_action: "LISTLOCATION", _id})
-
+ 
     const {accessCont} =this.props
-    const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
-    this.setState({
-      customVal:customVal,
-      presentVal: customVal
-    })
-
-   
+    // console.log(accessCont.value)
+    if(accessCont.value=="Container"){
+      const value = [{label:"Administrator",value:"308"},{label:"Role",value:"8"}]
+      this.setState({
+        customVal:value
+      })
+    }
+    if(accessCont.value==="Private"){
+      const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
+      this.setState({
+        customVal:customVal
+      })
+    }   
   }
 
-  componentDidUpdate(prevProps,prevState){
+  componentDidUpdate(prevProps){
     if(prevProps.location.locType !== this.props.location.locType){
       const {locType}=this.props.location   
       this.setState({
         listLoc:locType
       })
-    }
-    if(prevState.customVal !== this.state.customVal){
-      // console.log("yeya")
-      
-      // this.setState({
-      //   customVal:customVal
-      // })
-
-    }
-
+    } 
   }
   
   toggle = () => {
@@ -80,15 +76,6 @@ class CustomizeAccess extends Component {
     const { customVal } = this.state
 
     const newVal = update(customVal,{$push:[val]})
-    
-
-
-    
-    // const {accessCont} =this.props
-    // const customVal = accessCont.privateLocs.map(itm=>({label:itm.Name, value:itm.uri}))
-    // customVal.push(val)
-    // // customVal.push(val)
-    // // console.log(customVal)
 
     this.setState({       
       customVal:newVal
@@ -185,10 +172,10 @@ class CustomizeAccess extends Component {
   render() {
     const { modalShow } = this.props
     const { totalCount,pageSize, locationMember } = this.props.location
-    const { listLoc, current, showChild, nav, customVal, presentVal } = this.state
+    const { listLoc, current, showChild, nav, customVal } = this.state
 
     // console.log(customVal)
-    console.log(this.props.className)
+    // console.log(this.props.className)
      
 
     return (

@@ -35,15 +35,25 @@ export class index extends Component {
       createWF: false,
       checkOut: false,
       checkIn: false,
-      email: false 
+      email: false,
+      wizardRec:false 
     }
   }
   componentDidMount() {
     const {
+      active,
       recFetch,
-      searchConf: { searchParam }
+      searchConf: { searchParam },
     } = this.props
     recFetch(searchParam, { start: 0 })
+    
+    if(active!==undefined){
+      if(active==="record"){
+        this.setState({
+          wizardRec:true
+        })
+      }
+    }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.record.recList !== this.props.record.recList) {
@@ -100,7 +110,7 @@ export class index extends Component {
   recAction = actionName => {
     const {
       session: {
-        user: { _id }
+        user: { _id, sortname }
       },
       recDelete,
       recDetails,
@@ -110,12 +120,16 @@ export class index extends Component {
       setNewBread,
       setSearchParam,   
     } = this.props
-    const { selRec } = this.state   
+    const { selRec, recList } = this.state   
+    // console.log(recList)
      
     switch (actionName) {
       case "delete":
         //confirmation box
         recDelete({ _action: "DELETERECORD", _id, _recordUri: selRec.uri })
+        const delItem = recList.filter(itm => itm.uri !== selRec.uri)
+        this.setState({recList:delItem})
+        alert("Successful Deleted")
         break
       case "finalize":
         recDelete({ _action: "FINALIZERECORD", _id, _recordUri: selRec.uri, removeOldRevs: true })
@@ -158,7 +172,6 @@ export class index extends Component {
         break
       case "initWorkflow":
         this.setState({createWF:true})
-
         break
       case "workflow":
         populateWorkflow({_action: "SEARCHWORKFLOW", _recordNo: selRec["Record Number"], _id})
@@ -195,7 +208,7 @@ export class index extends Component {
   }
 
   render() {
-    const { recList, totalRec, currentPage, showFabSingle, selRec, checkIn, email, createWF, checkOut } = this.state   
+    const { recList, totalRec, currentPage, showFabSingle, selRec, checkIn, email, createWF, checkOut, wizardRec } = this.state   
     const rec = recList.map((itm, idx) => (
       <ThumbCard
         key={idx}
@@ -211,15 +224,21 @@ export class index extends Component {
         date_created={itm["Date Created"]}
       />
     ))
+    
+    const noData =  
+    <div className='d-flex align-items-center justify-content-center'>
+      <h1 className='h3 display'>There is no records.</h1>
+    </div>
+
     return (
       <section className='statistics'>
-        <div className='container-fluid'>
+        <div className={wizardRec?'container-fluid bg-light':'container-fluid'}>
           <header>
-            <div className='d-flex align-items-center justify-content-between'>
-              <h1 className='h3 display'>Records</h1>
+            <div className={wizardRec?'d-flex align-items-center justify-content-center':'d-flex align-items-center justify-content-between'}>
+              <h1 className={wizardRec?'h3 display text-primary text-center':'h3 display'}>Records</h1>
             </div>
           </header>
-          <div className='row d-flex'>{rec}</div>
+          <div className='row d-flex'>{rec.length!==0?rec:noData}</div>
           {showFabSingle ? <SingleFab recConf={selRec} editRec={this.recAction} /> : ""}
 
           {totalRec > 20 ? (

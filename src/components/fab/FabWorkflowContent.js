@@ -4,7 +4,7 @@ import Tooltip from 'rc-tooltip'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { changeSubBtn } from '../../actions/fabAction'
+// import { changeSubBtn } from '../../actions/fabAction'
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setWizardPage, setRecordStore } from "../../actions/workflowAction"
 // import { setNewBread } from "../../actions/breadcrumbAction"
@@ -128,7 +128,7 @@ FabWorkflowContent.propTypes={
     workflow: PropTypes.object.isRequired,
     layout: PropTypes.object.isRequired,    
     // fab: PropTypes.object.isRequired,
-    changeSubBtn:PropTypes.func.isRequired,
+    // changeSubBtn:PropTypes.func.isRequired,
     setActivePage:PropTypes.func.isRequired,
     setWizardPage:PropTypes.func.isRequired,
     // setNewBread:PropTypes.func.isRequired,
@@ -145,7 +145,7 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps,{
-    changeSubBtn,
+    // changeSubBtn,
     setActivePage,
     setWizardPage,
     // setNewBread,

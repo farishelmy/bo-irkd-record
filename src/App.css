@@ -266,6 +266,10 @@ img.desaturate {
 .img-icn{
    width:24px;
 }
+.img-modal{
+  max-width: 8%;
+  height: 10%;
+}
 .modal-list{
   overflow-y: auto;
   height:350px

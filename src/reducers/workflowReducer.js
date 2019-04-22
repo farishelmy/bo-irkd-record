@@ -16,7 +16,6 @@ import {
   PAGE_SIZE,
   TOTAL_COUNT,
   PANEL_CONTENT,
-  SHOW_SUB_BTN,
   ACTIVITY_DETAIL,
   SHOW_MODAL_SEARCH,
   WORKFLOW_SEARCH_PARAM,
@@ -42,7 +41,6 @@ const initialState = {
   isSel: false,
   showSearchModal: false,
   workflowSearchParam: null
-  // showSubBtn:false,
   // isMultiSel:false,
 };
 
@@ -145,12 +143,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         panelContent: action.payload
-      };
-
-    case SHOW_SUB_BTN:
-      return {
-        ...state,
-        showSubBtn: action.payload
       };
 
     case SHOW_MODAL_SEARCH:

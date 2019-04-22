@@ -138,6 +138,8 @@ export class RecordWizard extends Component {
   }
   render() {
     const { recList, totalRec, currentPage, showFabSingle, selRec } = this.state    
+    const {active} =this.props
+    console.log(active)
     // console.log(selRec.uri) 
     const rec = recList.map((itm, idx) => (
       <ThumbCard

@@ -81,6 +81,7 @@ class CreateWorkflow extends Component {
     const { workflowName, tempVal } = this.state     
     this.props.recWorkflow({ _action: "INITIATEWF",  workflowName: workflowName, _recordNo: conf["Record Number"], _id, template: tempVal })
     this.props.closedModal(!createWF)
+    alert("Successful Create")
   }  
 
   render() {

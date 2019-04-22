@@ -13,6 +13,7 @@ import { setStakehType, viewStakehMember } from "../../actions/location";
 
 import ListCard from "../activity/modal/ListCard";
 import ListCardChild from "../activity/modal/ListCardChild";
+import BrowseLoc from "../record/BrowseLoc"
 
 import {
   Button,
@@ -43,12 +44,18 @@ class EmailForm extends Component {
       nav: [{ childName: "Root", childUri: "root" }],
       listLoc: [],
       current: 1,
-      collapse: false,
+      collapseTo: false,
+      collapseCc: false,
+      collapseBcc: false,
       locVal: [],
       click:false,
       email: null,
       conf: null
     };
+  }
+
+  BrowseLoc = (a)=>{
+    console.log(a)
   }
 
   componentWillMount() {
@@ -57,8 +64,10 @@ class EmailForm extends Component {
         user: { _id: bId }
       },
       conf,
-      email
+      email,
+      emailTo
     } = this.props;
+    // console.log(haha)
     this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
     this.setState({
       conf:conf,
@@ -113,16 +122,35 @@ class EmailForm extends Component {
     // console.log(param)
   };
 
-  btnCollapse = () => {
-    this.setState(state => ({ collapse: !state.collapse }));
+  btnCollapse = (e) => {
+    console.log(e.target.name)
+    switch (e.target.name) {
+      case "inputTo":
+        const collapseTo = this.state.collapseTo
+          this.setState({ collapseTo: !collapseTo, collapseCc: false, collapseBcc: false })
+        break 
+      case "inputCc":
+        const collapseCc = this.state.collapseCc
+          this.setState({ collapseTo: false, collapseCc: !collapseCc, collapseBcc: false })
+        break 
+      case "inputBcc":
+        const collapseBcc = this.state.collapseBcc
+          this.setState({ collapseTo: false, collapseCc: false, collapseBcc: !collapseBcc })
+        break 
+      default:
+    }
   };
 
-  handleClick = () => {
-    const {click} = this.state
-    console.log(click)
-    this.setState({
-      click:!click
-    })
+  // handleClick = () => {
+  //   const {click} = this.state
+  //   console.log(click)
+  //   this.setState({
+  //     click:click
+  //   })
+  // }
+
+  test=(a)=>{
+    console.log(a)
   }
 
   addBtn = (name, id) => {
@@ -244,14 +272,19 @@ class EmailForm extends Component {
       nav,
       listLoc,
       current,
-      collapse,
+      collapseTo,
+      collapseCc,
+      collapseBcc,      
       bcc,
       cc,
       emailTo,
       email,
-      conf
+      conf,
+      click
     } = this.state;
     const { totalCount, pageSize, locationMember } = this.props.location;
+    const {haha} =this.props
+    console.log(haha)
 
     return (
       <div>
@@ -285,12 +318,15 @@ class EmailForm extends Component {
                       value={emailTo}
                       noOptionsMessage={() => null}
                       onChange={this.handleTo}
+                      // onClick={this.handle}
                       components={{
                         DropdownIndicator: () => null,
                         IndicatorSeparator: () => null
                       }}
                     />
                     <Tooltip
+                      // onClick={this.btnCollapse} 
+                      // name='inputTo'
                       placement="top"
                       overlay={
                         <div style={{ height: 20, width: "100%" }}>
@@ -299,16 +335,11 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <button
-                        className="btn btn-sm btn-primary mr-2"
-                        onClick={this.btnCollapse}
-                      >
-                      {}
-                        <i className="fa fa-search" />
-                      </button>
+                      <img name="inputTo" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
+                {collapseTo?<BrowseLoc collapseTo={click} emailTo={this.test} />:""}
                 <div className="form-group">
                   <label>Cc</label>
                   <div className="row">
@@ -334,15 +365,11 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <button
-                        className="btn btn-sm btn-primary mr-2"
-                        onClick={this.btnCollapse}
-                      >
-                        <i className="fa fa-search" />
-                      </button>
+                      <img name="inputCc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
+                {collapseCc?<BrowseLoc/>:""}
                 <div className="form-group">
                   <label>Bcc</label>
                   <div className="row">
@@ -353,7 +380,7 @@ class EmailForm extends Component {
                       value={bcc}
                       noOptionsMessage={() => null}
                       onChange={this.handleBcc}
-                      onClick={this.handleClick}
+                      // onClick={this.handleClick}
                       components={{
                         DropdownIndicator: () => null,
                         IndicatorSeparator: () => null
@@ -369,71 +396,11 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <button
-                        className="btn btn-sm btn-primary mr-2"
-                        onClick={this.btnCollapse}
-                      >
-                        <i className="fa fa-search" />
-                      </button>
+                      <img name="inputBcc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
-
-                <Collapse isOpen={collapse}>
-                  <div className="form-group modal-list">
-                    {showChild !== false ? (
-                      <div>
-                        <div
-                          className="d-flex justify-content-between recListMenu"
-                          onClick={this.backToParent}
-                        >
-                          <div className="left-col d-flex align-items-center">
-                            <div className="icon mr-2">
-                              <i className="fa fa-angle-left" />
-                              {/* <img src={require(`../../../img/search.svg`)} className='listIcn' alt='...' /> */}
-                            </div>
-                            <p className="title text-primary mb-0">
-                              {nav[nav.length - 1].childName}
-                            </p>
-                          </div>
-                        </div>
-                        {locationMember.map(item => (
-                          <ListCardChild
-                            key={item.uri}
-                            name={item.Name}
-                            uri={item.uri}
-                            iconCls={item.iconCls}
-                            leaf={item.leaf}
-                            getParent={this.getChild}
-                            addBtn={this.addBtn}
-                            getChild={this.getChild}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      listLoc.map(item => (
-                        <ListCard
-                          key={item.uri}
-                          stakehId={item.uri}
-                          name={item.Name}
-                          iconCls={item.iconCls}
-                          leaf={item.leaf}
-                          addBtn={this.addBtn}
-                          getChild={this.getChild}
-                        />
-                      ))
-                    )}
-
-                    <div className="d-flex justify-content-end p-2">
-                      <Pagination
-                        onChange={this.onChangePaging}
-                        current={current}
-                        pageSize={pageSize}
-                        total={totalCount}
-                      />
-                    </div>
-                  </div>
-                </Collapse>
+                {collapseBcc?<BrowseLoc/>:""}
                 <div className="row">
                   <div className="col-sm-6 form-group">
                     <label>

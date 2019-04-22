@@ -4,7 +4,6 @@ import Tooltip from 'rc-tooltip'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { changeSubBtn } from '../../actions/fabAction'
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setWizardPage, setRecordStore } from "../../actions/workflowAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
@@ -45,17 +44,6 @@ class FabActivityContent extends Component {
           } = this.props
 
         switch(e.target.name){
-            
-
-            case 'enableSubBtn':
-                // console.log('enableMulti')
-                this.props.changeSubBtn(true)
-            break
-
-            case 'disableSubBtn':
-                // console.log('disable multi')
-                this.props.changeSubBtn(false)
-            break
 
             case 'records':
                 
@@ -83,8 +71,14 @@ class FabActivityContent extends Component {
                 
                 this.props.setActivePage('wizardActivity')
                 this.props.setWizardPage("general") 
-                this.props.changeSubBtn(false)   
                 
+                this.props.setSearchParam({
+                    _action: "SEARCHRECORD",
+                    _id:bId,
+                    searchOrder: 0,
+                    jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Related Records of Activity", value1: activityUri }]))
+                })     
+
                 //Breadcrumb
                 this.props.setNewBread(false, {
                     id: activityUri,
@@ -133,35 +127,24 @@ class FabActivityContent extends Component {
     } 
 
 
-  render() {
-      const { showSubBtn } = this.props.workflow
-      
+  render() {    
     
 
     return (
         <section>
         <div className="fab">
-            <span className={!showSubBtn?"fab-action-button":"d-none"}>
+            <span className="fab-action-button">
                 <Tooltip
-                placement="left"
-                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Action</div>}
-                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}>
-                    <img name="enableSubBtn" src={require('../../img/settings-open.svg')} alt='enableSubBtn' className='img-fluid' onClick={this.action}/>
+                    placement="left"
+                    overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Details</div>}
+                    arrowContent={<div className="rc-tooltip-arrow-inner"></div>}>
+                    <img name="details" src={require('../../img/fab-update.svg')} alt='details' className='img-fluid' onClick={this.action} />
                 </Tooltip>
             </span>
 
-            <span className={showSubBtn?"fab-action-button":"d-none"}>
-                <Tooltip
-                placement="left"
-                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Close Action</div>}
-                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}>
-                    <img name="disableSubBtn" src={require('../../img/settings-close.svg')} alt='disableSubBtn' className='img-fluid' onClick={this.action} />
-                </Tooltip>
-            </span>
-            
         <ul className="fab-buttons">
 
-            <li className={showSubBtn?"fab-buttons-item":"d-none"}>
+            <li className="fab-buttons-item">
                 <span className="fab-buttons-link">
                     <Tooltip
                     placement="left"
@@ -172,7 +155,7 @@ class FabActivityContent extends Component {
                 </span>
             </li>
 
-            <li className={showSubBtn?"fab-buttons-item":"d-none"}>
+            <li className="fab-buttons-item">
                 <span className="fab-buttons-link">
                     <Tooltip
                     placement="left"
@@ -183,7 +166,7 @@ class FabActivityContent extends Component {
                 </span>
             </li>   
 
-            <li className={showSubBtn?"fab-buttons-item":"d-none"}>
+            <li className="fab-buttons-item">
                 <span className="fab-buttons-link">
                     <Tooltip
                     placement="left"
@@ -193,7 +176,7 @@ class FabActivityContent extends Component {
                     </Tooltip>
                 </span>
             </li>
-            <li className={showSubBtn?"fab-buttons-item":"d-none"}>
+            <li className="fab-buttons-item">
                 <span className="fab-buttons-link">
                     <Tooltip
                     placement="left"
@@ -205,7 +188,7 @@ class FabActivityContent extends Component {
             </li>
  
 
-            <li className={showSubBtn?"fab-buttons-item":"d-none"}>
+            {/* <li className="fab-buttons-item">
                 <span className="fab-buttons-link">
                     <Tooltip
                     placement="left"
@@ -214,7 +197,7 @@ class FabActivityContent extends Component {
                         <img name="details" src={require('../../img/fab-update.svg')} alt='details' className='img-fluid' onClick={this.action} />
                     </Tooltip>
                 </span>
-            </li>               
+            </li>                */}
 
         </ul>
     </div>
@@ -233,7 +216,6 @@ FabActivityContent.propTypes={
     activity: PropTypes.object.isRequired,
     workflow: PropTypes.object.isRequired,
     layout: PropTypes.object.isRequired,    
-    changeSubBtn:PropTypes.func.isRequired,
     setActivePage:PropTypes.func.isRequired,
     setWizardPage:PropTypes.func.isRequired,
     setNewBread:PropTypes.func.isRequired,
@@ -256,7 +238,6 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps,{
-    changeSubBtn,
     setActivePage,
     setWizardPage,
     setNewBread,

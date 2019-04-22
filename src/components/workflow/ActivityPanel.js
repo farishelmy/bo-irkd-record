@@ -34,17 +34,15 @@ class ActivityPanel extends Component {
                 Activity:act
             })
         }  
+        if(prevProps.activity.listActivity !== this.props.activity.listActivity){
+            const { listActivity } = this.props.activity  
+            // console.log(listActivity)
+            this.setState({
+                Activity: listActivity,
+            })
+
+        }
         
-    }
-
-    componentWillMount(){
-        const {activityStatus} = this.props.activity  
-        const act= activityStatus.map(res=>({...res,isSel:false}))
-        // console.log(act)
-        this.setState({
-            Activity: act,
-        })
-
     }
 
     //Selection
@@ -97,13 +95,11 @@ class ActivityPanel extends Component {
         })
     }
 
-    
-
-
     render() {
          
         const { Activity } = this.state
         const { showFab } = this.props.activity
+         
          
         return (
             <Fragment>
@@ -127,7 +123,7 @@ class ActivityPanel extends Component {
 
                     ) 
                 : 
-                    <strong>No Activity</strong>
+                    <strong>There is no activity.</strong>
                 } 
 
                 {

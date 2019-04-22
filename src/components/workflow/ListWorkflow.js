@@ -45,7 +45,8 @@ class ListWorkflow extends Component {
   }
 
   ///Direct Page
-  setActivePage = FabRec => {
+  setActivePage = (page) => {
+    console.log(page)
 
       const { 
         workflow: {  
@@ -59,44 +60,57 @@ class ListWorkflow extends Component {
           }
         }
       }= this.props
+
+      if(page==="workflowContent"){
   
-      this.props.setShowFab(false)
-      this.props.setActivePage('workflowContent')
-      this.props.setWizardPage("general")
-      this.props.panelContent(true)
-  
-      //List Activity
-      const workflowDet = {
-        _action: "SEARCHACTIVITY",
-        workflowUri: wrkflSel,
-        _id: bId
+        this.props.setShowFab(false)
+        this.props.setActivePage(page)
+        this.props.setWizardPage("general")
+        // this.props.panelContent(true)
+    
+        //List Activity
+        this.props.setListActivity({_action: "SEARCHACTIVITY", workflowUri: wrkflSel, _id: bId})
+    
+        //Breadcrumb
+        this.props.setNewBread(false, {
+          id: wrkflSel,
+          label: workflowName,
+          activePage: page,
+          isActive: true
+        })
       }
-       
-      this.props.setListActivity(workflowDet)
-  
-      //Record Wizard
-      const recordDet = {
-        _id: bId,
-        _action: "SEARCHRECORD",
-        jsonQuery: JSON.stringify([
-          {
-            op: "EQUALS",
-            field: "%26%26Related+Records+of+Workflow",
-            value1: workflowName
-          }
-        ]),
-        searchOrder: "0"
-      };
-      // console.log(recordDet)
-      this.props.setRecordStore(recordDet);
-  
-      //Breadcrumb
-      this.props.setNewBread(false, {
-        id: wrkflSel,
-        label: workflowName,
-        activePage: "workflowContent",
-        isActive: true
-      })
+
+      if(page==="viewWorkflow"){
+
+        this.props.setActivePage(page)
+        this.props.setWizardPage("general") 
+        this.props.setShowFab(false)   
+
+        const recordDet = {
+          _id: bId,
+          _action: "SEARCHRECORD",
+          jsonQuery: JSON.stringify([
+            {
+              op: "EQUALS",
+              field: "%26%26Related+Records+of+Workflow",
+              value1: workflowName
+            }
+          ]),
+          searchOrder: "0"
+        }        
+        this.props.setRecordStore(recordDet)
+
+         //Breadcrumb
+         this.props.setNewBread(false, {
+          id: wrkflSel,
+          label: workflowName,
+          activePage: page,
+          isActive: true
+        })
+
+
+
+      }
     }
 
   //Selection
@@ -337,7 +351,7 @@ class ListWorkflow extends Component {
             </div>
 
             {showFab ? (
-              <Fab FabRec={this.setActivePage} delBtn={this.delBtn} />
+              <Fab FabRec={this.setActivePage} />
             ) : (
                 ""
               )}

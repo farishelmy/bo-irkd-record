@@ -146,7 +146,7 @@ export const setRecordStore = (param) => dispatch =>{
         fetch(url)
         .then(res=>res.json())
         .then(res=>{
-            console.log(res)
+            // console.log(res)
             dispatch({
                 type:SET_RECORD_STORE,
                 payload:res.data
