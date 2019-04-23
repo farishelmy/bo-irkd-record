@@ -9,11 +9,11 @@ import "rc-tooltip/assets/bootstrap.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { setStakehType, viewStakehMember } from "../../actions/location";
+import { setStakehType, viewStakehMember } from "../../../actions/location";
 // import { emailTo } from "../record/EmailForm"
 
-import ListCard from "../activity/modal/ListCard";
-import ListCardChild from "../activity/modal/ListCardChild";
+import ListCard from "../../activity/modal/ListCard";
+import ListCardChild from "../../activity/modal/ListCardChild";
  
 
 
@@ -164,8 +164,6 @@ class BrowseLoc extends Component {
       nav,
       listLoc,
       current,
-      collapse,
-      customVal
     } = this.state;
     // console.log(customVal)
     const { totalCount, pageSize, locationMember } = this.props.location;

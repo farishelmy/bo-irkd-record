@@ -15,6 +15,9 @@ import {
 } from "./types"
 import { gwUrl } from "../config/appConf"
 import { converter } from "../utilis/queryStringConverter"
+import { download  } from 'downloadjs'
+import { saveAs  } from 'file-saver'
+
 
 export const recFetch = (fetchParam, paging) => dispatch => {
   const url = `${gwUrl}${converter(fetchParam)}&${converter(paging)}`
@@ -86,6 +89,42 @@ export const recDelete = fetchParam => dispatch => {
       console.log(res)
       // dispatch({ type: SET_ADDFIELD_LIST, payload: response })
     })
+}
+export const recDownload = fetchParam => () => {
+  const url = gwUrl + converter(fetchParam)
+  // console.log(url)
+  // fetch(url)
+  //   .then(res => {
+  //     console.log(res)      
+      fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/pdf"},
+        responseType: "blob"
+        })
+        .then(res => {
+        const contentType = res.headers.get("content-disposition")
+        // const filename = contentType.substring(contentType.indexOf('"') + 1, contentType.lastIndexOf('"'))
+        res.blob()
+        })
+        .then(blob => {download(blob)})
+
+      // fetch(url, {
+      //   credentials: 'same-origin',
+      //   method: 'GET',
+      //   headers: {'Content-Type': 'application/pdf'},
+      //   responseType: "blob"
+      // })
+      // .then(res => {
+      //   const contentType = res.headers.get("content-disposition")
+      //   // filename = contentType.substring(contentType.indexOf('"') + 1, contentType.lastIndexOf('"'))
+      //   return res.blob();
+      // })
+      // .then(blob => {
+      //   download(blob);
+      // })
+
+
+    // })
 }
 export const recDetails = fetchParam => dispatch => {
   const url = gwUrl + converter(fetchParam)

@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function ThumbCard({ record_type_icon, isSel, title, date_created, getDetails, recId, isContainer, isChild }) {
+export default function ThumbCard({ record_type_icon, isSel, title, date_created, getDetails, recId, isContainer, isChild, getSelected, revuri, revisionnumber, datemodified, preserve }) {
   // console.log(date_created)
 
   const iconType =
@@ -23,7 +23,12 @@ export default function ThumbCard({ record_type_icon, isSel, title, date_created
     titleColor = isSel ? "text-light" : "text-primary"
 
   const handleClick = e => {
-    getDetails(recId, title)
+    if(revisionnumber!==undefined){
+      getSelected(revuri, revisionnumber)
+    }
+    else{ 
+      getDetails(recId, title)
+    }
     // console.log(recId, recType, recProps)
   }
   return (
@@ -38,8 +43,9 @@ export default function ThumbCard({ record_type_icon, isSel, title, date_created
           </div>
         </div>
         <hr className={`mb-2 ${bgLight}`} />
-        <span className={`${titleColor} text-truncate`}>{title}</span>
+        <span className={`${titleColor} text-truncate`}>{revisionnumber===undefined?title:revisionnumber}</span>
         {date_created !== undefined ? <p className={textColor}>Created: {date_created}</p> : ""}
+        {datemodified !== undefined ? <p className={textColor}>Date Modified: {datemodified}</p> : "" }
       </div>
       {/* <div className={`card ${toggleBg}`} onClick={handleClick}>
         <div className='text-center'>

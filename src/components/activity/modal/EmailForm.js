@@ -9,11 +9,9 @@ import "rc-tooltip/assets/bootstrap.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
  
-import { setStakehType, viewStakehMember } from "../../actions/location";
+import { setStakehType, viewStakehMember } from "../../../actions/location";
 
-import ListCard from "../activity/modal/ListCard";
-import ListCardChild from "../activity/modal/ListCardChild";
-import BrowseLoc from "../record/BrowseLoc"
+import BrowseLoc from "../modal/BrowseLoc"
 
 import {
   Button,
@@ -48,7 +46,8 @@ class EmailForm extends Component {
       collapseCc: false,
       collapseBcc: false,
       locVal: [],
-      click:false,
+      is_enable_auto_scripting:false,
+      attachment:false,
       email: null,
       conf: null
     };
@@ -61,7 +60,6 @@ class EmailForm extends Component {
       },
       conf,
       email,
-      emailTo
     } = this.props;
     // console.log(haha)
     this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
@@ -100,21 +98,34 @@ class EmailForm extends Component {
     console.log(inputVal);
   };
 
+  handleChangeCheckbox=(event)=>{
+    // e.preventDefault()
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name    
+            
+    this.setState({
+        [name]:value
+    })  
+    // console.log(name)  
+    // console.log(value)
+}    
+
   handleTo = param => {
     // const inputName = e.target.getAttribute('name')
-    this.setState({ emailTo: param });
+    this.setState({ emailTo: param.label });
     // console.log(param)
   };
 
   handleCc = param => {
     console.log(param);
-    this.setState({ cc: param });
+    this.setState({ cc: param.label  });
     // console.log(param)
   };
 
   handleBcc = param => {
     // const inputName = e.target.getAttribute('name')
-    this.setState({ bcc: param });
+    this.setState({ bcc: param.label  });
     // console.log(param)
   };
 
@@ -171,7 +182,10 @@ class EmailForm extends Component {
       emailTo,
       email,
       conf,
+      is_enable_auto_scripting,
+      attachment,
     } = this.state;
+    // console.log(conf)
 
     return (
       <div>
@@ -191,8 +205,7 @@ class EmailForm extends Component {
                     name="subject"
                     className="form-control"
                     onChange={this.handleChange}
-                    value={`Record Number: ${conf['Record Number']}`}
-                    // value={locVal}
+                    value={`Workflow Name: ${conf.workflowName}`}
                   />
                 </div>
                 <div className="form-group">
@@ -219,7 +232,7 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <img name="inputTo" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
+                      <img name="inputTo" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
@@ -251,7 +264,7 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <img name="inputCc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
+                      <img name="inputCc" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
@@ -284,7 +297,7 @@ class EmailForm extends Component {
                       }
                       arrowContent={<div className="rc-tooltip-arrow-inner" />}
                     >
-                      <img name="inputBcc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
+                      <img name="inputBcc" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
                   </div>
                 </div>
@@ -297,10 +310,21 @@ class EmailForm extends Component {
                       <input
                         name="is_enable_auto_scripting"
                         type="checkbox"
-                        onChange={this.handleChange}
-                        // checked={activityName}
+                        onChange={this.handleChangeCheckbox}
+                        checked={is_enable_auto_scripting}
                       />{" "}
                       URL Reference
+                    </label>
+                  </div>
+                  <div className="col-sm-6 form-group">
+                    <label>
+                      <input
+                        name="attachment"
+                        type="checkbox"
+                        onChange={this.handleChangeCheckbox}
+                        checked={attachment}
+                      />{" "}
+                      Attachment
                     </label>
                   </div>
                 </div>

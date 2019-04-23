@@ -66,10 +66,34 @@ const sendActive=(e)=>{
                     <span className="fab-buttons-link">
                         <Tooltip
                         placement="left"
+                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Email</div>}
+                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                        >
+                            <img name="email" src={require('../../img/fab-email.svg')} alt='email' className='img-fluid' onClick={sendActive}/>
+                    </Tooltip>
+                </span>
+            </li>
+
+            <li className="fab-buttons-item">
+                    <span className="fab-buttons-link">
+                        <Tooltip
+                        placement="left"
                         overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Workflow</div>}
                         arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
                         >
                             <img name="workflow" src={require('../../img/fab-workflow.svg')} alt='workflow' className='img-fluid' onClick={sendActive}/>
+                    </Tooltip>
+                </span>
+            </li>
+
+            <li className="fab-buttons-item">
+                    <span className="fab-buttons-link">
+                        <Tooltip
+                        placement="left"
+                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Records</div>}
+                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                        >
+                            <img name="showRecords" src={require('../../img/fab-child.svg')} alt='showRecords' className='img-fluid' onClick={sendActive}/>
                     </Tooltip>
                 </span>
             </li>

@@ -44,7 +44,7 @@ render() {
         general:GeneralWizard,
         record:recordWizard,
         escalation:escalationWizard,
-        email:emailWizard        
+        // email:emailWizard        
 
     }
     const DetailsWizard=this.components[wizardPage]

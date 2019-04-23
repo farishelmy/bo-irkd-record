@@ -35,11 +35,13 @@ class ReassignModal extends Component {
   }
 
   componentWillMount(){
-    const {locType}=this.props.location   
-    this.setState({
-      listLoc:locType
-
-    })
+    const {
+      session: {
+        user: { _id: bId }
+      },
+    } = this.props;
+    // console.log(haha)
+    this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
   }
 
   componentDidUpdate(prevProps){

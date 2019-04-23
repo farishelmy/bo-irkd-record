@@ -52,6 +52,9 @@ class SideNav extends React.Component {
           activePage: e.target.getAttribute('name'),
           isActive: true,
         })
+
+        // this.props.showFabSingle(false)
+
         break
 
       case "search":
@@ -158,11 +161,11 @@ class SideNav extends React.Component {
       }
       this.props.setListActDue(listAct)
       
-      const stakehList = {
-        _action: "LISTLOCATION",
-        _id: bId,
-      }
-      this.props.setStakehType(stakehList)
+      // const stakehList = {
+      //   _action: "LISTLOCATION",
+      //   _id: bId,
+      // }
+      // this.props.setStakehType(stakehList)
 
     }
 

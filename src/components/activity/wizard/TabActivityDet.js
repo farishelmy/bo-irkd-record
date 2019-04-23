@@ -42,7 +42,7 @@ const FolderTabHeader =({activeEditor,active,isContainer})=>{
         </div>
     </div>
 
-   <div className={isContainer?"col-3 colContainer":"d-none"}>
+   {/* <div className={isContainer?"col-3 colContainer":"d-none"}>
     <div className={active==='email'?'tab activeTab mx-auto':'tab mx-auto'}>
                 <img
                 name="email"
@@ -50,7 +50,7 @@ const FolderTabHeader =({activeEditor,active,isContainer})=>{
                 className={active==='email'?'img-fluid desaturate':'img-fluid'}
                 onClick={sendActive} />
         </div>
-    </div> 
+    </div>  */}
 
     
     

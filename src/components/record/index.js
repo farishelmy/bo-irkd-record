@@ -5,7 +5,7 @@ import update from "immutability-helper"
 import Pagination from "rc-pagination/lib"
 import localeInfo from "rc-pagination/lib/locale/en_US"
 
-import { recFetch, recDelete, recDetails, recAcc } from "../../actions/backendAction"
+import { recFetch, recDelete, recDetails, recAcc, recDownload } from "../../actions/backendAction"
 import { setSearchParam } from "../../actions/searchAction"
 import { populateWorkflow } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
@@ -36,7 +36,7 @@ export class index extends Component {
       checkOut: false,
       checkIn: false,
       email: false,
-      wizardRec:false 
+      wizardRec:false, 
     }
   }
   componentDidMount() {
@@ -46,7 +46,7 @@ export class index extends Component {
       searchConf: { searchParam },
     } = this.props
     recFetch(searchParam, { start: 0 })
-    
+  
     if(active!==undefined){
       if(active==="record"){
         this.setState({
@@ -55,7 +55,7 @@ export class index extends Component {
       }
     }
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps,prevState) {
     if (prevProps.record.recList !== this.props.record.recList) {
       const { data, totalCount } = this.props.record.recList
       const rec = data.map(itm => ({ ...itm, isSel: false }))
@@ -77,27 +77,31 @@ export class index extends Component {
     recFetch(searchParam, { start: (e - 1) * 20 })
     this.setState({ currentPage: e })
   }
-  markOnSel = recId => {
+
+  markOnSel = (recId,title) => {
     const { recList, isMultiSel } = this.state
     // console.log(recList)
     const {
       // record: { isMultiSel }
       // fabToggle
     } = this.props
+
     const selRecIdx = recList.findIndex(rec => rec.uri === recId),
-      deSelRecIdx = recList.findIndex(rec => rec.isSel === true),
-      { isSel: selRecIsSel, ...recConf } = recList.find(rec => rec.uri === recId)
+    deSelRecIdx = recList.findIndex(rec => rec.isSel === true),
+    { isSel: selRecIsSel, ...recConf } = recList.find(rec => rec.uri === recId)   
+
     const newSelRec = selRecIsSel
-      ? update(recList, { [selRecIdx]: { isSel: { $set: false } } })
-      : isMultiSel
-      ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
-      : deSelRecIdx === -1
-      ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
-      : update(recList, {
-          [selRecIdx]: { isSel: { $set: true } },
-          [deSelRecIdx]: { isSel: { $set: false } }
-        })
-    this.setState({ recList: newSelRec, selRec: recConf, showFabSingle: selRecIsSel ? false : true })
+    ? update(recList, { [selRecIdx]: { isSel: { $set: false } } })
+    : isMultiSel
+    ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
+    : deSelRecIdx === -1
+    ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
+    : update(recList, {
+        [selRecIdx]: { isSel: { $set: true } },
+        [deSelRecIdx]: { isSel: { $set: false } }
+      })
+    this.setState({ recList: newSelRec, selRec: recConf, showFabSingle: selRecIsSel ? false : true })      
+
     // if (!isMultiSel) {
     //   if (deSelRecIdx === selRecIdx) {
     //     // this.props.setSelRec(null)
@@ -107,6 +111,41 @@ export class index extends Component {
     //   }
     // }
   }
+
+  selected = (recId,title) => {
+    const { recList, isMultiSel, revision } = this.state
+    // console.log(recList)
+    const {
+      // record: { isMultiSel }
+      // fabToggle
+    } = this.props    
+
+    const selRecIdx = recList.findIndex(rec => rec.revuri === recId),
+    deSelRecIdx = recList.findIndex(rec => rec.isSel === true),
+    { isSel: selRecIsSel, ...recConf } = recList.find(rec => rec.revuri === recId)    
+    
+    const newSelRec = selRecIsSel
+    ? update(recList, { [selRecIdx]: { isSel: { $set: false } } })
+    : isMultiSel
+    ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
+    : deSelRecIdx === -1
+    ? update(recList, { [selRecIdx]: { isSel: { $set: true } } })
+    : update(recList, {
+        [selRecIdx]: { isSel: { $set: true } },
+        [deSelRecIdx]: { isSel: { $set: false } }
+      })
+    this.setState({ recList: newSelRec, selRec: recConf, showFabSingle: selRecIsSel ? false : true,})
+    
+    // if (!isMultiSel) {
+    //   if (deSelRecIdx === selRecIdx) {
+    //     // this.props.setSelRec(null)
+    //     fabToggle(true)
+    //   } else {
+    //     fabToggle(false)
+    //   }
+    // }
+  }
+
   recAction = actionName => {
     const {
       session: {
@@ -116,12 +155,13 @@ export class index extends Component {
       recDetails,
       setActivePage,
       recAcc,
+      recDownload,
       populateWorkflow,
       setNewBread,
       setSearchParam,   
     } = this.props
     const { selRec, recList } = this.state   
-    // console.log(recList)
+    // console.log(selRec.revisionnumber)
      
     switch (actionName) {
       case "delete":
@@ -135,13 +175,22 @@ export class index extends Component {
         recDelete({ _action: "FINALIZERECORD", _id, _recordUri: selRec.uri, removeOldRevs: true })
         break
       case "download":
-        recDelete({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
+        if(selRec.revisionnumber!==undefined){
+          recDownload({ _action: "DOWNLOADREVISION", _id, revuri: selRec.revuri, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
+        }
+        else{
+          recDownload({ _action: "DOWNLOAD", _id, _recordUri: selRec.uri, _recordNo: selRec["Record Number"] })
+        }
         break
       case "checkin":
         this.setState({checkIn:true})
         break
       case "checkout":
         this.setState({checkOut:true})
+        break
+      case "revision":
+        setSearchParam({_action:"LISTREVISION", _recordUri: selRec.uri, _recordNo:selRec["Record Number"], _id})
+        this.setState({showFabSingle:false})
         break
       case "parent":
         setSearchParam({ 
@@ -190,7 +239,7 @@ export class index extends Component {
       default:
       // recDetails({ _action: "GENFORM", _id, _recType: selRec.uri })
       console.log("generate form")
-      console.log(recDelete)
+      // console.log(recDelete)
         
     }
     // console.log(selRec)
@@ -209,6 +258,7 @@ export class index extends Component {
 
   render() {
     const { recList, totalRec, currentPage, showFabSingle, selRec, checkIn, email, createWF, checkOut, wizardRec } = this.state   
+    // console.log(revision)
     const rec = recList.map((itm, idx) => (
       <ThumbCard
         key={idx}
@@ -222,6 +272,11 @@ export class index extends Component {
         getDetails={this.markOnSel}
         record_type_icon={itm.iconCls}
         date_created={itm["Date Created"]}
+        getSelected={this.selected}
+        revisionnumber={itm.revisionnumber}
+        datemodified={itm.datemodified}
+        revuri={itm.revuri}
+        preserve={itm.preserve}
       />
     ))
     
@@ -272,6 +327,7 @@ index.propTypes = {
   populateWorkflow: PropTypes.func.isRequired,
   setNewBread: PropTypes.func.isRequired,
   setSearchParam: PropTypes.func.isRequired,
+  recDownload: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
   layout: state.layout,
@@ -291,5 +347,6 @@ export default connect(
     populateWorkflow, 
     setNewBread, 
     setSearchParam,
+    recDownload
   }
 )(index)
