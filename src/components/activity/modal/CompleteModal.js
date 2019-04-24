@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { connect } from 'react-redux'
 
-import { showComplete, completeActivity } from '../../../actions/activityAction'
+import { showComplete, completeActivity, setShowFab } from '../../../actions/activityAction'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
 
@@ -73,7 +73,8 @@ class CompleteModal extends Component {
         //   console.log(param)
         this.props.completeActivity(param)
         this.props.showComplete(false)
-    
+        this.props.updList()
+        this.props.setShowFab(false)
 
     }
 
@@ -92,8 +93,7 @@ class CompleteModal extends Component {
         //   console.log(param)
         this.props.completeActivity(param)
         this.props.showComplete(false)
-    
-
+        this.props.updList()
     }
 
     render() {
@@ -156,6 +156,7 @@ CompleteModal.propTypes = {
   activity: PropTypes.object.isRequired,   
   showComplete: PropTypes.func.isRequired,
   completeActivity: PropTypes.func.isRequired,
+  setShowFab: PropTypes.func.isRequired,
  
    
 
@@ -170,6 +171,7 @@ export default connect(mapStateToProps,
   {
     showComplete,
     completeActivity,
+    setShowFab
      
   
   })

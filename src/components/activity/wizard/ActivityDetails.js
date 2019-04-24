@@ -3,7 +3,6 @@ import GeneralWizard from '../../activity/wizard/GeneralWizard'
 import recordWizard from '../../record/index'
 // import recordWizard from '../../activity/wizard/RecordWizard'
 import escalationWizard from '../../activity/wizard/EscalationWizard'
-import emailWizard from '../../activity/wizard/EmailWizard'
 import FolTabHead from '../../activity/wizard/TabActivityDet'
 // import Breadcrumb from '../../layouts/Breadcrumb'
 

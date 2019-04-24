@@ -1,15 +1,23 @@
-import React from 'react' 
+import React,{useEffect, useState} from 'react' 
 import Tooltip from 'rc-tooltip'
 import 'rc-tooltip/assets/bootstrap.css';
  
 
-export default function Fab({FabRec,delBtn}) {
+export default function Fab({FabRec,conf}) {
+    // console.log(conf)
+    const [icon,setIcon] = useState(null)
 
-   
-const sendActive=(e)=>{
-    e.preventDefault()
-    FabRec(e.target.name, e.target.alt)
-}
+    useEffect(() => {
+        if (conf !== null) {
+            setIcon(conf.iconCls)
+        }     
+    },[conf])
+
+
+    const sendActive=(e)=>{
+        e.preventDefault()
+        FabRec(e.target.name, e.target.alt)
+    }
 
 
   return (
@@ -26,80 +34,102 @@ const sendActive=(e)=>{
         </span>        
 
             <ul className="fab-buttons">
+
+
+                {icon!=="activity-suspend"?
+                    <li className="fab-buttons-item">
+                        <span className="fab-buttons-link">
+                            <Tooltip
+                                placement="left"
+                                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Suspend Activity</div>}
+                                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                                >
+                                    <img name="suspend" src={require('../../img/suspend.svg')} alt='suspend' className='img-fluid' onClick={sendActive}/>
+                            </Tooltip>
+                        </span>
+                    </li>
+                :
+                    <li className="fab-buttons-item">
+                        <span className="fab-buttons-link">
+                            <Tooltip
+                                placement="left"
+                                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Resume Activity</div>}
+                                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                            >
+                                <img name="resume" src={require('../../img/resume.svg')} alt='resume' className='img-fluid' onClick={sendActive}/>
+                            </Tooltip>
+                        </span>
+                    </li>
+                }
+
+                {icon!=="activity-suspend"?
+                    <li className="fab-buttons-item">
+                            <span className="fab-buttons-link">
+                                <Tooltip
+                                placement="left"
+                                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Reasign Activity</div>}
+                                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                                >
+                                    <img name="reassignActivity" src={require('../../img/user.svg')} alt='reassignActivity' className='img-fluid' onClick={sendActive}/>
+                            </Tooltip>
+                        </span>
+                    </li>
+                :
+                    ""
+                }
+
+                {icon!=="activity-suspend"?
+                    <li className="fab-buttons-item">
+                            <span className="fab-buttons-link">
+                                <Tooltip
+                                placement="left"
+                                overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Complete Activity</div>}
+                                arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                                >
+                                    <img name="complete" src={require('../../img/complete.svg')} alt='complete' className='img-fluid' onClick={sendActive}/>
+                            </Tooltip>
+                        </span>
+                    </li>
+                :
+                    ""
+                }
+
                 <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Suspend Activity</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="suspend" src={require('../../img/suspend.svg')} alt='suspend' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
+                        <span className="fab-buttons-link">
+                            <Tooltip
+                            placement="left"
+                            overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Workflow</div>}
+                            arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                            >
+                                <img name="workflow" src={require('../../img/fab-workflow.svg')} alt='workflow' className='img-fluid' onClick={sendActive}/>
+                        </Tooltip>
+                    </span>
+                </li>
 
-            <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Reasign Activity</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="reassignActivity" src={require('../../img/user.svg')} alt='reassignActivity' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
+                <li className="fab-buttons-item">
+                        <span className="fab-buttons-link">
+                            <Tooltip
+                            placement="left"
+                            overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Email</div>}
+                            arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                            >
+                                <img name="email" src={require('../../img/fab-email.svg')} alt='email' className='img-fluid' onClick={sendActive}/>
+                        </Tooltip>
+                    </span>
+                </li>
 
-            <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Complete Activity</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="complete" src={require('../../img/complete.svg')} alt='complete' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
-
-            <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Email</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="email" src={require('../../img/fab-email.svg')} alt='email' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
-
-            <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Workflow</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="workflow" src={require('../../img/fab-workflow.svg')} alt='workflow' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
-
-            <li className="fab-buttons-item">
-                    <span className="fab-buttons-link">
-                        <Tooltip
-                        placement="left"
-                        overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Records</div>}
-                        arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
-                        >
-                            <img name="showRecords" src={require('../../img/fab-child.svg')} alt='showRecords' className='img-fluid' onClick={sendActive}/>
-                    </Tooltip>
-                </span>
-            </li>
-
-
-        </ul>
+                <li className="fab-buttons-item">
+                        <span className="fab-buttons-link">
+                            <Tooltip
+                            placement="left"
+                            overlay={<div style={{ height: 20, width: '100%', textAlign:'center'}}>Show Records</div>}
+                            arrowContent={<div className="rc-tooltip-arrow-inner"></div>}
+                            >
+                                <img name="showRecords" src={require('../../img/fab-child.svg')} alt='showRecords' className='img-fluid' onClick={sendActive}/>
+                        </Tooltip>
+                    </span>
+                </li>
+            </ul>
     </div>
   </div>
   )

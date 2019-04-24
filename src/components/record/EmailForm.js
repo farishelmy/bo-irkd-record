@@ -25,32 +25,26 @@ import {
   FormGroup,
   Col,
   Row,
-  CardBody,
   Input,
-  Collapse
+  Label,
 } from "reactstrap";
 
 class EmailForm extends Component {
   constructor() {
     super();
     this.state = {
-      markOnSel: null,
-      optLoc: [],
       emailTo: [],
       subject: null,
       cc: [],
       bcc: [],
-      showChild: false,
-      nav: [{ childName: "Root", childUri: "root" }],
-      listLoc: [],
-      current: 1,
       collapseTo: false,
       collapseCc: false,
-      collapseBcc: false,
-      locVal: [],
-      click:false,
+      collapseBcc: false,    
       email: null,
-      conf: null
+      conf: null,
+      body: null,
+      link:true,
+      attachment:true
     };
   }
 
@@ -61,13 +55,13 @@ class EmailForm extends Component {
       },
       conf,
       email,
-      emailTo
     } = this.props;
     // console.log(haha)
     this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
     this.setState({
       conf:conf,
-      email:email
+      email:email,
+      subject:`Record Number: ${conf['Record Number']}`
     })
   }
 
@@ -96,25 +90,38 @@ class EmailForm extends Component {
     this.setState({
       [inputName]: inputVal
     });
-    console.log(inputName);
-    console.log(inputVal);
+    // console.log(inputName);
+    // console.log(inputVal);
   };
+
+  handleChangeCheckbox=(event)=>{
+    // e.preventDefault()
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name    
+            
+    this.setState({
+        [name]:value
+    })  
+    // console.log(name)  
+    // console.log(value)
+  } 
 
   handleTo = param => {
     // const inputName = e.target.getAttribute('name')
-    this.setState({ emailTo: param });
+    this.setState({ emailTo: param.label });
     // console.log(param)
   };
 
   handleCc = param => {
     console.log(param);
-    this.setState({ cc: param });
+    this.setState({ cc: param.label });
     // console.log(param)
   };
 
   handleBcc = param => {
     // const inputName = e.target.getAttribute('name')
-    this.setState({ bcc: param });
+    this.setState({ bcc: param.label });
     // console.log(param)
   };
 
@@ -143,6 +150,7 @@ class EmailForm extends Component {
     
     if(collapseTo===true){
       const newVal = update(emailTo,{$push:[value]})
+      const val = newVal.map(itm=>itm.label).toString()
       this.setState({emailTo:newVal})
     }
 
@@ -159,9 +167,22 @@ class EmailForm extends Component {
     // this.props.toggleClose(false)
   };
 
+  //Submit
+  formSubmit=()=>{
+    const { bcc, cc, emailTo, subject, body, attachment, link } = this.state
+     
+    const to = emailTo.map(itm=>itm.label).toString()
+    const emailCc = cc.map(itm=>itm.label).toString()
+    const emailBcc = bcc.map(itm=>itm.label).toString()
+
+    const value = ({ To:to, Cc:emailCc, Bcc:emailBcc, Subject:subject, Body:body, Attachment:attachment, Link:link }) 
+    console.log(value)
+  }
+
   render() {
     const {
-      stakehList,
+      link,
+      attachment,
       subject,
       collapseTo,
       collapseCc,
@@ -180,24 +201,24 @@ class EmailForm extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
+        <Form>
           <ModalHeader toggle={this.toggle}>Send Email</ModalHeader>
           <ModalBody>
-            <div className="row">
-              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div className="form-group">
-                  <label>Subject</label>
-                  <input
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label>Subject</Label>
+                  <Input
                     type="text"
                     name="subject"
                     className="form-control"
                     onChange={this.handleChange}
-                    value={`Record Number: ${conf['Record Number']}`}
-                    // value={locVal}
+                    value={subject}
                   />
-                </div>
-                <div className="form-group">
-                  <label>To</label>
-                  <div className="row">
+                </FormGroup>
+                <FormGroup>
+                  <Label>To</Label>
+                  <Row>
                     <Select
                       placeholder="New Group"
                       isMulti
@@ -221,14 +242,14 @@ class EmailForm extends Component {
                     >
                       <img name="inputTo" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseTo?<BrowseLoc changeInput={this.addBtn}/>:""}
 
-                <div className="form-group">
-                  <label>Cc</label>
-                  <div className="row">
+                <FormGroup>
+                  <Label>Cc</Label>
+                  <Row>
                     <Select
                       placeholder="New Group"
                       isMulti
@@ -241,7 +262,6 @@ class EmailForm extends Component {
                         IndicatorSeparator: () => null
                       }}
                     />
-
                     <Tooltip
                       placement="top"
                       overlay={
@@ -253,14 +273,14 @@ class EmailForm extends Component {
                     >
                       <img name="inputCc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseCc?<BrowseLoc changeInput={this.addBtn}/>:""}
 
-                <div className="form-group">
-                  <label>Bcc</label>
-                  <div className="row">
+                <FormGroup>
+                  <Label>Bcc</Label>
+                  <Row>
                     <Select
                       className="col"
                       placeholder="New Group"
@@ -286,43 +306,55 @@ class EmailForm extends Component {
                     >
                       <img name="inputBcc" src={require('../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseBcc?<BrowseLoc changeInput={this.addBtn} />:""}
 
-                <div className="row">
+                <Row>
                   <div className="col-sm-6 form-group">
-                    <label>
+                    <Label>
                       <input
-                        name="is_enable_auto_scripting"
+                        name="link"
                         type="checkbox"
-                        onChange={this.handleChange}
-                        // checked={activityName}
-                      />{" "}
+                        onChange={this.handleChangeCheckbox}
+                        checked={link}
+                      />
                       URL Reference
-                    </label>
+                    </Label>
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>Body</label>
+                  <div className="col-sm-6 form-group">
+                    <Label>
+                      <input
+                        name="attachment"
+                        type="checkbox"
+                        onChange={this.handleChangeCheckbox}
+                        checked={attachment}
+                      />
+                      Attachment
+                    </Label>
+                  </div>
+                </Row>
+                <FormGroup>
+                  <Label>Body</Label>
                   <textarea
-                    name="auto_scripting"
+                    name="body"
                     rows="10"
                     cols="50"
                     className="form-control"
                     onChange={this.handleChange}
                   />
-                </div>
-              </div>
-            </div>
+                </FormGroup>
+              </Col>
+            </Row>             
           </ModalBody>
           <ModalFooter>
-            <Button color="primary">Send</Button>
+            <Button color="primary" onClick={this.formSubmit}>Send</Button>
             <Button color="secondary" onClick={this.toggle}>
               Cancel
             </Button>
           </ModalFooter>
+          </Form>
         </Modal>
       </div>
     );

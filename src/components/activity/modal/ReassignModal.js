@@ -1,22 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
-import 'react-datepicker/dist/react-datepicker.css'
+// import Select from 'react-select'
+// import 'react-datepicker/dist/react-datepicker.css'
 import ListCard from '../modal/ListCard'
 import ListCardChild from '../modal/ListCardChild'
+
 import Pagination from 'rc-pagination'
-import 'rc-pagination/assets/index.css' 
+import Tooltip from "rc-tooltip";
 import update from 'immutability-helper' 
+
+import "rc-tooltip/assets/bootstrap.css";
+import 'rc-pagination/assets/index.css' 
 
 
 
 import { connect } from 'react-redux'
 
-import { toggleErr, changeAssignee } from '../../../actions/activityAction'
+import { toggleErr, changeAssignee, setShowFab } from '../../../actions/activityAction'
 import { setStakehType, viewStakehMember } from '../../../actions/location'
 
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, CardBody } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Col, Row, Label, Input } from 'reactstrap'
 
 
 class ReassignModal extends Component {
@@ -30,6 +34,7 @@ class ReassignModal extends Component {
       childName:null,
       childUri:null,
       showChild:false,
+      searchName: null,
       nav: [{ childName: "Root", childUri: "root" }]
     }
   }
@@ -81,8 +86,11 @@ class ReassignModal extends Component {
         _id: bId,
       }
       console.log(param)
-      // this.props.changeAssignee(param)
+      this.props.changeAssignee(param)
       this.props.toggleErr(false)
+      this.props.updList()
+      this.props.setShowFab(false)
+      
    
   }
 
@@ -90,14 +98,7 @@ class ReassignModal extends Component {
     const { user: { _id: bId }} = this.props.session
     const { nav } = this.state
 
-    const param = {
-      _action: "LISTLOCATION",
-      _id: bId,
-      URI: stakehId,
-      ANODE: "A",
-    }
-    // console.log(param)
-    this.props.viewStakehMember(param)
+    this.props.viewStakehMember({_action: "LISTLOCATION", _id: bId, URI: stakehId, ANODE: "A",})
 
     const newNav = update(nav, {
       $push: [
@@ -164,12 +165,36 @@ class ReassignModal extends Component {
     })
   }
 
+  handleChange = e => {
+    const inputName = e.target.getAttribute("name");
+    const inputVal = e.target.value;
+    // ===""?e.target.value=null:e.target.value
+    // console.log(e.target.value)
+
+    this.setState({
+      [inputName]: inputVal
+    });
+    // console.log(inputName);
+    // console.log(inputVal);
+  };
+
+  btnSearch=()=>{
+    const { user: { _id }} = this.props.session
+    const { searchName } = this.state
+    this.props.setStakehType({_action: "LISTLOCATION", filtervalue: searchName, _id})
+  }
+
+  btnRefresh=()=>{
+    const { user: { _id }} = this.props.session  
+    this.props.setStakehType({ _action: "LISTLOCATION", _id })
+  }
+
 
   render() {
     const { showErr } = this.props.activity
     const { totalCount,pageSize, locationMember } = this.props.location
-    const { stakehList, assignee, listLoc, current, showChild, nav } = this.state
-    // console.log(test)
+    const { stakehList, assignee, listLoc, current, showChild, nav, searchName } = this.state
+    // console.log(searchName)
     // console.log(assignee)
 
 
@@ -179,10 +204,43 @@ class ReassignModal extends Component {
            
             <ModalHeader toggle={this.toggle}>Location</ModalHeader>
             <ModalBody> 
+              <FormGroup>
+                <Row>
+                  <Col>
+                    <Input
+                      name="searchName"
+                      type="text"
+                      placeholder="Seaarch Name"
+                      onChange={this.handleChange}
+                    />
+                  </Col>
+                  <Tooltip
+                    placement="top"
+                    overlay={
+                      <div style={{ height: 20, width: "100%" }}>
+                        Search Location
+                      </div>
+                    }
+                    arrowContent={<div className="rc-tooltip-arrow-inner" />}
+                    >
+                    <img name="inputTo" src={require('../../../img/search-user.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnSearch} />
+                  </Tooltip>
+                  <Tooltip
+                    placement="top"
+                    overlay={
+                      <div style={{ height: 20, width: "100%" }}>
+                        Refresh Location
+                      </div>
+                    }
+                    arrowContent={<div className="rc-tooltip-arrow-inner" />}
+                    >
+                    <img name="inputTo" src={require('../../../img/refresh.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnRefresh} />
+                  </Tooltip>
+                </Row>
+              </FormGroup>
 
               <FormGroup>
                 <label>Reassign Location</label>
-                
                 {
                   showChild!==false?
                   <div>
@@ -254,6 +312,7 @@ ReassignModal.propTypes = {
   changeAssignee: PropTypes.func.isRequired,
   setStakehType: PropTypes.func.isRequired,
   viewStakehMember: PropTypes.func.isRequired,
+  setShowFab: PropTypes.func.isRequired,
    
 
 }
@@ -269,7 +328,8 @@ export default connect(mapStateToProps,
     toggleErr,
     changeAssignee,
     setStakehType,
-    viewStakehMember
+    viewStakehMember,
+    setShowFab
   
   })
   (ReassignModal)

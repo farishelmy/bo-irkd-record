@@ -15,6 +15,7 @@ import Breadcrumb from '../layout/Breadcrumb'
 import CardRow from '../location/CardRow'  
 import DetailCard from '../location/DetailCard'
 import Fab from '../fab/FabLocation'
+import Search from '../location/Search'
 // import MultiFab from '../fab/MultiFab'
 import Tooltip from 'rc-tooltip'
 import 'rc-tooltip/assets/bootstrap.css'
@@ -216,11 +217,10 @@ class index extends Component {
         this.props.setStakehViewFalse(!locView)
     }
 
-    deleteMulti=(param)=>{
-        // this.props.setActivePage(param)
-        // this.props.setWizardPage(param)       
-
-    }    
+    handleChange = value => {
+        const { user: { _id }} = this.props.session         
+        this.props.setStakehType({_action: "LISTLOCATION", filtervalue: value, _id})
+    }
     
     // //LayoutView
     // stakehViewList=()=>{        
@@ -234,14 +234,11 @@ class index extends Component {
     render() {
         
         const {locView,showFab,stakehNumb,locLabel,totalCount,pageSize}=this.props.location
-        const {locList, current, loading}=this.state  
+        const {locList, current, loading }=this.state  
         // console.log(locLabel)            
         // const {pageTitle}=this.props.layout
         // const {stakeholder_Detail}=this.props.stakeholderView 
         // console.log(loading)
-        
-        
-        
         
         return (
             <Fragment>  
@@ -260,14 +257,16 @@ class index extends Component {
                             <h1 className="h3 display p-2 flex-grow-1 bd-highlight"><strong>{locLabel}</strong></h1>                        
                           
                             <div className="p-2 bd-highlight col-md-3"><Dropdown/></div> 
+                            <div className="p-2 bd-highlight col-md-3"><Search handleChange={this.handleChange}/></div> 
+
                          
                                 <div className="p-2 bd-highlight d-flex align-items-center">                          
 
                                     {/* <Tooltip
                                         placement="top"
-                                        overlay={<div style={{ height: 20, width: '100%' }}>Create New Stakeholder</div>}
+                                        overlay={<div style={{ height: 20, width: '100%' }}>Search Location</div>}
                                         arrowContent={<div className="rc-tooltip-arrow-inner"></div>}>
-                                        <button className="btn btn-sm btn-primary" data-pagename="addStakeholder" onClick={this.addStakeh}>
+                                        <button className="btn btn-sm btn-primary" data-pagename="addStakeholder" onClick={this.btnSearch}>
                                             <i className="fa fa-user-plus" data-pagename="addStakeholder"></i>
                                         </button>                            
                                     </Tooltip> */}
@@ -374,8 +373,11 @@ class index extends Component {
                            
                             <div className="modal-footer justify-content-center">
                                 <Pagination onChange={this.onChangePaging} current={current} pageSize={pageSize} total={totalCount} />    
-                            </div>                             
+                            </div>          
+
+                         
                             
+    
                     </div>                            
                         
                 </section>           

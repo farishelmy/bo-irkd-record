@@ -23,30 +23,22 @@ import {
   FormGroup,
   Col,
   Row,
-  CardBody,
   Input,
-  Collapse
+  Label
 } from "reactstrap";
 
 class EmailForm extends Component {
   constructor() {
     super();
     this.state = {
-      markOnSel: null,
-      optLoc: [],
       emailTo: [],
       subject: null,
       cc: [],
       bcc: [],
-      showChild: false,
-      nav: [{ childName: "Root", childUri: "root" }],
-      listLoc: [],
-      current: 1,
       collapseTo: false,
       collapseCc: false,
       collapseBcc: false,
-      locVal: [],
-      is_enable_auto_scripting:false,
+      link:false,
       attachment:false,
       email: null,
       conf: null
@@ -65,7 +57,8 @@ class EmailForm extends Component {
     this.props.setStakehType({ _action: "LISTLOCATION", _id: bId });
     this.setState({
       conf:conf,
-      email:email
+      email:email,
+      subject:`Record Number: ${conf.workflowName}`
     })
   }
 
@@ -94,8 +87,8 @@ class EmailForm extends Component {
     this.setState({
       [inputName]: inputVal
     });
-    console.log(inputName);
-    console.log(inputVal);
+    // console.log(inputName);
+    // console.log(inputVal);
   };
 
   handleChangeCheckbox=(event)=>{
@@ -109,7 +102,7 @@ class EmailForm extends Component {
     })  
     // console.log(name)  
     // console.log(value)
-}    
+  }    
 
   handleTo = param => {
     // const inputName = e.target.getAttribute('name')
@@ -170,9 +163,20 @@ class EmailForm extends Component {
     // this.props.toggleClose(false)
   };
 
+  //Submit
+  formSubmit=()=>{
+    const { bcc, cc, emailTo, subject, body, attachment, link } = this.state
+     
+    const to = emailTo.map(itm=>itm.label).toString()
+    const emailCc = cc.map(itm=>itm.label).toString()
+    const emailBcc = bcc.map(itm=>itm.label).toString()
+
+    const value = ({ To:to, Cc:emailCc, Bcc:emailBcc, Subject:subject, Body:body, Attachment:attachment, Link:link }) 
+    console.log(value)
+  }
+
   render() {
     const {
-      stakehList,
       subject,
       collapseTo,
       collapseCc,
@@ -182,7 +186,7 @@ class EmailForm extends Component {
       emailTo,
       email,
       conf,
-      is_enable_auto_scripting,
+      link,
       attachment,
     } = this.state;
     // console.log(conf)
@@ -194,23 +198,24 @@ class EmailForm extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
+           <Form>
           <ModalHeader toggle={this.toggle}>Send Email</ModalHeader>
           <ModalBody>
-            <div className="row">
-              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div className="form-group">
-                  <label>Subject</label>
-                  <input
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label>Subject</Label>
+                  <Input
                     type="text"
                     name="subject"
-                    className="form-control"
+                    // className="form-control"
                     onChange={this.handleChange}
-                    value={`Workflow Name: ${conf.workflowName}`}
+                    value={subject}
                   />
-                </div>
-                <div className="form-group">
-                  <label>To</label>
-                  <div className="row">
+                </FormGroup>
+                <FormGroup>
+                  <Label>To</Label>
+                  <Row>
                     <Select
                       placeholder="New Group"
                       isMulti
@@ -234,14 +239,14 @@ class EmailForm extends Component {
                     >
                       <img name="inputTo" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseTo?<BrowseLoc changeInput={this.addBtn}/>:""}
 
-                <div className="form-group">
-                  <label>Cc</label>
-                  <div className="row">
+                <FormGroup>
+                  <Label>Cc</Label>
+                  <Row>
                     <Select
                       placeholder="New Group"
                       isMulti
@@ -254,7 +259,6 @@ class EmailForm extends Component {
                         IndicatorSeparator: () => null
                       }}
                     />
-
                     <Tooltip
                       placement="top"
                       overlay={
@@ -266,14 +270,14 @@ class EmailForm extends Component {
                     >
                       <img name="inputCc" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseCc?<BrowseLoc changeInput={this.addBtn}/>:""}
 
-                <div className="form-group">
-                  <label>Bcc</label>
-                  <div className="row">
+                <FormGroup>
+                  <Label>Bcc</Label>
+                  <Row>
                     <Select
                       className="col"
                       placeholder="New Group"
@@ -299,54 +303,55 @@ class EmailForm extends Component {
                     >
                       <img name="inputBcc" src={require('../../../img/user-group.svg')} alt='inputTo' className='img-modal mr-2' onClick={this.btnCollapse} />
                     </Tooltip>
-                  </div>
-                </div>
+                  </Row>
+                </FormGroup>
 
                 {collapseBcc?<BrowseLoc changeInput={this.addBtn} />:""}
 
-                <div className="row">
+                <Row>
                   <div className="col-sm-6 form-group">
-                    <label>
+                    <Label>
                       <input
-                        name="is_enable_auto_scripting"
+                        name="link"
                         type="checkbox"
                         onChange={this.handleChangeCheckbox}
-                        checked={is_enable_auto_scripting}
-                      />{" "}
+                        checked={link}
+                      />
                       URL Reference
-                    </label>
+                    </Label>
                   </div>
                   <div className="col-sm-6 form-group">
-                    <label>
+                    <Label>
                       <input
                         name="attachment"
                         type="checkbox"
                         onChange={this.handleChangeCheckbox}
                         checked={attachment}
-                      />{" "}
+                      />
                       Attachment
-                    </label>
+                    </Label>
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>Body</label>
+                </Row>
+                <FormGroup>
+                  <Label>Body</Label>
                   <textarea
-                    name="auto_scripting"
+                    name="body"
                     rows="10"
                     cols="50"
                     className="form-control"
                     onChange={this.handleChange}
                   />
-                </div>
-              </div>
-            </div>
+                </FormGroup>
+              </Col>
+            </Row>             
           </ModalBody>
           <ModalFooter>
-            <Button color="primary">Send</Button>
+            <Button color="primary" onClick={this.formSubmit}>Send</Button>
             <Button color="secondary" onClick={this.toggle}>
               Cancel
             </Button>
           </ModalFooter>
+          </Form>
         </Modal>
       </div>
     );

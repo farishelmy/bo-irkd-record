@@ -82,7 +82,8 @@ class EscalationWizard extends Component {
          
 
           <div className="row">
-            <div className="col-12">                
+          <strong>There is no items to show in this view.</strong>
+            {/* <div className="col-12">                
               <div className="d-flex justify-content-between align-items-center">
               <div className="p-2 img-fluid img-scale"/>
                   <div className="col p-2">
@@ -95,7 +96,7 @@ class EscalationWizard extends Component {
                       <p className="card-title mb-1 font-weight-bold text-muted">Date to Escalate</p>
                   </div>                   
               </div>               
-            </div>  
+            </div>   */}
             
             {/* { listActivity.map(item=>
               <ListEscalation

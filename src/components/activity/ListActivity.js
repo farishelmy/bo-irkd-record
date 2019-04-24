@@ -39,6 +39,7 @@ import ReassignModal from "../activity/modal/ReassignModal";
 import CompleteModal from "../activity/modal/CompleteModal";
 import SuspendModal from "../activity/modal/SuspendModal";
 import EmailForm from "../activity/modal/EmailForm"
+import Resume from "../activity/modal/ResumeModal"
 
 import "rc-pagination/assets/index.css";
 import "rc-tooltip/assets/bootstrap.css";
@@ -51,7 +52,8 @@ class ListActivity extends Component {
       selAct: null,
       current: 1,
       searchToggle: false,
-      email:false
+      email:false,
+      resume:false,
     };
   }
 
@@ -125,6 +127,11 @@ class ListActivity extends Component {
     //Suspend
     else if (page === "suspend") {
       this.props.showSuspend(true);
+    } 
+
+     //Resume
+     else if (page === "resume") {
+      this.setState({resume:true});
     } 
     //Complete
     else if (page === "complete") {
@@ -226,32 +233,15 @@ class ListActivity extends Component {
     const {
       user: { _id: bId }
     } = this.props.session;
-    const val = [
-      {
-        activityName,
-        activityUri,
-        markOnSel,
-        workflowName,
-        assignedTo,
-        activityDateDue,
-        iconCls,
-        isSel,
-        supervisor,
-        priority,
-        estDuration
-      }
-    ];
 
-    this.props.getDetails(val); //Set Workflow Details
-    this.props.activityUri(activityUri); //Set Workflow Uri
-    this.props.activityName(activityName); //Set Workflow Name
-
-    const param = {
-      _action: "CHECKRESULT",
-      _activityUri: activityUri,
-      _id: bId
-    };
-    this.props.checkResult(param);
+    if(iconCls!=="activity-suspend"){
+      const param = {
+        _action: "CHECKRESULT",
+        _activityUri: activityUri,
+        _id: bId
+      };
+      this.props.checkResult(param);
+    }
 
     const { listAct } = this.state;
     // console.log(listAct)
@@ -276,6 +266,10 @@ class ListActivity extends Component {
       this.props.setShowFab(true);
     }
 
+    this.props.getDetails([value]); //Set Workflow Details
+    this.props.activityUri(activityUri); //Set Workflow Uri
+    this.props.activityName(activityName); //Set Workflow Name
+
     this.setState({
       listAct: newWrkfwList,
       selAct: value
@@ -288,10 +282,12 @@ class ListActivity extends Component {
     this.props.setCardView(!cardView);
   };
 
+  //Search
   searchActivity = () => {
     this.props.toggleSearchActivity(true);
   };
 
+  //Paging
   onChangePaging = page => {
     const {
       user: { _id: bId }
@@ -344,17 +340,26 @@ class ListActivity extends Component {
     }
   };
 
-  closedModal=(val)=>{
+  //Toggle Modal
+  closedModal=(value)=>{
     // console.log(val)
     this.setState({
-      email:val
+      email:value,
+      resume:value
     })
+  }
+
+  updList=()=>{
+    const {
+      user: { _id }
+    } = this.props.session;
+    this.props.setListActDue({_action:"LISTACTDUE", _id})
   }
 
   render() {
     const { cardView, showFab, pageSize, totalCount } = this.props.activity;
 
-    const { listAct, current, searchToggle, email, selAct } = this.state;
+    const { listAct, current, searchToggle, email, selAct, resume } = this.state;
     // console.log(selAct)
 
     const rec = listAct.map(itm =>
@@ -492,18 +497,18 @@ class ListActivity extends Component {
 
             {showFab ? (
               <Fab
+                conf={selAct}
                 FabRec={this.setActivePage}
-                reasgnBtn={this.reassignBtn}
-                delBtn={this.delBtn}
               />
             ) : (
               ""
             )}
 
-            <ReassignModal />
-            <CompleteModal />
-            <SuspendModal />
             <Search />
+            <ReassignModal updList={this.updList} />
+            <CompleteModal updList={this.updList} />
+            <SuspendModal updList={this.updList} />
+            {resume!==false?<Resume conf={selAct} resume={resume} closedModal={this.closedModal} updList={this.updList} />:""}  
             {email!==false?<EmailForm conf={selAct} email={email} closedModal={this.closedModal} />:""}  
 
 

@@ -77,7 +77,7 @@ export const setStakehType = (param) => dispatch =>{
         fetch(url)
         .then(res=>res.json())
         .then(res=>{
-            // console.log(res.data)
+            // console.log(res)
             dispatch({
                 type:LOC_TYPE,
                 payload:res.data

@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { connect } from 'react-redux'
 
-import { suspendActivity, showSuspend } from '../../../actions/activityAction'
+import { suspendActivity, showSuspend, setShowFab } from '../../../actions/activityAction'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Col, Row, Label } from 'reactstrap'
 
@@ -60,6 +60,8 @@ class SuspendModal extends Component {
         //   console.log(param)
         this.props.suspendActivity(param)
         this.props.showSuspend(false)
+        this.props.updList()
+        this.props.setShowFab(false)
     
 
     }
@@ -119,6 +121,7 @@ SuspendModal.propTypes = {
   activity: PropTypes.object.isRequired,   
   suspendActivity: PropTypes.func.isRequired,
   showSuspend: PropTypes.func.isRequired,
+  setShowFab: PropTypes.func.isRequired,
    
 
 }
@@ -131,9 +134,8 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps,
   {
     suspendActivity,
-    showSuspend
-     
-  
+    showSuspend,
+    setShowFab
   })
 (SuspendModal)
 
