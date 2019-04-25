@@ -46,7 +46,7 @@ class ListWorkflow extends Component {
 
   ///Direct Page
   setActivePage = (page) => {
-    console.log(page)
+    // console.log(page)
 
       const { 
         workflow: {  

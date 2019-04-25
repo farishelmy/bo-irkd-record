@@ -26,6 +26,9 @@ class SideNav extends React.Component {
   toggleClass = e => {
     e.preventDefault()
     const {
+      setShowFab,
+      setActivePage,
+      setNewBread,
       setSearchParam,
       session: {
         user: { _id, sortname }
@@ -44,17 +47,16 @@ class SideNav extends React.Component {
           searchOrder: 0,
           jsonQuery: encodeURIComponent(JSON.stringify([{ op: "EQUALS", field: "&&Owner Location", value1: sortname }]))
         })
-        this.props.setActivePage("record")
+         setActivePage("record")
 
-        this.props.setNewBread(true, {
+         setNewBread(true, {
           id: e.target.getAttribute('data-breadcrumb'),
           label: e.target.getAttribute('data-breadcrumb'),
           activePage: e.target.getAttribute('name'),
           isActive: true,
         })
-
-        // this.props.showFabSingle(false)
-
+        setShowFab(false) // Fab True false
+    
         break
 
       case "search":

@@ -356,6 +356,10 @@ class ListActivity extends Component {
     this.props.setListActDue({_action:"LISTACTDUE", _id})
   }
 
+  // shouldComponentUpdate(nextProps){
+  //   return this.props.activity.listActivityDue !== nextProps.activity.listActivityDue; 
+  // }
+
   render() {
     const { cardView, showFab, pageSize, totalCount } = this.props.activity;
 

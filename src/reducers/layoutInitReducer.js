@@ -1,10 +1,11 @@
-import{PAGE_CLASS,TOGGLE_SIDENAV,SIDENAV_CLASS,ACTIVE_PAGE} from '../actions/types'
+import{PAGE_CLASS,TOGGLE_SIDENAV,SIDENAV_CLASS,ACTIVE_PAGE,SHOW_FAB} from '../actions/types'
 
 const initialState={
     pageClass:'page',
     activePage:'dashboard',
     toggleSideNav:false,
-    navBarClass:'side-navbar'
+    navBarClass:'side-navbar',
+    showFab:false
 }
 
 export default function(state = initialState, action){
@@ -28,6 +29,11 @@ export default function(state = initialState, action){
         return {
             ...state,
             activePage:action.payload
+        }
+        case SHOW_FAB:
+        return {
+            ...state,
+            showFab:action.payload
         }
         default:
         return state

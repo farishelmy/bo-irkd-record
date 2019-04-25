@@ -30,3 +30,5 @@ export const setNavToggle=(toggleVal, pageClass, navClass)=>dispatch=>{
         payload:pageName
     }
  }
+
+ 

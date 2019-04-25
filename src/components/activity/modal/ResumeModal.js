@@ -62,8 +62,6 @@ class ResumeModal extends Component {
         this.props.closedModal(!resume)
         this.props.updList()
         this.props.setShowFab(false)
-
-         
     }
 
     render() {

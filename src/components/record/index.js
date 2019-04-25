@@ -7,7 +7,7 @@ import localeInfo from "rc-pagination/lib/locale/en_US"
 
 import { recFetch, recDelete, recDetails, recAcc, recDownload } from "../../actions/backendAction"
 import { setSearchParam } from "../../actions/searchAction"
-import { populateWorkflow } from "../../actions/workflowAction"
+import { populateWorkflow, setShowFab } from "../../actions/workflowAction"
 import { setActivePage } from "../../actions/layoutInitAction"
 import { setNewBread } from "../../actions/breadcrumbAction"
 import ThumbCard from "../layout/ThumbCard"
@@ -44,8 +44,10 @@ export class index extends Component {
       active,
       recFetch,
       searchConf: { searchParam },
+      layout:{ showFab }
     } = this.props
     recFetch(searchParam, { start: 0 })
+    this.setState({showFabSingle:showFab})
   
     if(active!==undefined){
       if(active==="record"){
@@ -78,6 +80,7 @@ export class index extends Component {
     this.setState({ currentPage: e })
   }
 
+  //Selection
   markOnSel = (recId,title) => {
     const { recList, isMultiSel } = this.state
     // console.log(recList)
@@ -112,6 +115,7 @@ export class index extends Component {
     // }
   }
 
+  //if Revision
   selected = (recId,title) => {
     const { recList, isMultiSel, revision } = this.state
     // console.log(recList)
@@ -258,7 +262,7 @@ export class index extends Component {
 
   render() {
     const { recList, totalRec, currentPage, showFabSingle, selRec, checkIn, email, createWF, checkOut, wizardRec } = this.state   
-    // console.log(revision)
+    // console.log(showFabSingle)
     const rec = recList.map((itm, idx) => (
       <ThumbCard
         key={idx}

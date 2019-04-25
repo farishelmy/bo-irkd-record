@@ -56,7 +56,8 @@ class CheckOutForm extends Component {
       }    
     } = this.props
     const { conf, comments, checkOut } = this.state     
-    this.props.recDelete({ _action: "CHECKOUT",  comments: comments, _recordNo: conf["Record Number"], _id, _recordUri: conf.uri })
+    console.log({ _action: "CHECKOUT",  comments: comments, _recordNo: conf["Record Number"], _id, _recordUri: conf.uri })
+    // this.props.recDelete({ _action: "CHECKOUT",  comments: comments, _recordNo: conf["Record Number"], _id, _recordUri: conf.uri })
     // this.props.closedModal(!checkOut)
   }  
 
@@ -67,7 +68,6 @@ class CheckOutForm extends Component {
     return (
       <div>
         <Modal isOpen={checkOut} toggle={this.toggle} className={this.props.className}>
-           
             <ModalHeader toggle={this.toggle}>Check Out - {conf['Record Number']} </ModalHeader>
             <ModalBody>               
               <FormGroup>
