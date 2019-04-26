@@ -82,7 +82,10 @@ class EscalationWizard extends Component {
          
 
           <div className="row">
-          <strong>There is no items to show in this view.</strong>
+          <div className='d-flex align-items-center justify-content-center'>
+            <h1 className='h3 display'>There is no items.</h1>
+          </div>
+           
             {/* <div className="col-12">                
               <div className="d-flex justify-content-between align-items-center">
               <div className="p-2 img-fluid img-scale"/>
